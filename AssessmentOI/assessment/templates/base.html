@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    {% block head %}
+      {% block meta %}
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <!-- Meta, title, CSS, favicons, etc. -->
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+      {% endblock meta %}
+
+      <title>{% block title %} Project Name {% endblock %}</title>
+
+      {% block stylesheets %}
+          <!-- Font Icon -->
+        <link rel="stylesheet" href="/static/build/fonts/material-icon/css/material-design-iconic-font.min.css">
+
+        <!-- Main css -->
+        <link rel="stylesheet" href="/static/build/css/style.css">
+
+
+
+
+<!--        &lt;!&ndash; Bootstrap -->
+        <link href="/static/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+        <!-- Font Awesome -->
+{#        <link href="/static/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">#}
+        <!-- Font Awesome 5 -->
+        <link href="/static/vendors/fontawesome-5/css/all.css" rel="stylesheet">
+        <!-- NProgress -->
+        <link href="/static/vendors/nprogress/nprogress.css" rel="stylesheet">
+        <!-- bootstrap-daterangepicker -->
+        <link href="/static/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+        <!-- iCheck -->
+        <link href="/static/vendors/iCheck/skins/flat/green.css" rel="stylesheet">
+        <!-- bootstrap-progressbar -->
+        <link href="/static/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
+        <!-- JQVMap -->
+        <link href="/static/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
+        <!-- jQuery custom content scroller -->
+        <link href="/static/vendors/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css" rel="stylesheet"/>
+
+        <!-- bootstrap tour for website walkthrough -->
+        <link href="/static/vendors/bootstrap-tourist-master/bootstrap-tourist.css" rel="stylesheet">-->
+
+      {% endblock stylesheets %}
+      <!-- Custom Theme Style -->
+      <link href="/static/build/css/custom.css" rel="stylesheet">
+    {% endblock head %}
+    {% block jqTop %}
+    {% endblock jqTop %}
+
+  </head>
+
+<!--{#  <body class="{% block body_class %}nav-md menu_fixed{% endblock body_class %}">#}
+  <body class="{% block body_class %}nav-sm menu_fixed{% endblock body_class %}">-->
+  <body>
+    {% block body %}
+      <div class="container body">
+        <div class="main_container">
+
+          {% block sidebar %}
+
+          {% endblock sidebar %}
+
+          {% block top_navigation %}
+
+          {% endblock top_navigation %}
+
+          {% block content %}
+            <!-- {{ content }} -->
+          {% endblock content %}
+
+          {% block footer %}
+
+          {% endblock footer %}
+        </div>
+      </div>
+
+      {% block javascripts %}
+        <!-- jQuery -->
+<!--        <script src="/static/vendors/jquery/dist/jquery.min.js"></script>
+        &lt;!&ndash; Bootstrap &ndash;&gt;
+        <script src="/static/vendors/bootstrap/dist/js/bootstrap.min.js"></script>-->
+        <!-- FastClick -->
+      {% endblock %}
+      <!-- Custom Theme Scripts -->
+<!--      <script src="/static/build/js/custom.js"></script>-->
+    {% endblock body %}
+    {% block jq %}
+    {% endblock jq %}
+    {% block frontend-test %}
+    {% endblock frontend-test %}
+  </body>
+</html>

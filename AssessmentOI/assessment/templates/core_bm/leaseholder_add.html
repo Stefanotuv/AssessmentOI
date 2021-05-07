@@ -1,0 +1,219 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Add a new Leaseholder {% endblock title %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
+
+      <div class="row">
+       <div class="col-md-2 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+
+              <h2>Add a new Leaseholder</h2>
+              {% if messages %}
+              {% for message in messages%}
+              <div class="alert alert-danger" role="alert">
+                {{message}}
+              </div>
+
+              {% endfor %}
+              {% endif %}
+              <!-- Tabs -->
+
+              {% if add_update == "add" %}
+                  <form class="" method="POST" action="{% url 'leaseholder_property_add_view' %}" id="add_" enctype = "multipart/form-data">
+              {% elif add_update == 'update'  %}
+                  <form class="" method="POST" action="{% url 'leaseholder_property_update_view' %}" id="update_" enctype = "multipart/form-data">
+              {% else %}
+                  <form class="" method="POST" action="{% url 'leaseholder_add_view' %}" id="add" enctype = "multipart/form-data">
+              {% endif %}
+
+                  {% csrf_token %}
+              <div id="wizard_verticle" class="form_wizard wizard_verticle">
+
+                <ul class="list-unstyled wizard_steps">
+                  <li>
+                    <a href="#step-11">
+                      <span class="step_no">1</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-22">
+                      <span class="step_no">2</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-33">
+                      <span class="step_no">3</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-44">
+                      <span class="step_no">4</span>
+                    </a>
+                  </li>
+                </ul>
+                      <div id="step-11">
+                        <h2 class="StepTitle">General Info</h2>
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ leaseholder_form.type|as_crispy_field}}
+                            </div>
+
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ leaseholder_form.title|as_crispy_field}}
+                            </div>
+
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ leaseholder_form.name_company_name|as_crispy_field}}
+                            </div>
+
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ leaseholder_form.surname|as_crispy_field}}
+                            </div>
+
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ leaseholder_form.email|as_crispy_field}}
+
+                            </div>
+
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ leaseholder_form.owner_since_date|as_crispy_field}}
+
+                            </div>
+
+                          </div>
+
+
+                      </div>
+
+                      <div id="step-22">
+                        <h2 class="StepTitle">Add Address</h2>
+                          <div class="form-group">
+                            <div class="col-md-3 col-sm-3">
+                              {{ address_form.number|as_crispy_field}}
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                              {{ address_form.house|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ address_form.address|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ address_form.address_1|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                              <div class="col-md-5 col-sm-5">
+                                {{ address_form.city|as_crispy_field}}
+                              </div>
+                            <div class="col-md-4 col-sm-4">
+                                {{ address_form.state|as_crispy_field}}
+                              </div>
+                            </div>
+
+                          <div class="form-group">
+                            <div class="col-md-4 col-sm-4">
+                              {{ address_form.post_code|as_crispy_field}}
+                            </div>
+                            <div class="col-md-5 col-sm-5">
+                              {{ address_form.country|as_crispy_field}}
+                            </div>
+                          </div>
+
+
+                      </div>
+
+                      <div id="step-33">
+                        <h2 class="StepTitle">Add Bank Account Details</h2>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ bank_account_form.bank_name|as_crispy_field}}
+                            </div>
+
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-md-4 col-sm-4">
+                              {{ bank_account_form.sort_code|as_crispy_field}}
+                            </div>
+                            <div class="col-md-5 col-sm-5">
+                              {{ bank_account_form.account_number|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ bank_account_form.owner_name|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ bank_account_form.account_type|as_crispy_field}}
+                            </div>
+                          </div>
+                      </div>
+
+                      <div id="step-44">
+                        <h2 class="StepTitle">Add notes and files</h2>
+                        <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{leaseholder_form.notes|as_crispy_field}}
+                            </div>
+
+                          </div>
+                        <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{leaseholder_form.documents|as_crispy_field}}
+                            </div>
+
+                          </div>
+
+
+                      </div>
+
+              </div>
+              </form>
+
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12"></div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+  <script type="text/javascript">
+<!--    document.getElementsByClassName('select form-control')[0].readonly = "readonly"-->
+    document.getElementsByName('owner_since_date')[0].parentNode.className = "col-md-11 xdisplay_inputx form-group has-feedback"
+    document.getElementsByName('owner_since_date')[0].parentNode.innerHTML = document.getElementsByName('owner_since_date')[0].parentNode.innerHTML + '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'
+
+
+</script>
+{% endblock javascripts %}

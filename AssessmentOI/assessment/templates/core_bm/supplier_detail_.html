@@ -1,0 +1,240 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Supplier Details {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Supplier Details</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <form method="post" action="{% url 'supplier_detail_view' object.pk %}">
+                  {% csrf_token %}
+              <section class="content invoice">
+                <!-- title row -->
+                <div class="row">
+                  <div class="col-xs-12 invoice-header">
+                    <h1>
+                                    <i class="fa fa-file-text"></i> Supplier name: {{ object.name }}.
+                                    <small class="pull-right"><small><small>
+                                        Today: <div id="demo"></div>
+                                        <script>
+                                                    var d = new Date();
+                                                    document.getElementById("demo").innerHTML = d.toDateString();
+                                        </script>
+                                        </small></small>
+                                    </small>
+                                </h1>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- info row -->
+                <div class="row invoice-info">
+                  <div class="col-sm-4">
+                    <address>
+                    <br/> Address:
+                    <br/>
+                        {{ object.full_address.number }}, {{ object.full_address.address }}
+                    <br/>  {{ object.full_address.address_1 }}
+                    <br/>  {{ object.full_address.city }}, {{ object.full_address.state }}
+                    <br/>  {{ object.full_address.poste_code }}
+                    <br/>  {{ object.full_address.country }}
+                    </address>
+                  </div>
+
+                    <div class="col-sm-4 ">
+                      <br/>  Email: {{ object.email }}
+                      <br/>  Vat Registration: {{ object.vat_reg }}
+                      <br/>  Category {{ object.category.type }}
+                      <br/>  Subcategory {{ object.category.subtype }}
+                  </div>
+
+                    <div class="col-sm-4 ">
+
+
+                  </div>
+
+                    <div class="col-sm-4">
+                        <p class="lead">Invoices:</p>
+    <!--                    <img src="/static/images/visa.png" alt="Visa">-->
+    <!--                    <img src="/static/images/mastercard.png" alt="Mastercard">-->
+    <!--                    <img src="/static/images/american-express.png" alt="American Express">-->
+    <!--                    <img src="/static/images/paypal.png" alt="Paypal">-->
+<!--                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">-->
+
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+
+                                      <th class="column-title">Invoice Number </th>
+                                      <th class="column-title">Amount </th>
+                                    <th class="column-title">Expiration Date </th>
+                                        <th class="column-title">Paid </th>
+                                        <th class="column-title">Payment Date </th>
+                                      <th class="bulk-actions" colspan="7">
+                                      </th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                  {% for invoice in invoices %}
+                                    <tr class="even pointer">
+
+                                        <td class="">{{ invoice.reference }}</td>
+                                        <td class="">{{ invoice.amount.amountinvoice_detail.html }}</td>
+                                        <td class="">{{ invoice.invoice_date_expire }}</td>
+                                        <td class="">{{ invoice.paid }}</td>
+                                        <td class="">{{ invoice.invoice_date_payment }}</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                  </tbody>
+                            </table>
+                            </div>
+<!--                        </p>-->
+                      </div>
+                </div>
+                <!-- /.row -->
+
+                <!-- Table row -->
+                <div class="row">
+
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                  <!-- accepted payments column -->
+                  <div class="col-xs-4">
+                    <p class="lead">Notes:</p>
+<!--                    <img src="/static/images/visa.png" alt="Visa">-->
+<!--                    <img src="/static/images/mastercard.png" alt="Mastercard">-->
+<!--                    <img src="/static/images/american-express.png" alt="American Express">-->
+<!--                    <img src="/static/images/paypal.png" alt="Paypal">-->
+                    <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+<!--                        {{ object.note }}-->
+                    </p>
+                  </div>
+                  <!-- /.col -->
+
+                    <div class="col-xs-4">
+                        <p class="lead">Files:</p>
+    <!--                    <img src="/static/images/visa.png" alt="Visa">-->
+    <!--                    <img src="/static/images/mastercard.png" alt="Mastercard">-->
+    <!--                    <img src="/static/images/american-express.png" alt="American Express">-->
+    <!--                    <img src="/static/images/paypal.png" alt="Paypal">-->
+<!--                        <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">-->
+
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+                                      <th>
+                                        <input type="checkbox" id="check-all" class="flat">
+                                      </th>
+                                      <th class="column-title">File name </th>
+                                      <th class="column-title">Description </th>
+                                      <th class="bulk-actions" colspan="7">
+                                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                      </th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                    <tr class="even pointer">
+                                      <td class="a-center ">
+                                        <input type="checkbox" class="flat" name="table_records">
+                                      </td>
+
+
+<!--                                            <td class="">{{ object.invoice_documents }}</td>-->
+                                              <td> <a href="{% url 'invoice_detail_view' object.pk %}"> {{ object.reference }} </a> </td>
+                                    </tr>
+
+
+                                  </tbody>
+                            </table>
+                            </div>
+<!--                        </p>-->
+                      </div>
+
+                    <div class="col-xs-4">
+                        <p class="lead">Amount Due by {{ object.invoice_date_expire }}</p>
+                        <div class="table-responsive">
+                          <table class="table">
+                            <tbody>
+                              <tr>
+                                <th style="width:50%">Subtotal:</th>
+                              <td>{{object.amount.currency}}</td>
+                                <td><div id="pre_vat_amount"></div></td>
+                              </tr>
+                              <tr>
+                                <th>Tax ({{object.vat}}%)</th>
+                                <td>{{object.amount.currency}}</td>
+                                <td> <div id="vat_amount"></div> </td>
+                              </tr>
+                              <tr>
+                                <th>Total Payable:</th>
+                                  <td> <div id="post_vat_amount"> {{ object.amount.currency }} </div></td>
+                                  <td> {{ object.amount.amount }}</td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                  <div class="col-xs-12">
+                    <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+
+
+                          <button type="submit" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment</button>
+
+
+                    <button class="btn btn-primary pull-right" style="margin-right: 5px;"><i class="fa fa-download"></i> Generate PDF</button>
+                  </div>
+                </div>
+              </section>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

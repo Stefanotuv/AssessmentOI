@@ -1,0 +1,72 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Supplier Details {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+<body>
+<div class="signin-form">
+
+
+    <form method="POST" action="" id="supplier">
+        {% csrf_token %}
+<!--        {{ form.as_p }}-->
+
+
+        <div class="form-group">
+            <label ><i class="zmdi zmdi-account"></i></label>
+            {{ form.name }}
+<!--                                                <input type="email" name="email" id="email" placeholder="email address"/>-->
+        </div>
+        <div class="form-group">
+            <label ><i class="zmdi zmdi-email"></i></label>
+            {{ form.email }}
+    <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+        </div>
+        <div class="form-group">
+            <label ><i class="zmdi zmdi-home"></i></label>
+            {{ form.address }}
+    <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+        </div>
+
+
+        <div class="form-group form-button">
+            <input type="submit" name="signin" id="update" class="form-submit" value="Add" />
+        </div>
+
+    </form>
+        <div class="form-group form-button">
+            <a href="{% url 'supplier_view' %}"> Back to List </a>
+        </div>
+</div>
+
+
+<!--<form >-->
+<!--    <ul>-->
+<!--    {% for obj in object_list %}-->
+<!--        <li>{{ obj.name }}</li>-->
+<!--        <li>{{ obj.email }}</li>-->
+<!--        <li>{{ obj.address }}</li>-->
+
+<!--    {% endfor %}-->
+<!--        <li> <a href="{% url 'supplier_view' %}"> Back to List </a> </li>-->
+<!--    </ul>-->
+<!--  </form>-->
+
+</body>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

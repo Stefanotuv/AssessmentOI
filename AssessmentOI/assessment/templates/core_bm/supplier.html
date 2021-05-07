@@ -1,0 +1,91 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Suppliers {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Supplier <small>List of All Suppliers</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+
+                      <th class="column-title">Name</th>
+                      <th class="column-title">Email</th>
+                      <th class="column-title">Address </th>
+
+                      <th class="column-title">Vat Reg. </th>
+                      <th class="column-title">Category</th>
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {% for supplier in object_list %}
+                    <tr class="even pointer">
+
+
+
+                      <td class=" "><a href="{% url 'supplier_detail_view' supplier.pk %}"> {{ supplier.name }} </a> </td>
+
+                      <td class=" ">{{ supplier.email }}</td>
+                      <td class=" ">{{ supplier.address }}</td>
+
+                      <td class=" ">{{ supplier.vat_reg }}</td>
+                      <td class=" ">{{ supplier.category }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

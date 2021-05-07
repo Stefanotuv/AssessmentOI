@@ -1,0 +1,265 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Home {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+<style>
+
+.flip-card {
+  background-color: transparent;
+  width: 230px;
+  height: 210px;
+<!--  width: 100%;-->
+<!--  height: 100%;-->
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+.flip-card-front {
+<!--  background-color: #c4f2e9;-->
+  background-color: #b9e1f0;
+  border-color: coral;
+  border-width: thick;
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #2f3e52;
+  color: white;
+  transform: rotateY(180deg);
+}
+</style>
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="col-md-12 col-sm-12 col-xs-12">
+      <div class="page-title">
+        <div>
+<!--        <div class="title_left">--> <!--  in case two titles (left and right) are used-->
+          <h3> <i><strong> Home Page: {{ company_name }}</strong></i> <small></small></h3>
+        </div>
+
+<!--        <div class="title_right">-->  <!--  in case two titles (left and right) are used-->
+<!--          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">-->
+
+<!--            </div>-->
+<!--          </div>-->
+        </div>
+      </div>
+
+<!--      <div class="clearfix"></div>-->
+      <div class="x_content">
+
+
+
+            </div>
+<!---->
+      <div class="row top_tiles">
+
+      </div>
+      <div class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Dashboard</i></h3>
+                    <br/>
+                    <i class="fas fa-chart-line fa-10x" style="color: #03586A;" ></i>
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Dashboard</h1>
+                    <p><a href="{% url 'dashboard_view' %}">Overview</a></p>
+
+                  </div>
+                </div>
+              </div>
+
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+
+              <div class="flip-card" >
+                <div class="flip-card-inner " >
+                  <div class="flip-card-front" >
+                    <h3 style="color: #03586A;"><i>Invoices</i></h3>
+                    <br/>
+                    <i class="fas fa-file-invoice fa-10x" style="color: #afd7e0;" ></i>
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Invoices</h1>
+                    <p><a href="{% url 'invoice_view' %}">Overview</a></p>
+                    <p><a href="{% url 'invoice_add_view' %}">Add New</p>
+                    <p><a href="{% url 'invoice_view' %}">Pay Invoice</p>
+                    <p>Add Invoices (Bulk)</p>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+
+              <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Suppliers</i></h3>
+                    <br/>
+                    <i class="fas fa-shopping-cart  fa-10x" style="color: #03586A;" ></i>
+<!--                    <i class="fas fa-file-invoice fa-10x" style="color: #03586A;" ></i>-->
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Suppliers</h1>
+                    <p><a href="{% url 'supplier_view' %}">Overview</a></p>
+                    <p><a href="{% url 'supplier_add_view' %}">Add New Supplier</a></p>
+                    <p><a href="{% url 'supplier_view' %}">Modify Existing Supplier Details</a></p>
+                    <p>Add Suppliers (Bulk)</p>
+                  </div>
+                </div>
+              </div>
+
+        </div>
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Properties</i></h3>
+                    <br/>
+                    <i class="fas fa-building   fa-10x" style="color: #afd7e0;" ></i>
+<!--                    <i class="fas fa-shopping-cart  fa-10x" style="color: #03586A;" ></i>-->
+<!--                    <i class="fas fa-file-invoice fa-10x" style="color: #03586A;" ></i>-->
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Properties</h1>
+                    <p><a href="{% url 'property_view' %}">Overview Properties</a></p>
+                    <p><a href="{% url 'property_add_view' %}">Add New Property</a></p>
+                    <p><a href="{% url 'block_view' %}">Overview Blocks</a></p>
+                    <p><a href="{% url 'block_add_view' %}">Add New Block</a></p>
+                    <p><a href="{% url 'freeholder_view' %}">Overview Freeholders</a></p>
+                    <p><a href="{% url 'freeholder_add_view' %}">Add New Freeholder</a></p>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+      <div style="padding-top:10px;" class="row">
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Service Charges</i></h3>
+                    <br/>
+                    <i class="fas fa-cash-register   fa-10x" style="color: #afd7e0;" ></i>
+
+<!--                    <i class="fas fa-shopping-cart  fa-10x" style="color: #03586A;" ></i>-->
+<!--                    <i class="fas fa-file-invoice fa-10x" style="color: #03586A;" ></i>-->
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Service Charges</h1>
+                    <p><a href="{% url 'service_charge_view' %}">Overview Service Charges</a></p>
+                    <p><a href="{% url 'service_charge_add_view' %}">Add Service Charges</a></p>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Transactions</i></h3>
+                    <br/>
+                    <i class="fas fa-credit-card   fa-10x" style="color: #03586A;" ></i>
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Transactions</h1>
+                    <p><a href="{% url 'transaction_view' %}">Overview</a></p>
+                    <p><a href="{% url 'transaction_add_view' %}">Add New Transaction</a></p>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Ledger</i></h3>
+                    <br/>
+                    <i class="fas fa-book   fa-10x" style="color: #afd7e0;" ></i>
+
+<!--                    <i class="fas fa-shopping-cart  fa-10x" style="color: #03586A;" ></i>-->
+<!--                    <i class="fas fa-file-invoice fa-10x" style="color: #03586A;" ></i>-->
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Ledger</h1>
+                    <p><a href="{% url 'general_ledger_view' %}">General Ledger</a></p>
+                  </div>
+                </div>
+              </div>
+        </div>
+
+        <div class="col-md-3 col-sm-6 col-xs-12">
+          <div class="flip-card">
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <h3 style="color: #03586A;"><i>Settings</i></h3>
+                    <br/>
+                    <i class="fas fa-sliders-h   fa-10x" style="color: #03586A;" ></i>
+
+
+<!--                    <i class="fas fa-shopping-cart  fa-10x" style="color: #03586A;" ></i>-->
+<!--                    <i class="fas fa-file-invoice fa-10x" style="color: #03586A;" ></i>-->
+                  </div>
+                  <div class="flip-card-back">
+                    <h1>Settings</h1>
+                    <p><a href="#">User Settings</a></p>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

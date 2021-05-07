@@ -1,0 +1,268 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+{% block title %} Home {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3> {{ company_name }} Dashboard<small>.</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--      <div class="clearfix"></div>-->
+      <div class="x_content">
+
+
+
+            </div>
+<!---->
+      <div class="row top_tiles">
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="tile-stats">
+            <div style="padding-left:0px" class="col-md-12">
+            <div style="padding-left:0px" class="col-md-9">
+               {% if balance > 0 %}
+            <div class="count" style="font-size:30px;">£
+              {{ balance|intcomma }}
+            </div>
+              {% else %}
+            <div class="count" style="font-size:30px;color:red;">£
+              {{ balance|intcomma }}
+            </div>
+              {% endif %}
+            </div>
+            <div class="col-md-3">
+            <div class="icon" style="color:#118ab2;">
+              <i class="fas fa-balance-scale-right"></i>
+            </div>
+             </div>
+            </div>
+            <h3>Balance</h3>
+            <p>total account balance</p>
+          </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="tile-stats">
+            <div style="padding-left:0px" class="col-md-12">
+            <div style="padding-left:0px" class="col-md-9">
+            <div class="count" style="font-size:30px;">£ {{ last_30_days_expenses|intcomma }}</div>
+            </div>
+            <div class="col-md-3">
+            <div class="icon" style="color:#118ab2;">
+<!--              <i class="fas fa-balance-scale-right"></i>-->
+              <i class="fas fa-file-invoice"></i>
+            </div>
+             </div>
+            </div>
+            <h3>Expenses</h3>
+            <p>payments out in the last 30 days</p>
+          </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="tile-stats">
+            <div style="padding-left:0px" class="col-md-12">
+            <div style="padding-left:0px" class="col-md-9">
+            <div class="count" style="font-size:30px;">{{ number_of_blocks }}</div>
+            </div>
+            <div class="col-md-3">
+            <div class="icon" style="color:#118ab2;">
+              <i class="fas fa-building"></i>
+            </div>
+             </div>
+            </div>
+            <h3>Blocks</h3>
+            <p>total number of blocks managed</p>
+          </div>
+        </div>
+        <div class="animated flipInY col-lg-3 col-md-3 col-sm-6 col-xs-12">
+          <div class="tile-stats">
+            <div style="padding-left:0px" class="col-md-12">
+            <div style="padding-left:0px" class="col-md-9">
+            <div class="count" style="font-size:30px;">{{ number_of_properties }}</div>
+            </div>
+            <div class="col-md-3">
+            <div class="icon" style="color:#118ab2;">
+              <i class="fas fa-couch"></i>
+            </div>
+             </div>
+            </div>
+            <h3>Properties</h3>
+            <p>total number of properties managed</p>
+          </div>
+        </div>
+
+
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Expenses by Category <small>last 30 days</small></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="expenses_by_categories"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Transactions <small>Last Six Months </small></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="service_charge_and_payments_6_months"></canvas>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    <div class="row">
+              <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+
+                <div>
+                  <div class="x_title">
+                    <h2>Last Transactions</h2>
+<!---->
+                    <div class="clearfix"></div>
+                  </div>
+                  <ul class="list-unstyled top_profiles scroll-view">
+                    {% for last_5_transaction in last_5_transactions %}
+                    <li class="media event">
+                      <a class="pull-left border-aero profile_thumb">
+                        {% if last_5_transaction.in_out == 'Payment Received' %}
+                        <i class="fas fa-file-import aero"></i>
+                        {% elif last_5_transaction.in_out == 'Payment Made' %}
+                        <i class="fas fa-file-export"></i>
+                        {% endif %}
+                      </a>
+                      <div class="media-body">
+                        {{ last_5_transaction.date_executed|date:"M d, Y" }}
+                        <a class="title" href="#">{{ last_5_transaction.transaction_type }}</a>
+                        <p><strong>£{{ last_5_transaction.transaction_amount|intcomma }} </strong> {{last_5_transaction.in_out}}
+                          {% if last_5_transaction.in_out == 'out' %}
+                        {{last_5_transaction.leaseholder.name}}
+                        </p>
+                        <p> <small> <div style="overflow: hidden; white-space: nowrap;text-overflow: ellipsis;width:200px;">{{ last_5_transaction.property }}</div></small>
+
+                          {% elif last_5_transaction.from_to == 'to' %}
+                        {{last_5_transaction.supplier.name}}
+                        </p>
+                        <p> <small>{{ last_5_transaction.supplier.category }}</small>
+                          {% endif %}
+
+                        </p>
+                      </div>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+<!--            </div>-->
+          </div>
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+<!--SCRIPT FOR THE pie CHART expenses_by_categories -->
+<script>
+    var ctx = document.getElementById('expenses_by_categories').getContext('2d');
+    debugger;
+    var expenses_by_categories = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: {{ categories|safe }},
+              datasets: [{
+                label: 'Population',
+                backgroundColor: ['#264653','#2A9D8F','#E9C46A','#F4A261','#E76F51',],
+                data: {{ values }}
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+              },
+              title: {
+<!--                display: true,-->
+<!--                text: 'Expenses by Category'-->
+              }
+            }
+          });
+
+
+</script>
+<!--SCRIPT FOR THE BAR CHART -->
+<script>
+    var ctx = document.getElementById('service_charge_and_payments_6_months').getContext('2d');
+    debugger;
+    var service_charge_and_payments_6_months = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ date_MM_YYYY|safe }},
+<!--            context['date_MM_YYYY']=['11-2020','10-2020','09-2020','08-2020','07-2020']-->
+<!--            labels: ['11-2020', '10-2020', '9-2020', '8-2020', '7-2020', '6-2020'],-->
+            datasets: [{
+                label: 'Payments In',
+
+                data: {{ transactions_in }},
+<!--                data: [1,2,3],-->
+                backgroundColor: "#26B99A",
+                borderWidth: 1
+            },
+            {
+                label: 'Payment Out',
+                data: {{  transactions_out }},
+<!--                data: [1,2,3],-->
+                backgroundColor: "#03586A",
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

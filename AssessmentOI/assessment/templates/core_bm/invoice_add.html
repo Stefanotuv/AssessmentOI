@@ -1,0 +1,316 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Add a new Invoice {% endblock title %}
+{% block stylesheets %}
+    <style>
+        /* Tooltip container */
+        .tooltip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+        }
+
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+          visibility: hidden;
+          width: 120px;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          padding: 5px 0;
+          border-radius: 6px;
+
+          /* Position the tooltip text - see examples below! */
+          position: absolute;
+          z-index: 1;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip:hover .tooltiptext {
+          visibility: visible;
+        }
+        </style>
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+  <style>
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: grey;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+<!--  background-color: #717171;-->
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-fill-mode: forwards;
+  animation-name: fade;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+  </style>
+    <script>
+    <!--inserted on top of the page as there is a srcipt in the page that uses this function to convert the date-->
+    function month_name_convert(number){
+        num_month = {'01':'Jan','02':'Feb','03':'Mar','04':'Apr','05':'May','06':'Jun','07':'Jul','08':'Aug','09':'Sep','10':'Oct','11':'Nov','12':'Dec',}
+        debugger;
+        month_name = num_month[number]
+        return month_name
+    }
+</script>
+
+{% endblock stylesheets %}
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-2 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+
+              <h2>Add a new Invoice</h2>
+
+              <form class="" method="POST" action="{% url 'invoice_add_view' %}" id="login-form" enctype = "multipart/form-data">
+              <!-- Tabs -->
+                <input name="input_tr_" type="hidden" value="12">
+              <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                <ul class="list-unstyled wizard_steps">
+                  <li>
+                    <a href="#step-11">
+                      <span class="step_no">1</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-22">
+                      <span class="step_no">2</span>
+                    </a>
+                  </li>
+
+                </ul>
+
+                {% csrf_token %}
+<!--                    <div class="form-horizontal form-label-left">-->
+                      <div id="step-11">
+                        <h2 class="StepTitle">General Info</h2>
+                        <div class="form-horizontal form-label-left">
+
+
+                          <div class="form-group">
+
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.reference|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                          </div>
+                          <div class="form-group">
+
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.supplier|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.category|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                          </div>
+                          <div class="form-group">
+
+                            <div class="col-md-6 col-sm-6">
+                              {{ form.amount|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                            <div class="col-md-3 col-sm-3">
+                              {{ form.currency|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                          </div>
+                          <div class="form-group">
+
+                            <div class="col-md-3 col-sm-3">
+                              {{ form.vat|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-5 col-sm-5" style="padding: 0px;">
+                              {{ form.invoice_date|as_crispy_field }}
+<!--                                <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>-->
+<!--                                <span id="inputSuccess2Status4" class="sr-only">(success)</span>-->
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+<!--                            <div class="col-md-1 col-sm-1"></div>-->
+
+                            <div class="col-md-5 col-sm-5" style="padding: 0px;">
+                              {{ form.invoice_date_expire|as_crispy_field }}
+<!--                              <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>-->
+<!--                                <span id="inputSuccess2Status3" class="sr-only">(success)</span>-->
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+
+
+                          </div>
+
+                        </div>
+                      </div>
+                      <div id="step-22">
+                        <h2 class="StepTitle">Additional Info</h2>
+                           <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.note|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.invoice_documents|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                          </div>
+
+
+
+                      </div>
+
+
+
+
+<!--                    </div>-->
+
+              </div>
+              </form>
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12"></div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+<!--  SCRIPT TO ATTACH THE CALENDAR-->
+  <script type="text/javascript">
+<!--    document.getElementsByClassName('select form-control')[0].readonly = "readonly"-->
+    document.getElementsByName('invoice_date')[0].parentNode.className = "col-md-11 xdisplay_inputx form-group has-feedback"
+    document.getElementsByName('invoice_date')[0].parentNode.innerHTML = document.getElementsByName('invoice_date')[0].parentNode.innerHTML + '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'
+    document.getElementsByName('invoice_date_expire')[0].parentNode.className = "col-md-11 xdisplay_inputx form-group has-feedback"
+    document.getElementsByName('invoice_date_expire')[0].parentNode.innerHTML = document.getElementsByName('invoice_date_expire')[0].parentNode.innerHTML + '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'
+
+</script>
+  <script type="text/javascript">
+<!--    Change the format of the date returned by the calendar. by default the output has the format: mm/dd/yyyy-->
+    function changeDateFormat(name){
+            debugger;
+<!--            old format is mm/dd/yyyy-->
+
+            if (name == ('invoice_date')||name == ('invoice_date_expire')) {
+              date_old_format = document.getElementsByName(name)[0].value
+              date_new_format = month_name_convert(date_old_format.split('/')[0]) + ' ' + date_old_format.split('/')[1] + ', ' + date_old_format.split('/')[2]
+              document.getElementsByName(name)[0].value = date_new_format
+            }
+            else{
+              date_old_format = document.getElementById(id).value
+              date_new_format = month_name_convert(date_old_format.split('/')[0]) + ' ' + date_old_format.split('/')[1] + ', ' + date_old_format.split('/')[2]
+              document.getElementById(id).value = date_new_format
+            }
+
+
+    }
+
+
+ </script>
+{% endblock javascripts %}

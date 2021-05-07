@@ -1,0 +1,191 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% load static %}
+{% block title %} Pay Service Charge {% endblock title %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-2 col-xs-12"></div>
+            <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+
+              <h2>Pay Service Charge</h2>
+              <!-- Tabs -->
+                <form method="post" action="{% url 'transaction_add_view' %}">
+                  {% csrf_token %}
+                  <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                    <ul class="list-unstyled wizard_steps">
+                      <li>
+                        <a href="#step-11">
+                          <span class="step_no">1</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#step-22">
+                          <span class="step_no">2</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#step-33">
+                          <span class="step_no">3</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#step-44">
+                          <span class="step_no">4</span>
+                        </a>
+                      </li>
+                    </ul>
+
+                    <div id="step-11">
+                      <h2 class="StepTitle">Payee Info</h2>
+                           <div class="form-group">
+
+                            <div class="col-md-5 col-sm-5">
+<!--                              <input name="field_name" disabled value="{{form.transaction_type.value}}" />-->
+                              {{ form.transaction_type|as_crispy_field }}
+                            </div>
+                          </div>
+                            <div class="form-group">
+                            <div class="col-md-4 col-sm-4">
+                              {{ form.from_to|as_crispy_field }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.property|as_crispy_field }}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.leaseholder|as_crispy_field }}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.from_account|as_crispy_field }}
+                            </div>
+                          </div>
+
+                    </div>
+                    <div id="step-22">
+                      <h2 class="StepTitle">Transaction Details</h2>
+
+
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.description|as_crispy_field }}
+                            </div>
+                          </div>
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.note|as_crispy_field }}
+                            </div>
+                          </div>
+
+
+                          <div class="form-group">
+                            <div class="col-md-5 col-sm-5">
+                              {{ form.transaction_amount|as_crispy_field }}
+                            </div>
+                            <div class="col-md-4 col-sm-4">
+                              {{ form.transaction_currency|as_crispy_field }}
+                            </div>
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9" style="padding-left: 0px;">
+                              {{ form.date_executed|as_crispy_field }}
+                            </div>
+                            <div class="col-md-9 col-sm-9" style="padding-left: 0px;">
+
+                                <small> <strong>*Note.</strong>
+                                <i>
+                                    Date Executed is the date the transaction was
+                                executed in the bank account (not the date it was recorded in the ledger)
+                                </i>
+                                </small>
+                            </div>
+                            </div>
+
+
+
+                            </div>
+
+
+                    <div id="step-33">
+                      <h2 class="StepTitle">Company Details</h2>
+
+
+
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.company|as_crispy_field }}
+                            </div>
+                          </div>
+
+
+
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.to_account|as_crispy_field }}
+                            </div>
+              </div>
+
+
+
+
+
+                    </div>
+
+                    <div id="step-44">
+                      <h2 class="StepTitle">Exclude</h2>
+
+
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.exclude|as_crispy_field }}
+                            </div>
+                          </div>
+
+
+                    </div>
+                  </div>
+                </form>
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+            </div>
+          <div class="col-md-2 col-xs-12"></div>
+
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+<script type="text/javascript">
+    document.getElementsByClassName('select form-control')[0].readonly = "readonly"
+<!--&lt;!&ndash;    document.getElementsByClassName('select form-control')[1].disabled = true&ndash;&gt;-->
+<!--    document.getElementsByClassName('select form-control')[2].disabled = true-->
+<!--    document.getElementsByClassName('select form-control')[3].disabled = true-->
+<!--    document.getElementsByClassName('select form-control')[4].disabled = true-->
+<!--    &lt;!&ndash;document.getElementsByClassName('select form-control')[5].disabled = true&ndash;&gt;-->
+<!--    document.getElementsByClassName('select form-control')[6].disabled = true-->
+    document.getElementsByName('date_executed')[0].parentNode.className = "col-md-11 xdisplay_inputx form-group has-feedback"
+    document.getElementsByName('date_executed')[0].parentNode.innerHTML = document.getElementsByName('date_executed')[0].parentNode.innerHTML + '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'
+</script>
+
+{% endblock javascripts %}

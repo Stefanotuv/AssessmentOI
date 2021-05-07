@@ -1,0 +1,429 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Service Charges {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style>
+    /* Solid border */
+    hr.solid {
+      border-top: 3px solid #bbb;
+    }
+
+</style>
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+        <div class="row">
+
+
+
+            <div class="col-md-9 col-sm-9 col-xs-9">
+            <div class="x_panel">
+            <div class="x_title">
+              <h2>List of Properties Service Charges </h2>
+
+              <div class="clearfix"></div>
+
+            </div>
+
+            <div class="x_content">
+
+              <div style="" class="col-md-12 col-sm-12 col-xs-12">
+
+
+                    <div style="padding-top:0px;" class="col-md-2">
+
+                    </div>
+                    <div class="col-md-2" style=""></div>
+
+                    <form method="get" action="{% url 'service_charge_add_multiple_view' %}">
+                        {% csrf_token %}
+                        <div class="col-md-12" style="padding-top:0px;">
+                            <div class="col-md-2" style=""></div>
+                            <div class="col-md-5" style="">
+                                        Selected Years: <input name="selected_years" type="text" id="years" readonly style="border:0; background: #F7F7F7; color:#2A3F54; font-weight:bold;">
+                                        <div style="padding-top:5px;">
+                                            <div id="slider-range"></div>
+                                        </div>
+                                            </div>
+                            <div class="col-md-3" style="">
+                                          <button type="submit" class="btn btn-success">
+                                              <i style="padding-right:10px;" class="fas fa-filter m-right-xs"></i>
+                                              Apply Filter
+                                          </button>
+                                            </div>
+                            <div class="col-md-2" style=""></div>
+                        </div>
+                  </form>
+
+
+              </div>
+              <div style="padding-top:10px;padding-bottom:10px;" class="col-md-12 col-sm-12 col-xs-12">
+            <!--                <div class="x_panel">-->
+                  <div class="col-md-1 col-sm-1 col-xs-!" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputYear" onkeyup="myFunction('myInputYear',0)" placeholder="Year">
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputBlock" onkeyup="myFunction('myInputBlock',0)" placeholder="Block">
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputFlatNumber" onkeyup="myFunction('myInputFlatNumber',1)" placeholder="Flat Number">
+                  </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputHouse" onkeyup="myFunction('myInputHouse',2)" placeholder="House">
+                  </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputCurrentOwner" onkeyup="myFunction('myInputCurrentOwner',3)" placeholder="Current Owner">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-3" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputCurrentServiceCharge" onkeyup="myFunction('myInputCurrentServiceCharge',4)" placeholder="Service Charge Bill">
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                     <button onclick="clearFilters()" type="submit" class="btn btn-info pull-right" style="margin-right: 5px;">
+                        <i class="fas fa-eraser"></i>
+                    </button>
+                  </div>
+
+              </div>
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="table-responsive">
+                <table id="myTable" class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+            <!--                      <th>-->
+            <!--                        <input type="checkbox" id="check-all" class="flat">-->
+            <!--                      </th>-->
+                      <th class="column-title"> Year </th>
+                      <th class="column-title"> Block </th>
+                      <th class="column-title"> Flat Number </th>
+                      <th class="column-title">House </th>
+                      <th class="column-title">Current Owner </th>
+                      <th class="column-title" style="width:20%;">Service Charge Bill </th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="myTableBody">
+                    {% for elements in mod_object_list %}
+                         {% for property in elements.context %}
+                        <tr class="even pointer" id="{{ elements.year }}_{{property.id}}_row">
+            <!--                      <td class="a-center ">-->
+            <!--                        <input type="checkbox" class="flat" name="table_records">-->
+            <!--                      </td>-->
+                          <td class=" " id="{{ elements.year }}_{{property.id}}_year">{{ elements.year }}</td>
+
+                          <td class=" " id="{{ elements.year }}_{{property.id}}_block_name">{{ property.block_name }}</td>
+                          <td class=" " id="{{ elements.year }}_{{property.id}}_full_address_number">{{ property.full_address_number }}</td>
+                          <td class=" " id="{{ elements.year }}_{{property.id}}_full_address_house">{{ property.full_address_house }}</td>
+                          <td class=" " id="{{ elements.year }}_{{property.id}}_current_leaseholder">{{ property.current_leaseholder_name }} {{ property.current_leaseholder_surname }}</td>
+                          <td class=" " style="width: 25%;padding-top: 2px;padding-bottom: 3px;" id="{{ elements.year }}_{{property.id}}_net_position"><input onchange="myLogFunction()" onfocus="saveOnFocus()" class="form-control" type="text" value="{{ property.net_position }}"> </td>
+                        </tr>
+                        {% endfor %}
+                     {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+              </div>
+
+            </div>
+            </div>
+            </div>
+
+            <div class="col-md-3 col-sm-3 col-xs-3">
+                <div class="x_panel">
+
+                <div class="x_title">
+                              <h2>Upload from File </h2>
+
+                              <div class="clearfix"></div>
+
+                </div>
+                <div class="x_content">
+                        <div class="col-md-9">
+                        </div>
+
+                            <button type="submit" class="btn btn-primary pull-right" style="margin-left: 50px;margin-right: 5px;">
+                                <i class="fas fa-file-upload"></i>
+                                Upload
+                            </button>
+                </div>
+            </div>
+            </div>
+
+            <div class="col-md-3 col-sm-3 col-xs-3">
+
+                <div class="x_panel">
+                        <div class="x_title">
+                              <h2>Changed Fields </h2>
+
+                              <div class="clearfix"></div>
+
+                </div>
+                        <div class="x_content">
+<form method="POST" action="{% url 'service_charge_add_multiple_view' %}">
+    {% csrf_token %}
+                            <button type="submit" class="btn btn-primary pull-right" style="margin-left: 50px;margin-right: 5px;">
+                            <i class="fa fa-paper-plane"></i>
+                            Update
+                            </button>
+
+                            <input id="input_hidden_1" name="" value="" hidden>
+                            <input id="input_hidden_2" name="" value="" hidden>
+
+                            <div id="log_function"  class="col-md-12 col-sm-12 col-xs-12">
+
+                            </div>
+</form>
+                        </div>
+                    </div>
+            </div>
+<!--</form>-->
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+
+<!--SCRIPT FOR THE SLIDER TO EVALUATE the YEARS-->
+    <script type="text/javascript">
+    $( function() {
+    debugger;
+    {% if date_from %}
+        date_from = {{ date_from }}
+    {% else %}
+        date_from = 2020
+    {% endif %}
+
+    {% if date_to %}
+        date_to = {{ date_to }}
+    {% else %}
+        date_to = 2020
+    {% endif %}
+
+    $( "#slider-range" ).slider({
+      range: true,
+      min:2010,
+      max: 2030,
+      values: [ date_from, date_to ],
+      slide: function( event, ui ) {
+        $( "#years" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#years" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+    } );
+    </script>
+
+<!--SCRIPT FOR THE FILTERS-->
+    <script>
+
+    function myFunction(inputName, column) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      debugger;
+
+      var input_names = document.getElementsByName("myInput");
+      var filters = {}
+      for (var j=0; j < input_names.length; j++) {
+
+            if(input_names[j].value){
+                filters[input_names[j].id] = input_names[j].value.toUpperCase()
+            }
+            else{
+                filters[input_names[j].id] = ""
+            }
+      }
+
+      tableBody = document.getElementById("myTableBody");
+
+      // change the selection of the table only for element that are visible
+      tr = tableBody.getElementsByTagName("tr");
+      debugger;
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+        td_year = tr[i].getElementsByTagName("td")[0];
+        td_block = tr[i].getElementsByTagName("td")[1];
+        td_flat_number = tr[i].getElementsByTagName("td")[2];
+        td_house = tr[i].getElementsByTagName("td")[3];
+        td_current_owner = tr[i].getElementsByTagName("td")[4];
+        td_service_charges = tr[i].getElementsByTagName("td")[5];
+
+        debugger;
+        if (td_year|td_block||td_flat_number||td_category||td_property||td_leaseholder|| td_date || td_amount) {
+          txtValue_year = td_year.textContent || td_year.innerText;
+          txtValue_block = td_block.textContent || td_block.innerText;
+          txtValue_flat_number = td_flat_number.textContent || td_flat_number.innerText;
+          txtValue_house = td_house.textContent || td_house.innerText;
+          txtValue_current_owner = td_current_owner.textContent || td_current_owner.innerText;
+           txtValue_service_charges = td_service_charges.firstElementChild.value;
+
+
+          if (
+                (txtValue_year.toUpperCase().indexOf(filters['myInputYear'])> -1) &&
+                (txtValue_block.toUpperCase().indexOf(filters['myInputBlock'])> -1) &&
+                (txtValue_flat_number.toUpperCase().indexOf(filters['myInputFlatNumber'])> -1) &&
+                (txtValue_house.toUpperCase().indexOf(filters['myInputHouse'])> -1) &&
+                (txtValue_current_owner.toUpperCase().indexOf(filters['myInputCurrentOwner'])> -1) &&
+                (txtValue_service_charges.toUpperCase().indexOf(filters['myInputCurrentServiceCharge'])> -1))
+              {
+                tr[i].style.display = "";
+              }
+              else {
+                tr[i].style.display = "none";
+              }
+            }
+      }
+    }
+    </script>
+
+<!--SCRIPT to clear THE FILTERS-->
+    <script type="text/javascript">
+    function clearFilters(){
+        var filters = document.getElementsByName('myInput')
+        debugger
+        for (var j=0; j < filters.length; j++) {
+            filters[j].value = ''
+        }
+        myFunction('inputName', 'column')
+
+    }
+    </script>
+
+<!--SCRIPT FOR THE LOGGING CHANGES-->
+    <script>
+
+    var previous_values = {}
+
+    function saveOnFocus(){
+<!--        needed to save the value of the cell before it gets changed-->
+
+        var th_row = event.target.parentNode.parentNode
+        var th_row_year = event.target.parentNode.id.split("_")[0]
+        var th_row_id = event.target.parentNode.id.split("_")[1]
+        var key = th_row_year + '_' + th_row_id
+        var value = event.target.value
+
+        previous_values[key] = value
+
+    }
+
+    function myLogFunction(){
+        var th_row = event.target.parentNode.parentNode
+        var th_row_year = event.target.parentNode.id.split("_")[0]
+        var th_row_id = event.target.parentNode.id.split("_")[1]
+        var key = th_row_year + '_' + th_row_id
+        debugger;
+        var element = document.getElementById(key)
+
+        if(element === null){
+<!--        the field has not been changed before-->
+            logChanges()
+
+        }
+        else{
+<!--        the field has already been changed, the same field will be changed-->
+            reLogChanges(key)
+
+        }
+
+    }
+
+    function logChanges() {
+      // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        debugger;
+
+        <!--      from the parent of the target (the event launcher) we extract the id-->
+        <!--      the id contains the year and the id of the property: "YYYY_pk_net_position"-->
+
+        var th_row = event.target.parentNode.parentNode
+        var th_row_year = event.target.parentNode.id.split("_")[0]
+        var th_row_id = event.target.parentNode.id.split("_")[1]
+        var key = th_row_year + '_' + th_row_id
+
+        var th_row_property_full_address_number = document.getElementById(th_row_year + '_' + th_row_id + '_'  + 'full_address_number').textContent
+        var th_row_property_full_address_house = document.getElementById(th_row_year + '_' + th_row_id + '_' + 'full_address_house').textContent
+        var th_row_property = th_row_property_full_address_number + ' ' + th_row_property_full_address_house
+
+        var log_function = document.getElementById('log_function')
+        var element_changed_div = document.createElement("div")
+        log_function.appendChild(element_changed_div)
+        element_changed_div.id = key
+
+        var element_changed_h4_year = document.createElement("h4")
+        var element_changed_h4_property = document.createElement("h4")
+
+        var element_changed_h5_from_to = document.createElement("h5")
+
+        element_changed_h4_year.innerHTML = "Year: " + th_row_year
+        element_changed_h4_property.innerHTML = "Property: " + th_row_property
+
+        var from = previous_values[key]
+        var to = event.target.value
+
+        element_changed_h5_from_to.innerHTML = 'from: ' + '<i>' + from + '</i>' + '  -->  to: ' + '<i id="to' + key + '">' + to + '</i>'
+
+        divider = document.createElement('hr')
+        divider.classList.add("solid")
+
+        input_hidden_1 = document.getElementById("input_hidden_1")
+        input_hidden_1.hidden = true
+        input_hidden_1.name = 'year_id'
+        var new_input_hidden_1 = input_hidden_1.value + '-' + key
+         input_hidden_1.value = new_input_hidden_1
+
+        input_hidden_2 = document.getElementById("input_hidden_2")
+        input_hidden_2.hidden = true
+        input_hidden_2.name = new_input_hidden_1
+        var new_input_hidden_2 = input_hidden_2.value + '-' + key
+        input_hidden_2.value = input_hidden_2.value + '-' + to
+
+
+        element_changed_div.appendChild(element_changed_h4_year)
+        element_changed_div.appendChild(element_changed_h4_property)
+        element_changed_div.appendChild(element_changed_h5_from_to)
+        element_changed_div.appendChild(divider)
+        element_changed_div.appendChild(input_hidden_1)
+        element_changed_div.appendChild(input_hidden_2)
+
+
+
+    }
+
+    function reLogChanges(key) {
+        var to = event.target.value
+        debugger;
+        document.getElementById('to'+key).innerHTML = to
+
+    }
+
+
+    </script>
+
+{% endblock javascripts %}
+        $(document).ready(function () {
+          $("#test").CreateMultiCheckBox({ width: '230px',
+                     defaultText : 'Select Below', height:'250px' });
+        });
+
+{% block jq%}
+
+{% endblock jq %}

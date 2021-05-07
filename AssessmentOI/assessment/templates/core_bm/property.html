@@ -1,0 +1,222 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+{% block title %} Property {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+      <div class="x_content">
+
+            </div>
+
+      <div class="row">
+
+
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>List of Properties </h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+              <div style="padding-top:10px;padding-bottom:10px;" class="col-md-12 col-sm-12 col-xs-12">
+<!--                <div class="x_panel">-->
+                  <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputBlock" onkeyup="myFunction('myInputBlock',0)" placeholder="Block">
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputFlatNumber" onkeyup="myFunction('myInputFlatNumber',1)" placeholder="Flat Number">
+                  </div>
+                    <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputHouse" onkeyup="myFunction('myInputHouse',2)" placeholder="House">
+                  </div>
+                    <div class="col-md-3 col-sm-3 col-xs-3" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputCurrentOwner" onkeyup="myFunction('myInputCurrentOwner',3)" placeholder="Current Owner">
+                  </div>
+                  <div class="col-md-3 col-sm-3 col-xs-3" style="padding:0px; padding-right:2px;">
+                  <input name="myInput" class="form-control" type="text" id="myInputCurrentServiceCharge" onkeyup="myFunction('myInputCurrentServiceCharge',4)" placeholder="S/C Position To Date">
+                  </div>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="table-responsive">
+                <table id="myTable" class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+<!--                      <th>-->
+<!--                        <input type="checkbox" id="check-all" class="flat">-->
+<!--                      </th>-->
+                      <th class="column-title"> Block </th>
+                      <th class="column-title"> Flat Number </th>
+                      <th class="column-title">House </th>
+                      <th class="column-title">Current Owner </th>
+                      <th class="column-title">S/C Position To Date </th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="myTableBody">
+
+
+                    {% for property in object_list %}
+                    <tr class="even pointer">
+<!--                      <td class="a-center ">-->
+<!--                        <input type="checkbox" class="flat" name="table_records">-->
+<!--                      </td>-->
+                      <td class=" "><a href="{% url 'block_detail_view' property.block_id %}"> {{ property.block }}</a></td>
+                      <td class=" "><a href="{% url 'property_detail_view' property.pk %}">{{ property.full_address.number }}</a></td>
+                      <td class=" "><a href="{% url 'property_detail_view' property.pk %}">{{ property.full_address.house }}</a></td>
+                      <td class=" ">{{ property.current_leaseholder.name }} {{ property.current_leaseholder.surname }}</td>
+                      <td class=" ">{{ property.net_position|intcomma }}</td>
+                    </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Service Charge Position by Block <small></small></h2>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="service_charge_position_by_block"></canvas>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+    <script>
+
+    function myFunction(inputName, column) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      debugger;
+
+      input = document.getElementById(inputName);
+
+      filter = input.value.toUpperCase();
+
+      var input_names = document.getElementsByName("myInput");
+      var filters = {}
+      for (var j=0; j < input_names.length; j++) {
+
+            if(input_names[j].value){
+                filters[input_names[j].id] = input_names[j].value.toUpperCase()
+            }
+            else{
+                filters[input_names[j].id] = ""
+            }
+      }
+
+      tableBody = document.getElementById("myTableBody");
+
+      // change the selection of the table only for element that are visible
+      tr = tableBody.getElementsByTagName("tr");
+      debugger;
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+
+        td_block = tr[i].getElementsByTagName("td")[0];
+        td_flat_number = tr[i].getElementsByTagName("td")[1];
+        td_house = tr[i].getElementsByTagName("td")[2];
+        td_current_owner = tr[i].getElementsByTagName("td")[3];
+        td_service_charges = tr[i].getElementsByTagName("td")[4];
+
+        debugger;
+        if (td_block||td_flat_number||td_category||td_property||td_leaseholder|| td_date || td_amount) {
+          txtValue_block = td_block.textContent || td_block.innerText;
+          txtValue_flat_number = td_flat_number.textContent || td_flat_number.innerText;
+          txtValue_house = td_house.textContent || td_house.innerText;
+          txtValue_current_owner = td_current_owner.textContent || td_current_owner.innerText;
+           txtValue_service_charges = td_service_charges.textContent || td_service_charges.innerText;
+
+
+          if (
+                (txtValue_block.toUpperCase().indexOf(filters['myInputBlock'])> -1) &&
+                (txtValue_flat_number.toUpperCase().indexOf(filters['myInputFlatNumber'])> -1) &&
+                (txtValue_house.toUpperCase().indexOf(filters['myInputHouse'])> -1) &&
+                (txtValue_current_owner.toUpperCase().indexOf(filters['myInputCurrentOwner'])> -1) &&
+                (txtValue_service_charges.toUpperCase().indexOf(filters['myInputCurrentServiceCharge'])> -1))
+              {
+                tr[i].style.display = "";
+              }
+              else {
+                tr[i].style.display = "none";
+              }
+            }
+      }
+    }
+    </script>
+<!--SCRIPT FOR THE BAR CHART -->
+    <script>
+    var ctx = document.getElementById('service_charge_position_by_block').getContext('2d');
+    debugger;
+    var service_charge_and_payments_6_months = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ blocks|safe }},
+
+            datasets: [{
+                label: 'Net Position',
+
+                data: {{ block_net_position }},
+                backgroundColor: "#26B99A",
+                borderWidth: 1
+            },
+
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+{% endblock javascripts %}
+
+
+{% block jq%}
+
+{% endblock jq %}

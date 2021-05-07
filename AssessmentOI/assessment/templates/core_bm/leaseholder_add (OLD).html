@@ -1,0 +1,166 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<!---->
+
+{% block title %} Leaseholder Add {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+
+
+{% block content %}
+ <div class="right_col" role="main">
+ <div class="">
+
+      <div class="clearfix"></div>
+
+
+      <div class="row">
+          <div class="col-md-3 col-xs-12"></div>
+        <div class="col-md-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Add a new Leaseholder</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+
+            </div><form method="post" action="{% url 'leaseholder_add_view' %}" class="form-horizontal form-label-left input_mask">
+                {% csrf_token %}
+<!--                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">-->
+
+<!--                  <input type="text" class="form-control has-feedback-left" id="inputSuccess" placeholder="Company/Individual">-->
+<!--                  <span class="fa fa-user form-control-feedback left" aria-hidden="true"></span>-->
+<!--                </div>-->
+
+
+
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+                          {{ form.type|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+
+
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+                          {{ form.name|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+                          {{ form.surname|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+                          {{ form.full_address|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+                          {{ form.owner_since_date|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                <div class="col-md-7 col-sm-7 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+
+                          {{ form.owner_until_date|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!--                          We need to have an add as well as select-->
+                          {% if form.bank_account != 'None' %}
+                            {{ form.bank_account|as_crispy_field }}
+                          {% endif %}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback" style="margin-bottom: 0px; margin-top: 43px;">
+
+                      <div class="form-group">
+
+                          <a href="{% url 'bank_account_add_view' %}" class="btn btn-success">Add +</a>
+
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+
+                </div>
+                 <div class="form-group">
+                  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+                </div>
+
+              </form>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+ </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+<script>
+<!--  $('.input-group.date').datepicker({format: "dd.mm.yyyy"});-->
+</script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}
+
+

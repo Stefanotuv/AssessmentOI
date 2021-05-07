@@ -1,0 +1,151 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<!---->
+
+{% block title %} Freeholder Add {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="clearfix"></div>
+
+      <div class="row">
+
+        <div class="col-md-2 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content" style="margin-bottom: 0px;">
+                <h2 style="margin-bottom: 0px;">Add a new Freeholder</h2>
+              <!-- Tabs -->
+                  <form class="" method="POST" action="{% url 'freeholder_add_view' %}" id="" enctype = "multipart/form-data">
+                  {% csrf_token %}
+                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
+
+                        <ul class="list-unstyled wizard_steps">
+                          <li>
+                            <a href="#step-11">
+                              <span class="step_no">1</span>
+                            </a>
+                          </li>
+                          <li>
+                            <a href="#step-22">
+                              <span class="step_no">2</span>
+                            </a>
+                          </li>
+
+                        </ul>
+
+
+                               <div id="step-11">
+                                <h2 class="StepTitle">General Info</h2>
+
+                                  <div class="form-group">
+                                    <div class="col-md-9 col-sm-9">
+                                      {{ freeholder_form.name|as_crispy_field}}
+                                    </div>
+
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-9 col-sm-9">
+                                      {{ freeholder_form.email|as_crispy_field}}
+                                    </div>
+
+                                  </div>
+
+                                 <div class="form-group">
+                                    <div class="col-md-9 col-sm-9">
+                                      {{freeholder_form.notes|as_crispy_field}}
+                                    </div>
+
+                                  </div>
+                                <div class="form-group">
+                                    <div class="col-md-9 col-sm-9">
+                                      {{freeholder_form.documents|as_crispy_field}}
+                                    </div>
+
+                                  </div>
+
+
+                              </div>
+
+                              <div id="step-22">
+                                <h2 class="StepTitle">Add Address</h2>
+                                  <div class="form-group">
+                                    <div class="col-md-2 col-sm-2">
+                                      {{ address_form.number|as_crispy_field}}
+                                    </div>
+                                    <div class="col-md-7 col-sm-7">
+                                      {{ address_form.house|as_crispy_field}}
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-9 col-sm-9">
+                                      {{ address_form.address|as_crispy_field}}
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-9 col-sm-9">
+                                      {{ address_form.address_1|as_crispy_field}}
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <div class="col-md-5 col-sm-5">
+                                        {{ address_form.city|as_crispy_field}}
+                                      </div>
+                                    <div class="col-md-4 col-sm-4">
+                                        {{ address_form.post_code|as_crispy_field}}
+                                      </div>
+                                    </div>
+
+                                  <div class="form-group">
+                                    <div class="col-md-4 col-sm-4">
+                                      {{ address_form.state|as_crispy_field}}
+                                    </div>
+                                    <div class="col-md-5 col-sm-5">
+                                      {{ address_form.country|as_crispy_field}}
+                                    </div>
+                                  </div>
+
+
+                              </div>
+
+                      </div>
+                      </form>
+
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12"></div>
+
+     </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+ <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+<script>
+<!--  $('.input-group.date').datepicker({format: "dd.mm.yyyy"});-->
+</script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

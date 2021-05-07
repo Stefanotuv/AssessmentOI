@@ -1,0 +1,181 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+{% block title %} Property {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+
+<!--  <link href="/static/vendors/jquery.mobile-1.4.5/jquery.mobile-1.4.5.css" rel="stylesheet">-->
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+        <div class="x_content">
+            <div class="well" style="overflow: auto">
+
+              <div class="">
+                <div class="col-md-12">
+                  <form method="get" action="">
+                    <div style="padding-top: 15px;" class="col-md-3">
+
+
+                            <div  id="slider-range"></div>
+
+                    </div>
+                    <div class="col-md-3">
+                      <div style="padding-top: 9px;">
+                            Selected Years: <input name="selected_years" type="text" id="years" readonly style="border:0; background: #F7F7F7; color:#2A3F54; font-weight:bold;">
+                      </div>
+                    </div>
+                    <div class="col-md-1">
+                      <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fas fa-filter"></i>
+                        Apply Filter
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+        </div>
+
+      <div class="row">
+
+
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Service Charges List </h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                      <th>
+                        <input type="checkbox" id="check-all" class="flat">
+                      </th>
+                        <th class="column-title">Year </th>
+                        <th class="column-title">Block </th>
+
+
+                        <th class="column-title">Flat Number </th>
+                      <th class="column-title">House </th>
+                      <th class="column-title">Current Owner </th>
+                      <th class="column-title">S/C Demand </th>
+                        <th class="column-title">S/C Payment </th>
+                      <th class="bulk-actions" colspan="11">
+                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+
+                    {% for serv_charge in object_list %}
+                    <tr class="even pointer">
+                      <td class="a-center ">
+                        <input type="checkbox" class="flat" name="table_records">
+                      </td>
+<!--                        <td class=" ">{{ property.pk }}</td>-->
+                        <td class=" ">{{ serv_charge.year }}</td>
+                        <td class=" ">{{ serv_charge.property.block }}</td>
+                          <td> <a href="{% url 'property_detail_view' serv_charge.pk %}"> {{ serv_charge.property.full_address.number }} </a> </td>
+
+                        <td class=" ">{{ serv_charge.property.full_address.house }}</td>
+                        <td class=" ">{{ serv_charge.property.current_leaseholder.name }}</td>
+                      <td class=" ">{{ serv_charge.amount|intcomma }}</td>
+                        <td class=" ">{{ serv_charge.paid.total }}</td>
+                    </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Bar graph <small>Sessions</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="mybarChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+  <script>
+  $( function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min:2010,
+      max: 2030,
+      values: [ {{date_from}}, {{date_to}} ],
+      slide: function( event, ui ) {
+        $( "#years" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#years" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+  } );
+  </script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

@@ -1,0 +1,238 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Transaction {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>General Ledger <small>.</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--      <div class="clearfix"></div>-->
+      <div class="x_content">
+
+
+              <div class="well" style="overflow: auto">
+                <div>
+                  <div class="col-md-12">
+
+                  <form method="get" action="/core_bm/transaction/?from_to">
+                    <div class="col-md-4">
+                      <div name="calendar" id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span id="calendar_period">{{ from }} - {{ to }}</span>  <b class="caret"></b>
+
+                      </div>
+                      <input hidden name="from_to" id="from_to" type="text" value="{{ from }} - {{ to }}">
+                    </div>
+                    <div class="col-md-2">
+                      <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-paper-plane"></i>
+                        Update
+                      </button>
+                    </div>
+
+
+
+
+                  </form>
+
+
+
+
+                </div>
+                </div>
+
+
+              </div>
+
+            </div>
+<!---->
+
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Spend by Category </h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="expenses_by_categories"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>In/ Out</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="mybarChart"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Service Charges by Building</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="canvasDoughnut"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--      <div class="clearfix"></div>-->
+      <div class="row">
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Transactions <small>List of all transactions In/Out</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                      <th>
+                        <input type="checkbox" id="check-all" class="flat">
+                      </th>
+                      <th class="column-title">ID </th>
+                      <th class="column-title">Trx Type </th>
+                      <th class="column-title">Invoice # </th>
+                      <th class="column-title">Supplier </th>
+                      <th class="column-title">Category </th>
+                      <th class="column-title">Sub Category </th>
+                      <th class="column-title">Property </th>
+                      <th class="column-title">Leaseholder </th>
+                      <th class="column-title">Date </th>
+                      <th class="column-title">Amount </th>
+                      <th class="column-title">Exclude </th>
+
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for transaction in object_list %}
+                    <tr>
+                        <tr class="even pointer">
+                        <td class="a-center ">
+                          <input type="checkbox" class="flat" name="table_records">
+                        </td>
+                        <td class=" ">{{ transaction.pk }}</td>
+                        <td class=" ">{{ transaction.transaction_type }}</td>
+                      <td class=" "><a href="{% url 'invoice_detail_view' transaction.invoice_pk %}">{{ transaction.invoice_pk }}</a></td>
+                        <td class=" ">{{ transaction.supplier.name }}</td>
+                         <td class=""> {{ transaction.supplier.category.type }} </td>
+                      <td class=""> {{ transaction.supplier.category.subtype }} </td>
+                        <td class=""> <div style=" overflow: hidden; white-space: nowrap;text-overflow: ellipsis;width:200px;">{{ transaction.property }}</div> </td>
+                      <td class=""> {{ transaction.leaseholder.name }} </td>
+                        <td class=""> {{ transaction.date_executed|date:"M d, Y"  }} </td>
+                      <td class="">{{ transaction.transaction_amount }} </td>
+                      <td class="">{{ transaction.exclude }} </td>
+
+                      </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+    <script type="text/javascript">
+<!--        document.getElementById("reportrange_right").onchange = function(){document.getElementById("from_to").innerHTML = document.getElementById("calendar_period").innerHTML};-->
+
+        var element = document.getElementById('reportrange_right');
+
+        element.addEventListener('DOMSubtreeModified', calendar_input)
+
+        function calendar_input(e) {
+            document.getElementById("from_to").value = document.getElementById("calendar_period").innerHTML;
+        }
+
+
+    </script>
+    <script>
+    var ctx = document.getElementById('expenses_by_categories').getContext('2d');
+    debugger;
+    var expenses_by_categories = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: {{ categories|safe }},
+              datasets: [{
+                label: 'Population',
+                backgroundColor: ['#26B99A','#03586A',],
+                data: {{ values }}
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+              },
+              title: {
+<!--                display: true,-->
+<!--                text: 'Expenses by Category'-->
+              }
+            }
+          });
+
+
+</script>
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}
+

@@ -1,0 +1,85 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Suppliers {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Questions Bank <small>List of All the Approved Questions for Online Assessment</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+
+                      <th class="column-title">#</th>
+                      <th class="column-title">Question Type</th>
+                      <th class="column-title">Question</th>
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {% for question in object_list %}
+                    <tr class="even pointer">
+
+
+
+                      <td class=" "><a href="{% url 'question_detail_view' question.pk %}"> {{ question.pk }} </a> </td>
+
+                      <td class=" ">{{ question.question_type }}</td>
+                      <td class=" ">{{ question.question }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

@@ -1,0 +1,143 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Question Details {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Question Details</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form method="post" action="">
+                  {% csrf_token %}
+                    <section class="content invoice">
+                        <!-- title row -->
+                        <div class="row">
+                          <div class="col-xs-12 invoice-header">
+                            <h1>
+                                            <i class="far fa-question-circle"></i> Question Number: {{ object.pk }}.
+                                            <small class="pull-right"><small><small>
+                                                Today: <div id="demo"></div>
+                                                <script>
+                                                            var d = new Date();
+                                                            document.getElementById("demo").innerHTML = d.toDateString();
+                                                </script>
+                                                </small></small>
+                                            </small>
+                                        </h1>
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- info row -->
+
+                        <div class="row invoice-info">
+
+                            <div class="col-sm-9">
+                                <div class="col-sm-12">
+
+                                    <br/>
+                                        {{ object.question }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+<!--                                Insert the image if there is one-->
+
+
+                            </div>
+
+
+                        </div>
+                        <!-- /.row -->
+
+                        <br/>
+                        <b>Select Your Answer(s) Below <i>(chose {{ object.number_of_selection }})</i></b>
+                        <hr>
+                        <div class="row">
+                          <!-- answers -->
+                            <div class="col-sm-12">
+                                <div class="col-sm-1">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                  </label>
+                                </div>
+
+                                <div class="col-sm-11">
+                                    {{ object.answer_1 }}
+
+                                </div>
+                            </div>
+
+                          <!-- /.col -->
+                        </div>
+
+                        <hr>
+                        <div class="row">
+                          <!-- answers -->
+                            <div class="col-sm-12">
+                                <div class="col-sm-1">
+                                  <label>
+                                    <input type="checkbox" value="">
+                                  </label>
+                                </div>
+
+                                <div class="col-sm-11">
+                                    {{ object.answer_1 }}
+
+                                </div>
+                            </div>
+
+                          <!-- /.col -->
+                        </div>
+
+
+                        <hr>
+                        <!-- /.row -->
+
+                        <!-- this row will not appear when printing -->
+                        <div class="row no-print">
+                          <div class="col-xs-12">
+                              <div  class="btn btn-link pull-right" style="margin-right: 10px;"><a href="{% url 'question_view' %}"><i class="fas fa-list-ul"></i> Back to List </a></div>
+
+                          </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

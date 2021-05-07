@@ -1,0 +1,75 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Add a new Invoice {% endblock title %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+{#      <div class="row">#}
+{##}
+{#        <div class="col-md-12 col-sm-12 col-xs-12">#}
+          <div class="x_panel">
+
+            <div class="x_content" style="">
+
+              <h2>Upload a file</h2>
+
+              <form class="" method="POST" action="{% url 'file_upload_view' %}" id="login-form" enctype = "multipart/form-data">
+              <!-- Tabs -->
+
+
+                {% csrf_token %}
+
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+
+
+                        <div class="form-horizontal form-label-left">
+                          <div class="form-group">
+
+                            <div class="col-md-6 col-sm-6">
+                                <br/>
+                            {{ form.file|as_crispy_field }}
+                                <br/>
+                            <div class="form-group">
+
+                              <button class="btn btn-primary" type="submit"  value="submit">
+                                <i class="fas fa-file-upload"></i>
+                                  Load Data from File
+                              </button>
+                            </div>
+                                <br/>
+                                <a href="#"> Download The Template </a>
+                            </div>
+
+
+                          </div>
+
+
+
+                        </div>
+                        <br/>
+
+                    </div>
+
+
+              </form>
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+
+{#        </div>#}
+{#      </div>#}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+{% endblock javascripts %}

@@ -1,0 +1,268 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+{% block title %} Invoices {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+        <form method="get" action="{% url 'invoice_pay_view' %}" >
+            {% csrf_token %}
+
+            <div class="row">
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <div class="col-md-10" style="padding-left:0px;">
+              <h2>Invoices List <small>List of received invoices: select invoice or supplier from the table for more details</small></h2>
+              </div>
+              <div class="col-md-2">
+                      <button  type="submit" class="btn btn-success pull-right" style="margin-right: 5px;">
+
+                            <i class="fas fa-money-bill-wave" style="padding-right:5px;"></i>
+<!--                        <i class="fa fa-paper-plane"></i>-->
+                        Pay Selected
+
+                      </button>
+                    </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+              <div style="padding-top:10px;padding-bottom:10px;" class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputReference" onkeyup="myFunction('myInputReference',2)" placeholder="Reference">
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-2" name="myInput" style="padding:0px; padding-right:2px;">
+
+<!--                    <input name="myInput" class="form-control" type="text" id="myInputSupplier" onkeyup="myNewFunction()" placeholder="Supplier">-->
+
+                    <input name="myInput" class="form-control" type="text" id="myInputSupplier" onkeyup="myFunction('myInputSupplier',3)" placeholder="Supplier">
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputAmount" onkeyup="myFunction('myInputAmount',4)" placeholder="Amount">
+                  </div>
+                  <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputCategory" onkeyup="myFunction('myInputCategory',6)" placeholder="Category">
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputStatus" onkeyup="myFunction('myInputStatus',9)" placeholder="Status">
+                  </div>
+                  <div class="col-md-5 col-sm-5 col-xs-5" style="padding:0px; padding-right:2px;">
+                      <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0px; padding-right:2px;">
+                        <input name="myInput" class="form-control" type="text" id="myInputDate" onkeyup="myFunction('myInputDate',7)" placeholder="Date">
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0px; padding-right:2px;">
+                        <input name="myInput" class="form-control" type="text" id="myInputExpireDate" onkeyup="myFunction('myInputExpireDate',8)" placeholder="Expire Date">
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0px; padding-right:2px;">
+                        <input name="myInput" class="form-control" type="text" id="myInputPaidDate" onkeyup="myFunction('myInputPaidDate',10)" placeholder="Paid Date">
+                      </div>
+                  </div>
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+
+              <div class="table-responsive">
+                <table id="myTable" class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                      <th>
+                        <input type="checkbox" id="check-all" class="flat">
+                      </th>
+                      <th class="column-title">Invoice Id</th>
+                      <th class="column-title">Reference</th>
+                      <th class="column-title">Supplier </th>
+                      <th class="column-title">Amount </th>
+                      <th class="column-title">Currency </th>
+                      <th class="column-title">Category </th>
+                      <th class="column-title">Invoice Date </th>
+                      <th class="column-title">Date Expire</th>
+                      <th class="column-title no-link last"><span class="nobr">Status</span>
+                      </th>
+                      <th class="column-title">Date Paid</th>
+                      <th class="bulk-actions" colspan="11">
+                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="myTableBody" >
+                    {% for invoice in object_list %}
+                        <tr name="tr_name" id="tr_test" onchange="testFunction()" class="even pointer">
+                          <input name="input_tr_{{ invoice.pk }}" type="hidden" value="">
+                          <td class="a-center ">
+                            <input type="checkbox" class="flat" name="table_records">
+                          </td>
+
+
+                          <td class=" "><a href="{% url 'invoice_detail_view' invoice.pk %}"> {{ invoice.pk }} </a> </td>
+                          <td> <a href="{% url 'invoice_detail_view' invoice.pk %}"> {{ invoice.reference }} </a> </td>
+
+                          <td class=" "> <a href="{% url 'supplier_detail_view' invoice.supplier.pk %}"> {{ invoice.supplier.name }} </a> </td>
+                          <td class=" ">{{ invoice.amount|intcomma }}</td>
+                          <td class=" ">{{ invoice.currency }}</td>
+                          <td class=" ">{{ invoice.category }}</td>
+
+                          <td class=" ">{{ invoice.invoice_date|date:"M d, Y" }}</td>
+                          <td class=" ">{{ invoice.invoice_date_expire|date:"M d, Y" }}</td>
+                          <td class=" ">{% if invoice.paid == 'Yes' %} Paid {% else %} Not Paid {% endif %}</td>
+                          <td class=" ">{{ invoice.invoice_date_payment|date:"M d, Y" }}</td>
+                        </tr>
+
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+        </form>
+
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+<script>
+    tr_s = document.getElementsByName('tr_name');
+    function mCallback (mutations) {
+          for (let mutation of mutations) {
+            if (mutation.type === 'attributes') {
+<!--              insert the code to write on the get form-->
+                debugger;
+<!--                  the event element location strictly depend from the position of the input field -->
+<!--                  within the tr-->
+                if(event.target.parentNode.parentNode.parentNode.childNodes[1].value == '1'){
+                    event.target.parentNode.parentNode.parentNode.childNodes[1].value = '0'
+                }
+                else{
+                    event.target.parentNode.parentNode.parentNode.childNodes[1].value = '1'
+                }
+              console.log('2')
+            }
+          }
+        }
+    observerOptions = {
+        attributes: true
+    };
+
+        for(i = 0; i<tr_s.length; i++){
+        debugger;
+            targetNode = tr_s[i];
+            let observer = new MutationObserver(mCallback);
+
+            observer.observe(targetNode, observerOptions);
+        }
+
+
+
+
+</script>
+
+
+
+
+<script>
+        function testFunction(){
+        debugger;
+        }
+
+        function myFunction(inputName, column) {
+          // Declare variables
+          var input, filter, table, tr, td, i, txtValue;
+          debugger;
+
+          input = document.getElementById(inputName);
+
+          filter = input.value.toUpperCase();
+
+          var input_names = document.getElementsByName("myInput");
+          var filters = {}
+          for (var j=0; j < input_names.length; j++) {
+
+                if(input_names[j].value){
+                    filters[input_names[j].id] = input_names[j].value.toUpperCase()
+                }
+                else{
+                    filters[input_names[j].id] = ""
+                }
+          }
+
+          tableBody = document.getElementById("myTableBody");
+
+          // change the selection of the table only for element that are visible
+          tr = tableBody.getElementsByTagName("tr");
+          debugger;
+
+          // Loop through all table rows, and hide those who don't match the search query
+          for (i = 0; i < tr.length; i++) {
+
+            td_reference = tr[i].getElementsByTagName("td")[2];
+            td_supplier = tr[i].getElementsByTagName("td")[3];
+            td_amount = tr[i].getElementsByTagName("td")[4];
+            td_category = tr[i].getElementsByTagName("td")[6];
+            td_date = tr[i].getElementsByTagName("td")[7];
+            td_date_expire = tr[i].getElementsByTagName("td")[8];
+            td_status = tr[i].getElementsByTagName("td")[9];
+            td_date_paid = tr[i].getElementsByTagName("td")[10];
+            debugger;
+            if (td_reference||td_supplier||td_amount||td_category||td_date||td_date_expire||td_date_paid) {
+              txtValue_reference = td_reference.textContent || td_reference.innerText;
+              txtValue_supplier = td_supplier.textContent || td_supplier.innerText;
+              txtValue_amount = td_amount.textContent || td_amount.innerText;
+              txtValue_category = td_category.textContent || td_category.innerText;
+               txtValue_date = td_date.textContent || td_date.innerText;
+               txtValue_date_expire = td_date_expire.textContent || td_date_expire.innerText;
+               txtValue_status = td_status.textContent || td_status.innerText;
+               txtValue_date_paid = td_date_paid.textContent || td_date_paid.innerText;
+
+              if (
+                    (txtValue_reference.toUpperCase().indexOf(filters['myInputReference'])> -1) &&
+                    (txtValue_supplier.toUpperCase().indexOf(filters['myInputSupplier'])> -1) &&
+                    (txtValue_amount.toUpperCase().indexOf(filters['myInputAmount'])> -1) &&
+                    (txtValue_category.toUpperCase().indexOf(filters['myInputCategory'])> -1) &&
+                    (txtValue_date.toUpperCase().indexOf(filters['myInputDate'])> -1) &&
+                    (txtValue_date_expire.toUpperCase().indexOf(filters['myInputExpireDate'])> -1) &&
+                    (txtValue_status.toUpperCase().indexOf(filters['myInputStatus'])> -1) &&
+                    (txtValue_date_paid.toUpperCase().indexOf(filters['myInputPaidDate'] ) > -1))
+                  {
+                    tr[i].style.display = "";
+                  }
+                  else {
+                    tr[i].style.display = "none";
+                  }
+                }
+          }
+        }
+        </script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

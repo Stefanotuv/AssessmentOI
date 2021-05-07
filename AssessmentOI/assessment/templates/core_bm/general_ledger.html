@@ -1,0 +1,605 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load humanize %}
+{% block title %} Transaction {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>General Ledger <small>.</small></h3>
+        </div>
+
+
+      </div>
+
+<!--      <div class="clearfix"></div>-->
+      <div class="x_content" >
+
+
+              <div class="well" style="overflow: auto">
+                <div>
+                  <div class="col-md-12">
+
+                  <form method="get" action="/core_bm/general_ledger/?from_to">
+                    <div class="col-md-4">
+                      <div name="calendar" id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                        <span id="calendar_period">{{ from }} - {{ to }}</span>  <b class="caret"></b>
+
+                      </div>
+                      <input hidden name="from_to" id="from_to" type="text" value="{{ from }} - {{ to }}">
+                    </div>
+                    <div class="col-md-2">
+                      <button type="submit" class="btn btn-primary pull-right" style="margin-right: 5px;">
+                        <i class="fa fa-paper-plane"></i>
+                        Update
+                      </button>
+                    </div>
+
+
+
+
+                  </form>
+
+
+
+
+                </div>
+                </div>
+
+
+              </div>
+
+      </div>
+<!---->
+
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>In and Out <small>tot: {{ total_categories|intcomma }}</small>  </h2>
+              <div class="pull-right">
+                <ul class="nav navbar-right panel_toolbox pull_right">
+                <li>
+              </li>
+                <li>
+              </li>
+              <li><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a>
+              </li>
+
+            </ul>
+              </div>
+
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="display: none;">
+              <canvas id="expenses_by_categories"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Transactions In & Out</small></h2>
+              <div class="pull-right">
+                <ul class="nav navbar-right panel_toolbox pull_right">
+                <li>
+              </li>
+                <li>
+              </li>
+              <li><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a>
+              </li>
+
+            </ul>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="display: none;">
+              <canvas id="service_charge_and_payments"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Pay-in by Block: <small>tot: {{ total_service_charges_by_block_by_date|intcomma }}</small></h2>
+              <div class="pull-right">
+                <ul class="nav navbar-right panel_toolbox pull_right">
+                <li>
+              </li>
+                <li>
+              </li>
+              <li><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a>
+              </li>
+
+            </ul>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content" style="display: none;">
+              <canvas id="service_charges_by_block_by_date"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--      <div class="clearfix"></div>-->
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>In/Out Transactions <small>tot: {{ total_categories|intcomma }}</small>  </h2>
+              <div class="pull-right">
+                <ul class="nav navbar-right panel_toolbox pull_right">
+                <li>
+              </li>
+                <li>
+              </li>
+              <li><a class="collapse-link pull-right"><i class="fa fa-chevron-up"></i></a>
+              </li>
+
+            </ul>
+              </div>
+
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+            <div class="demo-container" style="height:250px">
+              <div id="transactions_selected" data-stuff='["a","b","c"]' class="demo-placeholder"></div>
+            </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Transactions <small>List of all transactions In/Out</small></h2>
+              <div class="title_right" style="margin-bottom:0px">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right" style="margin-bottom:0px">
+
+                  <div class="input-group pull-right" style="margin-bottom:0px">
+
+                      {% if balance > 0 %}
+                      <h2><strong>Total Balance (@{{ to }}): £{{ balance|intcomma }}</strong></h2>
+                      {% else %}
+                      <h2><strong>Total Balance (@{{ to }}):</strong> <strong style="color:red;"> £{{ balance|intcomma }}</strong></h2>
+                      {% endif %}
+
+                  </div>
+
+                   <div class="input-group pull-right" style="margin-bottom:0px">
+
+                      {% if balance_selected > 0 %}
+                      <h2><strong>Balance ({{ from }} - {{ to }}): £{{ balance_selected|intcomma }}</strong></h2>
+                      {% else %}
+                      <h2><strong>Balance ({{ from }} - {{ to }}):</strong> <strong style="color:red;"> £{{ balance_selected|intcomma }}</strong></h2>
+                      {% endif %}
+
+                  </div>
+                </div>
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content" >
+                <div style="padding-top:10px;padding-bottom:10px;" class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputTrxType" onkeyup="myFunction('myInputTrxType',2)" placeholder="Trx Type">
+                  </div>
+
+                  <div class="col-md-2 col-sm-2 col-xs-2" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputSupplier" onkeyup="myFunction('myInputSupplier',3)" placeholder="Supplier">
+                  </div>
+
+
+
+                  <div class="col-md-7 col-sm-7 col-xs-7" style="padding:0px; padding-right:2px;">
+
+                      <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputCategory" onkeyup="myFunction('myInputCategory',6)" placeholder="Category">
+                  </div>
+                      <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0px; padding-right:2px;">
+                        <input name="myInput" class="form-control" type="text" id="myInputProperty" onkeyup="myFunction('myInputProperty',7)" placeholder="Property">
+                      </div>
+                      <div class="col-md-4 col-sm-4 col-xs-4" style="padding:0px; padding-right:2px;">
+                        <input name="myInput" class="form-control" type="text" id="myInputLeaseholder" onkeyup="myFunction('myInputLeaseholder',8)" placeholder="Leaseholder">
+                      </div>
+
+                  </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                        <input name="myInput" class="form-control" type="text" id="myInputPaidDate" onkeyup="myFunction('myInputPaidDate',10)" placeholder="Paid Date">
+                      </div>
+                  <div class="col-md-1 col-sm-1 col-xs-1" style="padding:0px; padding-right:2px;">
+                    <input name="myInput" class="form-control" type="text" id="myInputAmount" onkeyup="myFunction('myInputAmount',4)" placeholder="Amount">
+                  </div>
+              </div>
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr class="headings">
+                          <th class="column-title">ID </th>
+                          <th class="column-title">Trx Type </th>
+                          <th class="column-title">Invoice # </th>
+                          <th class="column-title">Supplier </th>
+                          <th class="column-title">Category </th>
+                          <th class="column-title">Sub Category </th>
+                          <th class="column-title">Property </th>
+                          <th class="column-title">Leaseholder </th>
+                          <th class="column-title">Date </th>
+                          <th class="column-title">Amount </th>
+                          <th class="column-title">Exclude </th>
+
+
+                        </tr>
+                      </thead>
+
+                      <tbody id="myTableBody">
+                        {% for transaction in object_list %}
+                        <tr>
+                            <tr class="even pointer">
+
+                            <td class=" ">{{ transaction.pk }}</td>
+                            <td class=" ">{{ transaction.transaction_type }}</td>
+                          <td class=" "><a href="{% url 'invoice_detail_view' transaction.invoice_pk %}">{{ transaction.invoice_pk }}</a></td>
+                            <td class=" ">{{ transaction.supplier.name }}</td>
+                             <td class=""> {{ transaction.supplier.category.type }} </td>
+                          <td class=""> {{ transaction.supplier.category.subtype }} </td>
+                          <td class=""> <div style=" overflow: hidden; white-space: nowrap;text-overflow: ellipsis;width:200px;"><a href="{% url 'property_detail_view' transaction.property_id %}">{{ transaction.property }}</a></div> </td>
+                          <td class=""> {{ transaction.leaseholder.name_company_name }} {{ transaction.leaseholder.surname }}</td>
+                            <td class=""> {{ transaction.date_executed|date:"M d, Y"  }} </td>
+                          <td class="">{{ transaction.transaction_amount|intcomma }} </td>
+                          <td class="">{{ transaction.exclude }} </td>
+
+                          </tr>
+                        {% endfor %}
+
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <!-- Chart.js -->
+  <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+  <!-- gauge.js -->
+  <script src="/static/vendors/gauge.js/dist/gauge.min.js"></script>
+  <!-- Skycons -->
+  <script src="/static/vendors/skycons/skycons.js"></script>
+  <!-- Flot -->
+  <script src="/static/vendors/Flot/jquery.flot.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.pie.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.time.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.stack.js"></script>
+  <script src="/static/vendors/Flot/jquery.flot.resize.js"></script>
+  <!-- Flot plugins -->
+  <script src="/static/vendors/flot.orderbars/js/jquery.flot.orderBars.js"></script>
+  <script src="/static/vendors/flot-spline/js/jquery.flot.spline.min.js"></script>
+  <script src="/static/vendors/flot.curvedlines/curvedLines.js"></script>
+  <!-- DateJS -->
+  <script src="/static/vendors/DateJS/build/date.js"></script>
+  <!-- JQVMap -->
+  <script src="/static/vendors/jqvmap/dist/jquery.vmap.js"></script>
+  <script src="/static/vendors/jqvmap/dist/maps/jquery.vmap.world.js"></script>
+  <script src="/static/vendors/jqvmap/examples/js/jquery.vmap.sampledata.js"></script>
+
+<script type="text/javascript">
+    var element = document.getElementById('reportrange_right');
+
+    element.addEventListener('DOMSubtreeModified', calendar_input)
+
+    function calendar_input(e) {
+        document.getElementById("from_to").value = document.getElementById("calendar_period").innerHTML;
+    }
+
+
+    </script>
+
+    <!--SCRIPT FOR THE pie CHART expenses_by_categories -->
+    <script>
+    var ctx = document.getElementById('expenses_by_categories').getContext('2d');
+    debugger;
+    var expenses_by_categories = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: {{ categories|safe }},
+          datasets: [{
+            label: 'Population',
+            backgroundColor: ['#26B99A','#03586A',],
+            data: {{ values }}
+          }]
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+    <!--                display: true,-->
+    <!--                text: 'Expenses by Category'-->
+          }
+        }
+      });
+
+
+    </script>
+
+    <!--SCRIPT FOR THE BAR CHART -->
+    <script>
+    var ctx = document.getElementById('service_charge_and_payments').getContext('2d');
+    debugger;
+    var service_charge_and_payments = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ date_MM_YYYY|safe }},
+    <!--            context['date_MM_YYYY']=['11-2020','10-2020','09-2020','08-2020','07-2020']-->
+    <!--            labels: ['11-2020', '10-2020', '9-2020', '8-2020', '7-2020', '6-2020'],-->
+        datasets: [{
+            label: 'Payments In',
+
+            data: {{ transactions_in }},
+    <!--                data: [1,2,3],-->
+            backgroundColor: "#26B99A",
+            borderWidth: 1
+        },
+        {
+            label: 'Payment Out',
+            data: {{  transactions_out }},
+    <!--                data: [1,2,3],-->
+            backgroundColor: "#03586A",
+            borderWidth: 1
+        }
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    }
+    });
+    </script>
+
+    <!--SCRIPT FOR THE pie CHART service_charges_by_block -->
+    <script>
+    var ctx = document.getElementById('service_charges_by_block_by_date').getContext('2d');
+    debugger;
+    var expenses_by_categories = new Chart(ctx, {
+        type: 'pie',
+        data: {
+          labels: {{ blocks|safe }},
+          datasets: [{
+            label: 'Population',
+            backgroundColor: ['#3E89AE','#2F3E52','#E3C477','#5F728C','#26B99A','#03586A',],
+            data: {{ block_payments }}
+          }]
+        },
+        options: {
+          responsive: true,
+          legend: {
+            position: 'bottom',
+          },
+          title: {
+    <!--                display: true,-->
+    <!--                text: 'Expenses by Category'-->
+          }
+        }
+      });
+
+
+    </script>
+
+    <!--script for the filters-->
+    <script>
+
+    function myFunction(inputName, column) {
+      // Declare variables
+      var input, filter, table, tr, td, i, txtValue;
+      debugger;
+
+      input = document.getElementById(inputName);
+
+      filter = input.value.toUpperCase();
+
+      var input_names = document.getElementsByName("myInput");
+      var filters = {}
+      for (var j=0; j < input_names.length; j++) {
+
+            if(input_names[j].value){
+                filters[input_names[j].id] = input_names[j].value.toUpperCase()
+            }
+            else{
+                filters[input_names[j].id] = ""
+            }
+      }
+
+      tableBody = document.getElementById("myTableBody");
+
+      // change the selection of the table only for element that are visible
+      tr = tableBody.getElementsByTagName("tr");
+      debugger;
+
+      // Loop through all table rows, and hide those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+
+        td_trx_type = tr[i].getElementsByTagName("td")[1];
+        td_supplier = tr[i].getElementsByTagName("td")[3];
+        td_category = tr[i].getElementsByTagName("td")[4];
+        td_property = tr[i].getElementsByTagName("td")[6];
+        td_leaseholder = tr[i].getElementsByTagName("td")[7];
+        td_date = tr[i].getElementsByTagName("td")[8];
+        td_amount = tr[i].getElementsByTagName("td")[9];
+        debugger;
+        if (td_trx_type||td_supplier||td_category||td_property||td_leaseholder|| td_date || td_amount) {
+          txtValue_trx_type = td_trx_type.textContent || td_trx_type.innerText;
+          txtValue_supplier = td_supplier.textContent || td_supplier.innerText;
+          txtValue_category = td_category.textContent || td_category.innerText;
+          txtValue_property = td_property.textContent || td_property.innerText;
+           txtValue_leaseholder = td_leaseholder.textContent || td_leaseholder.innerText;
+           txtValue_date = td_date.textContent || td_date.innerText;
+           txtValue_amount = td_amount.textContent || td_amount.innerText;
+
+          if (
+                (txtValue_trx_type.toUpperCase().indexOf(filters['myInputTrxType'])> -1) &&
+                (txtValue_supplier.toUpperCase().indexOf(filters['myInputSupplier'])> -1) &&
+                (txtValue_category.toUpperCase().indexOf(filters['myInputCategory'])> -1) &&
+                (txtValue_property.toUpperCase().indexOf(filters['myInputProperty'])> -1) &&
+                (txtValue_leaseholder.toUpperCase().indexOf(filters['myInputLeaseholder'])> -1) &&
+                (txtValue_date.toUpperCase().indexOf(filters['myInputPaidDate'])> -1) &&
+                (txtValue_amount.toUpperCase().indexOf(filters['myInputAmount'] ) > -1))
+              {
+                tr[i].style.display = "";
+              }
+              else {
+                tr[i].style.display = "none";
+              }
+            }
+      }
+    }
+    </script>
+
+    <!--line chart script-->
+    <script>
+
+    $( document ).ready(transactions_selected_graph())
+    function gd(year, month, day) {
+        return new Date(year, month - 1, day).getTime();
+    }
+
+
+
+    function transactions_selected_graph() {
+    debugger;
+
+
+  var arr_data_in =[
+    {% for trx_in in transactions_selected.trxs_in %}
+      [gd({{trx_in.year}},{{trx_in.month}},{{trx_in.day}}),{{trx_in.value}}],
+    {% endfor %}
+  ]
+  var arr_data_out =[
+    {% for trx_out in transactions_selected.trxs_out %}
+      [gd({{trx_out.year}},{{trx_out.month}},{{trx_out.day}}),{{trx_out.value}}],
+    {% endfor %}
+  ]
+    var arr_data1 = [
+        [gd(2012, 1, 1), 17],
+        [gd(2012, 1, 2), 74],
+        [gd(2012, 1, 3), 6],
+        [gd(2012, 1, 4), 39],
+        [gd(2012, 1, 5), 20],
+        [gd(2012, 1, 6), 85],
+        [gd(2012, 1, 7), 7]
+    ];
+
+    var arr_data2 = [
+        [gd(2012, 1, 1), 82],
+        [gd(2012, 1, 2), 23],
+        [gd(2012, 1, 3), 66],
+        [gd(2012, 1, 4), 9],
+        [gd(2012, 1, 5), 119],
+        [gd(2012, 1, 6), 6],
+        [gd(2012, 1, 31), 900]
+    ];
+    var transactions_selected_settings = {
+            series: {
+                lines: {
+                    show: false,
+                    fill: true
+                },
+                splines: {
+                    show: true,
+                    tension: 0.4,
+                    lineWidth: 1,
+                    fill: 0.4
+                },
+                points: {
+                    radius: 0,
+                    show: true
+                },
+                shadowSize: 2
+            },
+            grid: {
+                verticalLines: true,
+                hoverable: true,
+                clickable: true,
+                tickColor: "#d5d5d5",
+                borderWidth: 1,
+                color: '#fff'
+            },
+            colors: ["rgba(38, 185, 154, 0.38)", "rgba(3, 88, 106, 0.38)"],
+            xaxis: {
+                tickColor: "rgba(51, 51, 51, 0.06)",
+                mode: "time",
+                tickSize: [1, "{{time_frame}}"],
+                //tickLength: 10,
+                axisLabel: "Date",
+                axisLabelUseCanvas: true,
+                axisLabelFontSizePixels: 12,
+                axisLabelFontFamily: 'Verdana, Arial',
+                axisLabelPadding: 10
+            },
+            yaxis: {
+                ticks: 8,
+                tickColor: "rgba(51, 51, 51, 0.06)",
+            },
+            tooltip: true
+        };
+
+        if ($("#transactions_selected").length) {
+            console.log('Plot1 - testing...');
+
+            var stuff = $("#transactions_selected").data('stuff');
+            // alert(stuff);
+
+            // console.log()
+
+            $.plot($("#transactions_selected"), [arr_data_in, arr_data_out], transactions_selected_settings);
+        }
+    }
+  </script>
+
+
+
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}
+

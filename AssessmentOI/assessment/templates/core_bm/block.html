@@ -1,0 +1,171 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Block {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+            <div class="x_content">
+
+
+
+
+            </div>
+
+            <div class="row">
+
+
+        <div class="col-md-8 col-sm-8 col-xs-8">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>List of Blocks </h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                      <th>
+                        <input type="checkbox" id="check-all" class="flat">
+                      </th>
+                      <th class="column-title"> Block Name </th>
+                      <th class="column-title">Freeholder </th>
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+
+                    {% for block in object_list %}
+                    <tr class="even pointer">
+                      <td class="a-center ">
+                        <input type="checkbox" class="flat" name="table_records">
+                      </td>
+<!--                        <td class=" ">{{ property.pk }}</td>-->
+
+
+                        <td class=" ">{{ block.block_name }}</td>
+                        <td class=" ">{{ block.freeholder.name }}</td>
+
+                    </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel" style="padding-right=5px;">
+
+
+              <div class="form-group" style="padding-right=5px;">
+                <div style="padding=0px;" class="col-md-12 col-sm-12 col-xs-12 ">
+                    <div  class="col-md-6 col-sm-6 col-xs-12 ">
+                    <a href="{% url 'block_add_view' %}">
+                        <div style=" width: 160px;" type="submit" class="btn btn-success">Add new Block</div>
+                    </a>
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-12 ">
+                    <a href="{% url 'freeholder_view' %}">
+                    <div style=" width: 160px;" type="submit" class="btn btn-info">Go to Freeholder</div>
+                    </a>
+                    </div>
+                  </div>
+                </div>
+
+
+          </div>
+        </div>
+<!--        <div class="col-md-4 col-sm-6 col-xs-12">-->
+<!--                      <div class="x_panel">-->
+<!--                <div>-->
+<!--                  <div class="col-md-12">-->
+
+<!--                  <form method="get" action="">-->
+<!--                    <div class="col-md-12">-->
+<!--                      <div name="calendar" id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">-->
+<!--                        <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>-->
+<!--                        <span id="calendar_period">{{ from }} - {{ to }}</span>  <b class="caret"></b>-->
+
+<!--                      </div>-->
+<!--                      <input hidden name="from_to" id="from_to" type="text" value="{{ from }} - {{ to }}">-->
+<!--                    </div>-->
+
+<!--                    <div class="col-md-12" style="text-align:center;">-->
+<!--                      <button type="submit" class="btn btn-primary" style="margin-top: 10px;">-->
+<!--                        <i class="fa fa-paper-plane"></i>-->
+<!--                        Update-->
+<!--                      </button>-->
+<!--                    </div>-->
+
+<!--                  </form>-->
+
+
+
+
+<!--                </div>-->
+<!--                </div>-->
+<!--                      </div>-->
+<!--        </div>-->
+
+
+<!--        <div class="col-md-4 col-sm-6 col-xs-12">-->
+<!--          <div class="x_panel">-->
+<!--            <div class="x_title">-->
+<!--              <h2>Service Charge Positions</h2>-->
+
+<!--              <div class="clearfix"></div>-->
+<!--            </div>-->
+<!--            <div class="x_content">-->
+<!--              <canvas id="mybarChart"></canvas>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+
+{% endblock javascripts %}
+        $(document).ready(function () {
+          $("#test").CreateMultiCheckBox({ width: '230px',
+                     defaultText : 'Select Below', height:'250px' });
+        });
+
+{% block jq%}
+
+{% endblock jq %}

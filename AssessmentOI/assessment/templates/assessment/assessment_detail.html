@@ -1,0 +1,191 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Assessment {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+<!--    <link rel="stylesheet" href="/static/build/css/cards.css">-->
+    <!-- Assessment css -->
+    <link rel="stylesheet" href="/static/build/css/assessment.css">
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-12">-->
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Assessment</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <div>Time remaining <span id="time">05:00</span> minutes!</div>
+              <form id="regForm" action="">
+
+
+
+                <!-- One "tab" for each step in the form: -->
+                {% for Q in questions_selected %}
+
+                <div class="tab"><strong>Question:</strong>
+                  <p><div class="question">{{ Q.question }}</div>
+                  <br/>
+                  <br/>
+                  <strong>Select the best answer(s) from the option(s) below </strong> <i>(select {{ Q.number_of_selection}})</i>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                      {% if Q.question_type == 'Single Selection' %}
+                        <input type="radio" checked="" value="option1" id="optionsRadios1" name="optionsRadios">
+                      {% else %}
+                      <input type="checkbox" value="">
+                        {% endif %}
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        {{ Q.answer_1 }}
+                      </div>
+
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+
+
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-md-1 col-sm-12 col-xs-12">
+                      {% if Q.question_type == 'Single Selection' %}
+                        <input type="radio" checked="" value="option2" id="optionsRadios2" name="optionsRadios">
+                      {% else %}
+                      <input type="checkbox" value="">
+                        {% endif %}
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        {{ Q.answer_2 }}
+                      </div>
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-md-1 col-sm-12 col-xs-12">
+                      {% if Q.question_type == 'Single Selection' %}
+                        <input type="radio" checked="" value="option3" id="optionsRadios3" name="optionsRadios">
+                      {% else %}
+                      <input type="checkbox" value="">
+                        {% endif %}
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        {{ Q.answer_3 }}
+                      </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-md-1 col-sm-12 col-xs-12">
+                      {% if Q.question_type == 'Single Selection' %}
+                        <input type="radio" checked="" value="option4" id="optionsRadios4" name="optionsRadios">
+                      {% else %}
+                      <input type="checkbox" value="">
+                        {% endif %}
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        {{ Q.answer_4 }}
+                      </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                      <div class="col-md-1 col-sm-12 col-xs-12">
+                      {% if Q.question_type == 'Single Selection' %}
+                        <input type="radio" checked="" value="option5" id="optionsRadios5" name="optionsRadios">
+                      {% else %}
+                      <input type="checkbox" value="">
+                        {% endif %}
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        {{ Q.answer_5 }}
+                      </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                </div>
+
+                {% endfor %}
+
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div style="overflow:auto;">
+                  <div style="float:right;">
+                    <button type="button" id="Btn" onclick="Function()">Count</button>
+                    <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
+                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                  </div>
+                </div>
+              </div>
+
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;margin-top:40px;">
+
+                  {% for Q in questions_selected %}
+
+                  <span class="step"></span>
+
+                {% endfor %}
+
+
+                </div>
+
+                </form>
+
+            </div>
+          </div>
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+  </div>
+
+<script src="/static/build/js/assessment.js"></script>
+<script>
+function Function() {
+    setTimeout(setAlert, 4000);
+}
+function setAlert() {
+  alert("Hello World!");
+}
+</script>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- jQuery Smart Wizard -->
+<!--  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>-->
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

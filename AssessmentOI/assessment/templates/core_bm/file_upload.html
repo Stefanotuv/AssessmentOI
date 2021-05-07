@@ -1,0 +1,167 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Add a new Invoice {% endblock title %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+{#      <div class="row">#}
+{##}
+{#        <div class="col-md-12 col-sm-12 col-xs-12">#}
+          <div class="x_panel">
+
+            <div class="x_content" style="">
+
+              <h2>Upload a file</h2>
+
+              <form class="" method="POST" action="{% url 'file_upload_view' %}" id="login-form" enctype = "multipart/form-data">
+              <!-- Tabs -->
+
+
+                {% csrf_token %}
+<!--                    <div class="form-horizontal form-label-left">-->
+                        <h2 class="StepTitle">
+                            <br/>
+                            <i>
+                            To upload the entries to the database: 1) download and fill the template, 2) select the model to upload, 3) attach the file and submit
+                            </i>
+                            <br/>
+                            <br/>
+                            <br/>
+
+                        </h2>
+
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+
+                    </div>
+
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+
+
+                        <div class="form-horizontal form-label-left">
+                          <div class="form-group">
+                            <div class="col-md-6 col-sm-6">
+                                {% for choice in table_choice %}
+                                File Template {{choice}}
+                                <br/>
+                                {% endfor %}
+
+<!--                                File Template Leaseholders<br/>-->
+<!--                                File Template Property<br/>-->
+<!--                                File Template Block<br/>-->
+<!--                                File Template Service Charges<br/>-->
+<!--                                File Template Transactions<br/>-->
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                 {{ form.model|as_crispy_field }}
+                                {{ form.file|as_crispy_field }}
+                                <div class="form-group pull-right">
+
+                                  <button class="btn btn-primary" type="submit"  value="submit">
+                                    <i class="fas fa-file-upload"></i>
+                                      Load Data from File
+                                  </button>
+                              </div>
+                            </div>
+
+                          </div>
+
+
+
+                        </div>
+                        <br/>
+
+                    </div>
+
+                    <div class="col-md-3     col-sm-3 col-xs-3">
+
+                    </div>
+
+              </form>
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+          <div class="x_panel">
+
+                <form class="" method="POST" action="{% url 'file_upload_view' %}" >
+                    {% csrf_token %}
+                    <input hidden name="class_name" value="{{model}}">
+
+                        <div class="form-group">
+                            <strong>Table: <i>{{model}}</i></strong>
+                        </div>
+                        <div class="form-group pull-right">
+                      <button class="btn btn-primary" type="submit"  value="submit">
+                          <i class="fas fa-upload"></i>
+                          Upload on the Database</button>
+                    </div>
+
+                    <div class="x_content">
+                                  <!-- Tabs -->
+
+                    {% if upload == 'uploaded' %}
+                        <div style="color:green"> Table Uploaded successfully </div>
+<!--                        add the entry that gave error during the upload. not_inserted_rows contains the errors-->
+<!--                        the post should save a "error" variable to check if erros occured during the upload -->
+                    {% endif %}
+
+
+                <!-- End SmartWizard Content -->
+                        <div class="table-responsive">
+                    <table class="table table-striped jambo_table bulk_action">
+                      <thead>
+                        <tr class="headings">
+                            {% for header in headers_file %}
+                          <th class="column-title">{{ header }}</th>
+                            {% endfor %}
+
+
+                        </tr>
+                      </thead>
+
+                      <tbody>
+
+                        {% for k, value in data_dict_rows.items %}
+                        <tr class="even pointer">
+
+
+                         {% for key, value in value.items %}
+                          <td class=" ">
+                          {% if upload == 'uploaded' %}
+                            <input name="{{k}}-{{ key }}" value="{% if value %} {{ value }} {% endif %}" style="border-color:green">
+    <!--                          <a> {{ element }} </a> -->
+                          {% else %}
+                            <input name="{{k}}-{{ key }}" value="{{ value }}">
+                          {% endif %}
+
+                          </td>
+
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+
+                      </tbody>
+
+                    </table>
+                  </div>
+
+                </div>
+                </form>
+
+          </div>
+{#        </div>#}
+{#      </div>#}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+{% endblock javascripts %}

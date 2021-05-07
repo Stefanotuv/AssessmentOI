@@ -1,0 +1,196 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Supplier Details {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Supplier Details</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <form method="post" action="{% url 'supplier_detail_view' object.pk %}">
+                  {% csrf_token %}
+              <section class="content invoice">
+                <!-- title row -->
+                <div class="row">
+                  <div class="col-xs-12 invoice-header">
+                    <h1>
+                                    <i class="fa fa-file-text"></i> Supplier name: {{ object.name }}.
+                                    <small class="pull-right"><small><small>
+                                        Today: <div id="demo"></div>
+                                        <script>
+                                                    var d = new Date();
+                                                    document.getElementById("demo").innerHTML = d.toDateString();
+                                        </script>
+                                        </small></small>
+                                    </small>
+                                </h1>
+                  </div>
+                  <!-- /.col -->
+                </div>
+                <!-- info row -->
+                <div class="row invoice-info">
+
+                    <div class="col-sm-6">
+                        <div class="col-sm-12">
+                              <div class="col-sm-6">
+                            <address>
+                            <br/> Address:
+                            <br/>
+                                {{ object.full_address.number }}, {{ object.full_address.address }}
+                            <br/>  {{ object.full_address.address_1 }}
+                            <br/>  {{ object.full_address.city }}, {{ object.full_address.state }}
+                            <br/>  {{ object.full_address.poste_code }}
+                            <br/>  {{ object.full_address.country }}
+                            </address>
+                          </div>
+                            <div class="col-sm-6 ">
+                      <br/>  Email: {{ object.email }}
+                      <br/>  Vat Registration: {{ object.vat_reg }}
+                      <br/>  Category {{ object.category.type }}
+                      <br/>  Subcategory {{ object.category.subtype }}
+                  </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                             <div class="col-xs-12">
+                            <p class="lead">Notes:</p>
+
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">{{ object.notes }}
+                            </p>
+                          </div>
+                          <!-- /.col -->
+                            <div class="col-xs-12">
+                        <p class="lead">Files:</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+
+                                      <th class="column-title">File name </th>
+
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                      {% for document in files %}
+                                    <tr class="even pointer">
+                                      <td>
+                                        <a href=""> {{ document }} </a>
+                                    </td>
+                                    </tr>
+                                  {% endfor %}
+
+
+                                  </tbody>
+                            </table>
+                            </div>
+<!--                        </p>-->
+                      </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-sm-6">
+                       <div class="col-sm-12 invoices">
+                        <p class="lead">Invoices:</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-striped jambo_table bulk_action">
+                                <thead>
+                                    <tr class="headings">
+
+                                      <th class="column-title">Invoice Number </th>
+                                      <th class="column-title">Amount </th>
+                                    <th class="column-title">Expiration Date </th>
+                                        <th class="column-title">Paid </th>
+                                        <th class="column-title">Payment Date </th>
+                                      <th class="bulk-actions" colspan="7">
+                                      </th>
+                                    </tr>
+                                  </thead>
+
+                                  <tbody>
+                                  {% for invoice in invoices %}
+                                    <tr class="even pointer">
+
+                                        <td class="">
+                                            <a href="{% url 'invoice_detail_view' invoice.pk %}">
+                                                  {{ invoice.reference }}
+                                            </a>
+                                        </td>
+                                        <td class="">{{ invoice.amount }}</td>
+                                        <td class="">{{ invoice.invoice_date_expire|date:"M d, Y" }}</td>
+                                        <td class="">{{ invoice.paid }}</td>
+                                        <td class="">{{ invoice.invoice_date_payment|date:"M d, Y"  }}</td>
+                                    </tr>
+                                    {% endfor %}
+
+                                  </tbody>
+                            </table>
+                            </div>
+<!--                        </p>-->
+                      </div>
+
+                    </div>
+
+
+                </div>
+                <!-- /.row -->
+                <div class="row">
+                  <!-- accepted payments column -->
+
+
+                  <!-- /.col -->
+                </div>
+                <!-- /.row -->
+
+                <!-- this row will not appear when printing -->
+                <div class="row no-print">
+                  <div class="col-xs-12">
+                      <div  class="btn btn-link pull-right" style="margin-right: 10px;"><a href="{% url 'supplier_view' %}"><i class="fas fa-list-ul"></i> Back to List </a></div>
+
+                  </div>
+                </div>
+              </section>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

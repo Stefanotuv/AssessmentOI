@@ -1,0 +1,145 @@
+<div class="left_col scroll-view">
+  <div class="navbar nav_title" style="border: 0;">
+    <a href="index.html" class="site_title"><i class="fa fa-spinner"></i> <span><small>Block Management</small></span></a>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <!-- menu profile quick info -->
+  <div class="profile clearfix">
+    <div class="profile_pic">
+      <img src="{{ user.profile.image.url }}" alt=".ger.." class="img-circle profile_img">
+    </div>
+    <div class="profile_info">
+      <span>Welcome,</span>
+      <h2>{{user.email}}</h2>
+    </div>
+  </div>
+  <!-- /menu profile quick info -->
+
+  <br />
+
+  <!-- sidebar menu -->
+  <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+    <div class="menu_section">
+      <h3>General</h3>
+      <ul class="nav side-menu">
+
+        <li><a href="{% url 'home_view' %}"><i class="fa fa-home fa-lg"></i> Home
+<!--          <span class="fa fa-chevron-down"></span>-->
+        </a>
+
+        </li>
+                <li><a href="{% url 'dashboard_view' %}"><i class="fas fa-tachometer-alt fa-lg" style="padding-right:10px;"></i> Dashboard
+<!--          <span class="fa fa-chevron-down"></span>-->
+        </a>
+
+        </li>
+        <li><a><i class="fa fa-file-text"></i> Invoices <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'invoice_view' %}">Invoices List</a></li>
+            <li><a href="{% url 'invoice_add_view' %}">Add new Invoice</a></li>
+
+          </ul>
+
+        </li>
+        <li><a><i class="fa fa-shopping-cart fa-lg"></i> Suppliers <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'supplier_view' %}">Suppliers List</a></li>
+            <li><a href="{% url 'supplier_add_view' %}">Add new Supplier</a></li>
+
+          </ul>
+        </li>
+        <li><a><i class="fa fa-building-o"></i> Properties <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'property_view' %}">Properties List</a></li>
+            <li><a href="{% url 'property_add_view' %}">Add Property</a></li>
+
+          </ul>
+        </li>
+
+        <li><a><i class="fas fa-funnel-dollar fa-lg" style="padding-right:0px;"></i> Service Charges <span class="fa fa-chevron-down"></span></a>
+<!--        <li><a><i class="fa fa-comments-o"></i> Service Charges <span class="fa fa-chevron-down"></span></a>-->
+
+          <ul class="nav child_menu">
+            <li><a href="{% url 'service_charge_view' %}">Service Charges Overview</a></li>
+            <li><a href="{% url 'service_charge_add_view' %}">Add Service Charges </a></li>
+            <li><a href="{% url 'service_charge_add_multiple_view' %}">Add Service Charges (bulk) </a></li>
+          </ul>
+        </li>
+          <li><a><i class="fa fa-credit-card" style="padding-right:10px;"></i>Transactions <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'transaction_add_view' %}">Record a new Transaction</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fas fa-book fa-lg" style="padding-right:10px;"></i>General Ledger <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'general_ledger_view' %}">Overview</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-cubes" style="padding-right:10px;"></i>Gentelella <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="gentelella/index.html">Overview</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="menu_section">
+      <h3>Settings</h3>
+      <ul class="nav side-menu">
+        <li><a><i class="fa fa-suitcase"></i> Company<span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a >Company Details</a></li>
+            <li><a href="{% url 'block_view' %}">Blocks List</a></li>
+            <li><a href="{% url 'block_add_view' %}">Add Block</a></li>
+            <li><a href="{% url 'freeholder_view' %}">Freeholder List</a></li>
+            <li><a href="{% url 'freeholder_add_view' %}">Add Freeholder </a></li>
+          </ul>
+        </li>
+        <li><a><i class="fas fa-sliders-h" style="padding-right:10px;"></i> Parameters <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a >Add Category</a></li>
+          </ul>
+        </li>
+
+      </ul>
+      </div>
+    <div class="menu_section">
+      <h3>Admin</h3>
+      <ul class="nav side-menu">
+        <li><a><i class="fas fa-gamepad"></i> Console <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a href="{% url 'admin_table_view' %}">View Tables</a></li>
+
+            <li><a href="{% url 'file_upload_view' %}">Tables Upload (Bulk)</a></li>
+          </ul>
+        </li>
+        <li><a><i class="fa fa-user"></i> User <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+            <li><a >User List</a></li>
+            <li><a >Add a User</a></li>
+          </ul>
+        </li>
+
+      </ul>
+    </div>
+  </div>
+  <!-- /sidebar menu -->
+
+  <!-- /menu footer buttons -->
+  <div class="sidebar-footer hidden-small">
+    <a data-toggle="tooltip" data-placement="top" title="Settings">
+      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
+      <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="Lock">
+      <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
+    </a>
+    <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
+      <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+    </a>
+  </div>
+  <!-- /menu footer buttons -->
+</div>

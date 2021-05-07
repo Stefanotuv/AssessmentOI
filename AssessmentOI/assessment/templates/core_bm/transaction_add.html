@@ -1,0 +1,335 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_field %}
+{% load static %}
+{% block title %} Add Transaction {% endblock title %}
+
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-2 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+
+              <h2>Add a new Transaction <small>(No Invoice Payments or Service Charges)</small></h2>
+              <!-- Tabs -->
+                  <form class="" method="POST" action="{% url 'transaction_add_view' %}" id="" enctype = "multipart/form-data">
+                  {% csrf_token %}
+                    <div id="wizard_verticle" class="form_wizard wizard_verticle">
+
+                        <ul class="list-unstyled wizard_steps">
+                      <li>
+                        <a href="#step-11">
+                          <span class="step_no">1</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#step-22" id="id_step-22">
+                          <span class="step_no">2</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#step-33">
+                          <span class="step_no">3</span>
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#step-44">
+                          <span class="step_no">4</span>
+                        </a>
+                      </li>
+                    </ul>
+
+                        <div id="step-11">
+                        <h2 class="StepTitle">General Info</h2>
+
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.in_out|as_crispy_field }}
+                            </div>
+
+                          </div>
+
+                            <div class="" style="">
+                                  <div class="form-group">
+                                    <div class="col-md-4 col-sm-4">
+<!--                                      {{ form.transaction_type|as_crispy_field }}-->
+
+                                        <div id="div_id_transaction_type_in" class="form-group">
+
+                                            <label for="id_transaction_type" class="">
+                                                Transaction Type In
+                                            </label>
+
+                                            <div class="">
+                                                <select name="transaction_type" class="select form-control" id="id_transaction_type">
+                                                    <option value="Service Charge" selected="">Service Charge</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-1 col-sm-1">
+
+                                    </div>
+
+                                  </div>
+                                  <div class="form-group">
+                                    <div class="col-md-4 col-sm-4">
+<!--                                      {{ form.transaction_type|as_crispy_field }}-->
+                                        <div id="div_id_transaction_type_out" class="form-group">
+
+                                            <label for="id_transaction_type" class="">
+                                                Transaction Type Out
+                                            </label>
+
+                                            <div class="">
+                                                <select name="transaction_type" class="select form-control" id="id_transaction_type">
+                                                    <option value="Service Charge" selected="">Service Charge</option>
+                                                </select>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                  </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-md-9 col-sm-9">
+                                  {{ form.company|as_crispy_field }}
+
+                              </div>
+
+                            </div>
+                            <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+<!--                              {{ form.supplier|as_crispy_field }}-->
+
+                            </div>
+                          </div>
+                            <div class="form-group" id="id_from_account">
+                                <div class="col-md-6 col-sm-6" >
+                                  {{ form.from_account|as_crispy_field}}
+                                </div>
+                                <div class="col-md-3 col-sm-3">
+                                  {{ form.exclude|as_crispy_field}}
+                                </div>
+                            </div>
+                            <div class="form-group" id="id_to_account">
+                                <div class="col-md-6 col-sm-6">
+                                  {{ form.to_account|as_crispy_field}}
+                                </div>
+
+                                <div class="col-md-3 col-sm-3">
+                                  {{ form.exclude|as_crispy_field}}
+                                </div>
+
+                            </div>
+
+
+                      </div>
+
+                        <div id="step-22" >
+                          <div id="id_step_out" >
+                              <h2 class="StepTitle">Add id_step_out</h2>
+                              <div class="form-group">
+                                <div class="col-md-3 col-sm-3">
+                                  {{ form.invoice_pk|as_crispy_field }}
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                  {{ form.property|as_crispy_field}}
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-md-9 col-sm-9">
+                                  {{ form.leaseholder|as_crispy_field}}
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                <div class="col-md-9 col-sm-9">
+                                  {{ form.description|as_crispy_field}}
+                                </div>
+                              </div>
+                              <div class="form-group">
+                                  <div class="col-md-5 col-sm-5">
+                                    {{ form.note|as_crispy_field}}
+                                  </div>
+                                <div class="col-md-4 col-sm-4">
+                                    {{ form.date_executed|as_crispy_field}}
+                                  </div>
+                                </div>
+                              <div class="form-group">
+                                <div class="col-md-4 col-sm-4">
+                                  {{ form.transaction_amount|as_crispy_field}}
+                                </div>
+                                <div class="col-md-5 col-sm-5">
+                                  {{ form.transaction_currency|as_crispy_field}}
+                                </div>
+                              </div>
+                          </div>
+                          <div id="id_step_in" >
+                            <h2 class="StepTitle">Add id_step_in</h2>
+                            <div class="form-group">
+                              <div class="col-md-3 col-sm-3">
+                                {{ form.invoice_pk|as_crispy_field }}
+                              </div>
+                              <div class="col-md-6 col-sm-6">
+                                {{ form.property|as_crispy_field}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-md-9 col-sm-9">
+                                {{ form.leaseholder|as_crispy_field}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                              <div class="col-md-9 col-sm-9">
+                                {{ form.description|as_crispy_field}}
+                              </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-5 col-sm-5">
+                                  {{ form.note|as_crispy_field}}
+                                </div>
+                              <div class="col-md-4 col-sm-4">
+                                  {{ form.date_executed|as_crispy_field}}
+                                </div>
+                              </div>
+                            <div class="form-group">
+                            <div class="col-md-4 col-sm-4">
+                              {{ form.transaction_amount|as_crispy_field}}
+                            </div>
+                            <div class="col-md-5 col-sm-5">
+                              {{ form.transaction_currency|as_crispy_field}}
+                            </div>
+                          </div>
+
+                          </div>
+                        </div>
+
+                        <div id="step-33">
+                        <h2 class="StepTitle">Add Bank Account Details</h2>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.from_account|as_crispy_field}}
+                            </div>
+
+                          </div>
+
+                          <div class="form-group">
+                            <div class="col-md-6 col-sm-6">
+                              {{ form.to_account|as_crispy_field}}
+                            </div>
+
+                            <div class="col-md-3 col-sm-3">
+                              {{ form.exclude|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.documents|as_crispy_field}}
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.supplier}}
+                            </div>
+                          </div>
+                      </div>
+
+                        <div id="step-44">
+                            <h2 class="StepTitle">Add notes and files</h2>
+                            <div class="form-group">
+                                <div class="col-md-9 col-sm-9">
+                                  {{form.supplier}}
+                                </div>
+
+                              </div>
+                            <div class="form-group">
+                                <div class="col-md-9 col-sm-9">
+                                  {{form.supplier}}
+                                </div>
+
+                              </div>
+
+
+                          </div>
+
+                  </div>
+                  </form>
+
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12"></div>
+      </div>
+    </div>
+  </div>
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+  <script>
+
+      function_in_out()
+
+
+      in_out = document.getElementById('id_in_out');
+      in_out.addEventListener("change", function_in_out);
+
+      function function_in_out(){
+        in_out = document.getElementById('id_in_out');
+        debugger;
+        value_in_out = in_out.value
+        console.log(value_in_out)
+        id_step_in = document.getElementById('id_step_in');
+        id_step_out = document.getElementById('id_step_out');
+        id_to_account = document.getElementById('id_to_account');
+        id_from_account = document.getElementById('id_from_account');
+        div_id_transaction_type_in = document.getElementById('div_id_transaction_type_in');
+        div_id_transaction_type_out = document.getElementById('div_id_transaction_type_out');
+
+        if(value_in_out == 'Payment Received'){
+
+            id_step_out.style.display = 'none';
+            id_step_in.style.display = 'block';
+
+            id_from_account.style.display = 'block';
+            id_to_account.style.display = 'none';
+
+            div_id_transaction_type_in.style.display = 'block';
+            div_id_transaction_type_out.style.display = 'none';
+            debugger;
+        }
+        else if(value_in_out == 'Payment Made'){
+            id_step_in.style.display = 'none';
+            id_step_out.style.display = 'block';
+
+            id_from_account.style.display = 'none';
+            id_to_account.style.display = 'block';
+
+            div_id_transaction_type_in.style.display = 'none';
+            div_id_transaction_type_out.style.display = 'block';
+            debugger;
+
+        }
+      }
+
+</script>
+{% endblock javascripts %}

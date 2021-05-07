@@ -1,0 +1,118 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Add a new Invoice {% endblock title %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+{#      <div class="row">#}
+{##}
+{#        <div class="col-md-12 col-sm-12 col-xs-12">#}
+          <div class="x_panel">
+
+            <div class="x_content">
+
+              <h2>Review Tables</h2>
+
+              <!-- Tabs -->
+
+
+
+<!--                    <div class="form-horizontal form-label-left">-->
+                        <h2 class="StepTitle">
+                            <br/>
+                            <i>
+                            Select the Table to visualise and submit
+                            </i>
+                            <br/>
+                            <br/>
+                            <br/>
+
+                        </h2>
+
+                    <div class="col-md-3 col-sm-3 col-xs-3">
+
+                    </div>
+                    <div class="col-md-6 col-sm-6 col-xs-6">
+                    <form class="" method="GET" action="{% url 'admin_table_view' %}" id="login-form" enctype = "multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-horizontal form-label-left">
+                          <div class="form-group">
+                            <div class="col-md-6 col-sm-6">
+
+                            </div>
+                            <div class="col-md-6 col-sm-6">
+                                <div class="">
+                                <select name="model" class="select form-control" id="id_models">
+                                    {% for model in tables_names %}
+                                    <option value="{{model}}">{{model}}</option>
+                                    {% endfor %}
+                                </select>
+                                </div>
+                            </div>
+
+                          </div>
+
+
+
+                        </div>
+                        <br/>
+                        <div class="form-group pull-right">
+                          <button class="btn btn-primary" type="submit"  value="submit">Submit</button>
+                      </div>
+                     </form>
+                    </div>
+
+                    <div class="col-md-12 col-sm-12 col-xs-12">
+                        <h2>Table Name: {{ table_name }}</h2>
+                        <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+
+                        {% for header_name in headers_names %}
+                      <th class="column-title">{{header_name}} </th>
+                        {% endfor %}
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+                    {% for rows in table_items %}
+                    <tr>
+                        <tr class="even pointer">
+                        {% for cell in rows %}
+
+                        <td class=" ">{{ cell }}</td>
+                        {% endfor %}
+                      </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+                    </div>
+
+
+
+
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+{#        </div>#}
+{#      </div>#}
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+{% endblock javascripts %}

@@ -1,0 +1,85 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<!---->
+
+{% block title %} Property Add {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+
+
+{% block content %}
+ <div class="right_col" role="main">
+ <div class="">
+
+      <div class="clearfix"></div>
+
+
+      <div class="row">
+          <div class="col-md-3 col-xs-12"></div>
+        <div class="col-md-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Add a new Bank Account </small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <br />
+              <form method='post' action="{% url 'bank_account_add_view' %}" class="form-horizontal form-label-left input_mask">
+                {% csrf_token %}
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                 {{ form.bank_name|as_crispy_field }}
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                 {{ form.sort_code|as_crispy_field }}
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                 {{ form.account_number|as_crispy_field }}
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                 {{ form.account_type|as_crispy_field }}
+                </div>
+
+                  <div class="form-group">
+                  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <button type="button" class="btn btn-primary">Cancel</button>
+  		   <button class="btn btn-primary" type="reset">Reset</button>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+
+        </div>
+
+      </div>
+
+    </div>
+ </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+<script>
+<!--  $('.input-group.date').datepicker({format: "dd.mm.yyyy"});-->
+</script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}
+
+

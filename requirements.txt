@@ -1,0 +1,5 @@
+pip==21.1.1
+setuptools==56.1.0
+Django==3.2.1
+Pillow==8.0.1
+django-crispy-forms==1.11.2

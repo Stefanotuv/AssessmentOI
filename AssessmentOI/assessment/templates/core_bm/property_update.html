@@ -1,0 +1,239 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+
+<!---->
+
+{% block title %} Property Update {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+
+    <!--Script for the month_name_convert-->
+    <script>
+    <!--inserted on top of the page as there is a srcipt in the page that uses this function to convert the date-->
+    function month_name_convert(number){
+        num_month = {'1':'Jan','2':'Feb','3':'Mar','4':'Apr','5':'May','6':'Jun','7':'Jul','8':'Aug','9':'Sep','10':'Oct','11':'Nov','12':'Dec',}
+        debugger;
+        month_name = num_month[number]
+        return month_name
+    }
+    </script>
+{% endblock stylesheets %}
+
+
+{% block content %}
+ <div class="right_col" role="main">
+ <div class="">
+
+      <div class="clearfix"></div>
+
+
+      <div class="row">
+        <div class="col-md-2 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+              <h2>Update Selected Property<small></small></h2>
+                <!--  using # to recall the same view as we need the pk for the update -->
+              <form method="post" action="#" class="form-horizontal form-label-left input_mask" enctype = "multipart/form-data">
+                  {% csrf_token %}
+                  <div id="wizard_verticle" class="form_wizard wizard_verticle"></div>
+
+                <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ property_form.block |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12" style="padding-left: 0px;">
+                  <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ property_form.current_leaseholder |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback" style="margin-bottom: 0px; margin-top: 43px;">
+
+                      <div class="form-group">
+                          <a href="{% url 'leaseholder_property_update_view' %}" class="btn btn-success">Add +</a>
+
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+
+                </div>
+                </div>
+                                  <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+
+<!--                      <div class="form-group">-->
+<!---->                     {{ property_form.leaseholder_from|as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+<!--                      </div>-->
+
+
+                </div>
+                <br/>
+               <div class="col-md-12 col-sm-12 col-xs-12" >
+                    <div class="col-md-1 col-sm-1 col-xs-1" ></div>
+
+                    <div class="col-md-10 col-sm-10 col-xs-12" style="border-top: 3px dashed #bbb;"></div>
+
+                    <div class="col-md-1 col-sm-1 col-xs-1" ></div>
+               </div>
+                  <br/>
+                <div class="col-md-4 col-sm-4 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.number |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="col-md-8 col-sm-8 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.house |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.address |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div><div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.address_1 |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.city |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.state |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.post_code |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ address_form.country |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ property_form.floor |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ property_form.size_sft |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ property_form.notes |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+
+
+                  <div class="col-md-12 col-sm-12 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="zmdi zmdi-home"></i></label>
+<!---->                     {{ property_form.documents |as_crispy_field }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                <div class="form-group">
+                  <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
+                    <a href="{% url 'property_view' %}"><button type="button" class="btn btn-primary">Cancel</button></a>
+                    <button type="submit" class="btn btn-success">Submit</button>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-md-2 col-xs-12"></div>
+      </div>
+
+    </div>
+ </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <script type="text/javascript">
+<!--    Change the format of the date returned by the calendar. by default the output has the format: mm/dd/yyyy-->
+    function changeDateFormat(name){
+            debugger;
+<!--            old format is mm/dd/yyyy-->
+
+            if (name == ('leaseholder_from')||name == ('invoice_date')||name == ('invoice_date_expire')) {
+              date_old_format = document.getElementsByName(name)[0].value
+              date_new_format = month_name_convert(date_old_format.split('/')[0]) + ' ' + date_old_format.split('/')[1] + ', ' + date_old_format.split('/')[2]
+              document.getElementsByName(name)[0].value = date_new_format
+            }
+            else{
+              date_old_format = document.getElementById(id).value
+              date_new_format = month_name_convert(date_old_format.split('/')[0]) + ' ' + date_old_format.split('/')[1] + ', ' + date_old_format.split('/')[2]
+              document.getElementById(id).value = date_new_format
+            }
+
+
+    }
+
+
+ </script>
+  <script type="text/javascript">
+    document.getElementsByName('leaseholder_from')[0].parentNode.className = "col-md-11 xdisplay_inputx form-group has-feedback"
+    document.getElementsByName('leaseholder_from')[0].parentNode.innerHTML = document.getElementsByName('leaseholder_from')[0].parentNode.innerHTML + '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'
+
+
+    </script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}
+
+

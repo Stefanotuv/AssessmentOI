@@ -1,0 +1,606 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Invoice Update {% endblock title %}
+
+{% block stylesheets %}
+    <style>
+        /* Tooltip container */
+        .tooltip {
+          position: relative;
+          display: inline-block;
+          border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+        }
+
+        /* Tooltip text */
+        .tooltip .tooltiptext {
+          visibility: hidden;
+          width: 120px;
+          background-color: black;
+          color: #fff;
+          text-align: center;
+          padding: 5px 0;
+          border-radius: 6px;
+
+          /* Position the tooltip text - see examples below! */
+          position: absolute;
+          z-index: 1;
+        }
+
+        /* Show the tooltip text when you mouse over the tooltip container */
+        .tooltip:hover .tooltiptext {
+          visibility: visible;
+        }
+        </style>
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+  <style>
+* {box-sizing:border-box}
+
+/* Slideshow container */
+.slideshow-container {
+  max-width: 1000px;
+  position: relative;
+  margin: auto;
+}
+
+/* Hide the images by default */
+.mySlides {
+  display: none;
+}
+
+/* Next & previous buttons */
+.prev, .next {
+  cursor: pointer;
+  position: absolute;
+  top: 50%;
+  width: auto;
+  margin-top: -22px;
+  padding: 16px;
+  color: grey;
+  font-weight: bold;
+  font-size: 18px;
+  transition: 0.6s ease;
+  border-radius: 0 3px 3px 0;
+  user-select: none;
+}
+
+/* Position the "next button" to the right */
+.next {
+  right: 0;
+  border-radius: 3px 0 0 3px;
+}
+
+/* On hover, add a black background color with a little bit see-through */
+.prev:hover, .next:hover {
+  background-color: rgba(0,0,0,0.8);
+}
+
+/* Caption text */
+.text {
+  color: #f2f2f2;
+  font-size: 15px;
+  padding: 8px 12px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Number text (1/3 etc) */
+.numbertext {
+  color: #f2f2f2;
+  font-size: 12px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 0;
+}
+
+/* The dots/bullets/indicators */
+.dot {
+  cursor: pointer;
+  height: 15px;
+  width: 15px;
+  margin: 0 2px;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.active, .dot:hover {
+<!--  background-color: #717171;-->
+}
+
+/* Fading animation */
+.fade {
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 1.5s;
+  -webkit-animation-fill-mode: forwards;
+  animation-name: fade;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+}
+
+@-webkit-keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+
+@keyframes fade {
+  from {opacity: .4}
+  to {opacity: 1}
+}
+  </style>
+    <script>
+    <!--inserted on top of the page as there is a srcipt in the page that uses this function to convert the date-->
+    function month_name_convert(number){
+        num_month = {'1':'Jan','2':'Feb','3':'Mar','4':'Apr','5':'May','6':'Jun','7':'Jul','8':'Aug','9':'Sep','10':'Oct','11':'Nov','12':'Dec',}
+        debugger;
+        month_name = num_month[number]
+        return month_name
+    }
+</script>
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+        <div class="clearfix"></div>
+
+        <form method="POST" action="{% url 'invoice_pay_view' %}">
+            {% csrf_token %}
+
+
+
+
+        <div class="slideshow-container">
+
+
+            {% for object in object_list %}
+              <div class="mySlides fade">
+                <div class="numbertext">1 / 3</div>
+
+
+                <div class="row">
+                <div class="col-md-12">
+                  <div class="x_panel">
+                    <div class="x_title">
+                      <h2>Invoice reference: {{ object.pk }} Supplier: {{ object.supplier.name }}</h2>
+
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+
+                          {% csrf_token %}
+                      <section class="content invoice">
+                        <!-- title row -->
+                        <div class="row">
+                          <div class="col-xs-12 invoice-header">
+                            <h1>
+                                <i class="fa fa-file-text"></i> Invoice.
+                                <small class="pull-right"><small><small>
+                                    Today: <div id="demo"></div>
+                                    <script>
+                                        var d = new Date();
+                                        document.getElementById("demo").innerHTML = d.toDateString();
+                                    </script>
+                                    </small></small>
+                                </small>
+                            </h1>
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- info row -->
+                        <div class="row invoice-info">
+                          <div class="col-sm-4 invoice-col">
+                            <h2>
+                                From
+                            <br/>
+                                <br/>
+                            <a href="">
+                                {{ object.supplier.name }}
+                            </a>
+
+                            <address>
+                            <br/> Address:
+                            <br/>  {{ object.supplier.full_address.number }}
+                            <br/>  {{ object.supplier.full_address.address }}
+                            <br/>  {{ object.supplier.full_address.address_1 }}
+                            <br/>  {{ object.supplier.full_address.city }}
+                            <br/>  {{ object.supplier.full_address.state }}
+                            <br/>  {{ object.supplier.full_address.poste_code }}
+                            <br/>  {{ object.supplier.full_address.country }}
+                            </address>
+                            </h2>
+
+                          </div>
+                          <!-- /.col -->
+                          <div class="col-sm-4 invoice-col">
+                            To:
+                            <br/>
+                            {{ object.company.name }}
+                            <address>
+        <br/> Address:
+                            <br/>                 {{ object.company.full_address.number }}
+          {{ object.company.address.address }}
+                            <br/>  {{ object.company.full_address.address_1 }}
+                            <br/>  {{ object.company.full_address.city }}
+                            <br/>  {{ object.company.full_address.state }}
+                            <br/>  {{ object.company.full_address.poste_code }}
+                            <br/>  {{ object.company.full_address.country }}
+
+
+
+                                        </address>
+                          </div>
+                          <!-- /.col -->
+                          <div class="col-sm-4 invoice-col">
+                              <b><strong>Invoice Number: {{ object.pk }}</strong></b>
+                            <br>
+                            <br>
+                            <b><strong>Invoice date: {{ object.invoice_date|date:"M d, Y" }}</strong></b>
+                            <br>
+                            <b><strong>Payment due date: {{ object.invoice_date_expire|date:"M d, Y" }}</strong></b>
+                            <br>
+
+                            <br>
+                            <b><strong>Status:
+                                {% if object.paid == 'Yes' %}
+                                Paid
+                                {% else %}
+                                To Be Paid
+                                {% endif %}
+                            </strong></b>
+                              <br>
+                            <b><strong>Payment date:
+                                {% if object.paid == 'Yes' %}
+                                {{ object.invoice_date_payment|date:"M d, Y" }}
+                                {% else %}
+                                {% endif %}
+                            </strong></b>
+
+                            <br>
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+
+                        <!-- Table row -->
+                        <div class="row">
+
+
+                        </div>
+                        <!-- /.row -->
+
+                        <div class="row">
+                          <!-- accepted payments column -->
+                          <div class="col-xs-4">
+                            <p class="lead">Notes:</p>
+
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                {{ object.note }}
+                            </p>
+                          </div>
+                          <!-- /.col -->
+
+                            <div class="col-xs-4">
+                                <p class="lead">Files:</p>
+
+                                    <div class="table-responsive">
+                                        <table class="table table-striped jambo_table bulk_action">
+                                        <thead>
+                                            <tr class="headings">
+                                              <th>
+                                                <input type="checkbox" id="check-all" class="flat">
+                                              </th>
+                                              <th class="column-title">File name </th>
+                                              <th class="bulk-actions" colspan="7">
+                                                <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                                              </th>
+                                            </tr>
+                                          </thead>
+
+                                          <tbody>
+                                            {% for file in files %}
+                                            <tr class="even pointer">
+                                              <td class="a-center ">
+                                                <input type="checkbox" class="flat" name="table_records">
+                                              </td>
+
+        <!--                                        <td class="" > <a href="{{ file }}"> <div style=" overflow: hidden; white-space: nowrap;text-overflow: ellipsis;width:200px;"> {{ file }} </div> </a></td>-->
+                                                <td class="" > <a href="{{ file }}"> <div style=" overflow: hidden; white-space: nowrap;text-overflow: ellipsis;"> {{ file }} </div> </a></td>
+
+
+                                            </tr>
+                                          {% endfor%}
+
+
+                                          </tbody>
+                                    </table>
+                                    </div>
+        <!--                        </p>-->
+                              </div>
+
+                            <div class="col-xs-4">
+                                <p class="lead">Amount Due by {{ object.invoice_date_expire|date:"M d, Y" }}</p>
+                                <div class="table-responsive">
+                                  <table class="table">
+                                    <tbody>
+                                      <tr>
+                                        <th style="width:50%">Subtotal:</th>
+                                      <td>{{object.currency}}</td>
+                                        <td><div id="pre_vat_amount_{{object.pk}}"></div></td>
+                                      </tr>
+                                      <tr>
+                                        <th>Tax ({{object.vat}}%)</th>
+                                        <td>{{object.currency}}</td>
+                                        <td> <div id="vat_amount_{{object.pk}}"></div> </td>
+                                      </tr>
+                                      <tr>
+                                        <th>Total Payable:</th>
+                                          <td> <div id="post_vat_amount_{{object.pk}}"> {{ object.currency }} </div></td>
+                                          <td> {{ object.amount }}</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- /.row -->
+
+                        <!-- this row will not appear when printing -->
+                        <div class="row no-print">
+                            <div class="col-xs-12">
+                                <div class="col-xs-8">
+
+                                </div>
+                                <div class="col-xs-4" style="padding:0px;">
+                                    <div align="center">
+                                        {% if object.paid == 'No' %}
+
+                                        {% else %}
+                                        <div style="padding-bottom:10px;">
+                                        Invoice Paid on: {{ object.invoice_date_payment }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            <div class="col-xs-12">
+                              <div align="center">
+                                  <div class="col-md-6">
+                                    </div>
+
+                                <div class="col-md-6">
+                                    {% if object.paid == 'No'%}
+                                    <div class="col-md-12"  style="padding-top:10px;padding-bottom:10px;padding-right:0px;">
+                                        <div class="col-md-3">
+                                            Date Payment
+                                        </div>
+
+                                        <div class="col-md-9">
+                                            <input onchange="changeDateFormat('date_id_tr_{{ object.pk }}')" id="date_id_tr_{{ object.pk }}" name="date_tr_{{ object.pk }}" class="datetimeinput form-control" value="" >
+<!--                                        <script>-->
+<!--                                            debugger;-->
+<!--                                            var d = new Date();-->
+<!--                                            var curr_date = d.getDate();-->
+<!--                                            var curr_month = d.getMonth() + 1; //Months are zero based-->
+<!--                                            var month_name = month_name_convert(curr_month)-->
+<!--                                            var curr_year = d.getFullYear();-->
+
+<!--                                            document.getElementById("date_id_tr_{{ object.pk }}").value = month_name + " " + curr_date + ", " + curr_year;-->
+<!--                                        </script>-->
+
+
+
+
+                                        </div>
+                                    </div>
+                                     {% endif %}
+                                        <!--VAT calculation-->
+                                        <script type="text/javascript" language="javascript" >
+                                            {% if object.vat %}
+                                            function calculate_net_amount(amount, vat) {
+                                                var pre_vat_amount = amount / (1+vat/100)
+
+                                                var vat = {{ object.amount }} - pre_vat_amount
+                                                debugger;
+                                                document.getElementById("vat_amount_{{object.pk}}").innerHTML = vat.toFixed(2);
+
+                                                document.getElementById("pre_vat_amount_{{object.pk}}").innerHTML = pre_vat_amount.toFixed(2)
+
+                                            <!--    return net;-->
+                                            };
+
+                                            calculate_net_amount({{ object.amount }},{{ object.vat }})
+                                            {% endif%}
+
+                                        </script>
+
+
+
+                                {% if object.paid == 'Yes'%}
+                                <div name="payment_button" id="payment_button_{{ object.pk }}" disabled onclick="myClickFunction({{ object.pk }})" class="btn btn-warning pull-right">
+                                    <i class="fa fa-credit-card"></i>
+                                    Already Paid
+                                </div>
+                                {% else %}
+                                <div name="payment_button" id="payment_button_{{ object.pk }}" onclick="myClickFunction({{ object.pk }})" class="btn btn-success pull-right">
+                                    <i class="fa fa-credit-card"></i>
+                                    Mark for Payment
+                                </div>
+                                {% endif %}
+                                <div class="btn btn-primary pull-right" onclick=window.print(); style="margin-right: 10px;"><i class="fa fa-print"></i> Print Invoice </div>
+                                 <div  class="btn btn-link pull-right" style="margin-right: 10px;"><a href="{% url 'invoice_view' %}"><i class="fas fa-list-ul"></i> Back to List </a></div>
+                                </div>
+<!--                                hidden input to store data for post request  -->
+<!--                                the value of the input is assigned by the Javascript when the "mark for payment" button is pressed-->
+
+                                  <input id="input_id_tr_{{ object.pk }}" name="input_tr_{{ object.pk }}" type="hidden" value="">
+
+
+
+
+
+
+                            </div>
+                        </div>
+                        </div>
+                      </section>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+                <div class="text">Caption Text</div>
+              </div>
+
+            {% endfor %}
+
+            <!-- Next and previous buttons -->
+          <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
+          <a class="next" onclick="plusSlides(1)">&#10095;</a>
+
+        </div>
+            <div style="text-align:center">
+            {% for object in object_list %}
+
+              <span class="dot" onclick="currentSlide(1)"></span>
+            {% endfor %}
+            </div>
+
+                    <div class="col-md-1"></div>
+            <div class="col-md-10">
+             <button name="submit_button" type="submit" id="submit_button" class="btn btn-dark pull-right">
+                <i class="fa fa-credit-card"></i>
+                Pay Selected
+            </button>
+
+
+            </div>
+            <div class="col-md-1"></div>
+        </form>
+
+        <!-- Slideshow container -->
+
+            <br>
+
+        </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+<!--slide show-->
+<script type="text/javascript" language="javascript" >
+var slideIndex = 1;
+showSlides(slideIndex);
+
+// Next/previous controls
+function plusSlides(n) {
+  debugger;
+  showSlides(slideIndex += n);
+}
+
+// Thumbnail image controls
+function currentSlide(n) {
+  debugger;
+  showSlides(slideIndex = n);
+}
+
+function showSlides(n) {
+  var i;
+  var slides = document.getElementsByClassName("mySlides");
+  var dots = document.getElementsByClassName("dot");
+  if (n > slides.length) {slideIndex = 1}
+  if (n < 1) {slideIndex = slides.length}
+  debugger;
+  for (i = 0; i < slides.length; i++) {
+      slides[i].style.display = "none";
+  }
+  for (i = 0; i < dots.length; i++) {
+      dots[i].className = dots[i].className.replace(" active", "");
+  }
+  slides[slideIndex-1].style.display = "block";
+  dots[slideIndex-1].className += " active";
+}
+</script>
+
+<!--manage payment button-->
+<script type="text/javascript" language="javascript" >
+
+
+    function myClickFunction(pk) {
+    debugger;
+    payment_button = $("#payment_button_"+pk)
+
+    if (document.getElementById('payment_button_'+pk).textContent.includes("Marked")){
+        payment_button.attr("disabled", false)
+        document.getElementById('payment_button_'+pk).innerHTML = '<i class="fa fa-credit-card"></i> Mark for Payment'
+        payment_button.disabled = false
+
+        debugger;
+    }
+    else{
+        payment_button.attr("disabled", true)
+        document.getElementById('payment_button_'+pk).innerHTML = '<i class="fa fa-credit-card"></i> Marked for Payment'
+        payment_button.disabled = true
+        document.getElementById('input_id_tr_'+pk).value = '1'
+
+
+    }
+
+    }
+
+
+
+</script>
+
+<!--  SCRIPT TO ATTACH THE CALENDAR-->
+<script>
+    {% for object in object_list %}
+    {% if object.paid == 'No'%}
+    document.getElementById('date_id_tr_{{ object.pk }}').parentNode.className = "col-md-9 xdisplay_inputx form-group pull-right has-feedback-left datetimeinput"
+    document.getElementById('date_id_tr_{{ object.pk }}').parentNode.innerHTML = document.getElementById('date_id_tr_{{ object.pk }}').parentNode.innerHTML + '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'
+
+    debugger;
+    var tempClass = document.getElementById('date_id_tr_{{ object.pk }}').className
+    document.getElementById('date_id_tr_{{ object.pk }}').className =   tempClass + 'form-control has-feedback-left datetimeinput form-control'
+    $('#date_id_tr_{{ object.pk }}').daterangepicker({dateFormat: 'MMMM DD, YYYY', singleDatePicker: true, singleClasses: "picker_{{ object.pk }}" }, function(start, end, label) {console.log(start.toISOString(), end.toISOString(), label);});
+
+    debugger;
+    var d = new Date();
+    var curr_date = d.getDate();
+    var curr_month = d.getMonth() + 1; //Months are zero based
+    var month_name = month_name_convert(curr_month)
+    var curr_year = d.getFullYear();
+
+    document.getElementById("date_id_tr_{{ object.pk }}").value = month_name + " " + curr_date + ", " + curr_year;
+    {% endif %}
+    {% endfor %}
+<!--    Change the format of the date returned by the calendar. by default the output has the format: mm/dd/yyyy-->
+    function changeDateFormat(id){
+            debugger;
+<!--            old format is mm/dd/yyyy-->
+            date_old_format = document.getElementById(id).value
+            date_new_format = month_name_convert(date_old_format.split('/')[0]) + ' ' + date_old_format.split('/')[1] + ', ' + date_old_format.split('/')[2]
+            document.getElementById(id).value = date_new_format
+    }
+</script>
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

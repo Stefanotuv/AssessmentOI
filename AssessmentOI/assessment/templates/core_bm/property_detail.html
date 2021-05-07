@@ -1,0 +1,378 @@
+{% extends "base_custom.html" %}
+
+{% block title %} Property Details {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="right_col" role="main" xmlns="http://www.w3.org/1999/html">
+    <div class="">
+      <div class="page-title">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Property Details</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+              <div class="col-md-3 col-sm-3 col-xs-12 profile_left">
+                <h3>{{ object.full_address.number }} {{object.full_address.house }} </h3>
+                    <br/>
+                <ul class="list-unstyled user_data">
+                  <li>
+                    <h2>Address</h2>
+
+                    {{ object.full_address.number }} {{object.full_address.house }}
+                    <br/>
+                    {{ object.full_address.address }}, {{ object.full_address.address_1 }}
+                    <br/>
+                    {{ object.full_address.city }}, {{ object.full_address.state }}
+                    <br/>
+                    {{ object.full_address.post_code }}, {{ object.full_address.country }}
+                    <br/>
+                  </li>
+                  <br/>
+                  <li class="m-top-xs">
+
+                    <h2>Current Leaseholder</h2>
+
+                    <a href="{% url 'leaseholder_detail_view' object.current_leaseholder.pk %}" >
+                      <h4>{{ object.current_leaseholder.name_company_name }} {{ object.current_leaseholder.surname }}</h4>
+                    </a>
+                    <br/>
+
+                    <h2>Leaseholder since:</h2>
+                    <a >
+                      <h4>{{ object.leaseholder_from }}</h4>
+                    </a>
+
+                  </li>
+                </ul>
+                    <br/>
+                <a href="{% url 'property_update_view' object.pk %}"class="btn btn-success" style="width:180px;"><i style="padding-right:10px;" class="fa fa-edit m-right-xs"></i>Edit Property</a>
+                <br />
+                <a href="{% url 'property_view' %}" class="btn btn-link" style="width:180px;"><i style="padding-right:10px;" class="fas fa-list m-right-xs"></i>Property List</a>
+
+                <br />
+
+
+              </div>
+
+              <div class="col-md-9 col-sm-9 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                      <form method="get" action="{% url 'property_detail_view' object.pk %}">
+                      <div class="profile_title">
+                        <div class="col-md-3">
+                          <h2> Service Charges  </h2>
+                        </div>
+                        <div style="padding-top: 15px;" class="col-md-3">
+                          <div  id="slider-range"></div>
+
+                        </div>
+
+                        <div class="col-md-3">
+                          <div style="padding-top: 2px;">
+                                Selected Years: <input name="selected_years" type="text" id="years" readonly style="border:0; background: #F7F7F7; color:#2A3F54; font-weight:bold;">
+                          </div>
+                        </div>
+
+                        <div class="col-md-3" style="padding-top:6px;padding-right:10px;">
+                              <button type="submit" class="btn btn-success"><i style="padding-right:10px;" class="fas fa-filter m-right-xs"></i>Apply Filter</button>
+                            </div>
+
+                      </div>
+                         </form>
+                </div>
+
+                <div class="col-md-12 col-sm-12 col-xs-12" style="padding: 10px;">
+                <!-- start of user-activity-graph -->
+                  <canvas id="service_charge_and_payments" style="width:100%; height:280px"></canvas>
+                <!-- end of user-activity-graph -->
+                </div>
+
+              </div>
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="" role="tabpanel" data-example-id="togglable-tabs">
+                  <ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#tab_content1" id="activity-tab" role="tab" data-toggle="tab" aria-expanded="true">Activities</a>
+                    </li>
+                    <li role="presentation" class=""><a href="#tab_content2" role="tab" id="leaseholder-tab" data-toggle="tab" aria-expanded="false">Leaseholder History</a>
+
+                    <li role="presentation" class=""><a href="#tab_content3" role="tab" id="details-tab2" data-toggle="tab" aria-expanded="false">Property Details</a>
+                    </li>
+                    <li role="presentation" class=""><a href="#tab_content4" role="tab" id="notes-tab2" data-toggle="tab" aria-expanded="false">Files</a>
+                    </li>
+                  </ul>
+                  <div id="myTabContent" class="tab-content">
+
+                    <div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="profile-tab">
+                        <div class="col-md-12">
+                          <a href="{% url 'service_charge_pay_view' %}" class="btn btn-success pull-right"><i style="padding-right:10px;" class="fas fa-money-bill-wave m-right-xs"></i>Make Payment</a>
+                        </div>
+                      <!-- start user projects -->
+                      <table class="data table table-striped no-margin">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Transaction Type</th>
+                            <th>Date Executed</th>
+                            <th class="hidden-phone">Amount</th>
+                            <th>Leaseholder</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for transaction in transactions%}
+                          <tr>
+                            <td>{{ transaction.pk }}</td>
+                            <td>{{ transaction.transaction_type }}</td>
+                            <td>{{ transaction.date_executed|date:"M d, Y" }}</td>
+                            <td class="hidden-phone">{{ transaction.transaction_amount }}</td>
+                             <td class="hidden-phone">{{ transaction.property.current_leaseholder.name_company_name }}</td>
+
+                          </tr>
+                        {% endfor %}
+
+                        </tbody>
+                      </table>
+                      <!-- end user projects -->
+
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade " id="tab_content2" aria-labelledby="home-tab">
+
+                      <table class="data table table-striped no-margin">
+                        <thead>
+                          <tr>
+                            <th>ID</th>
+                            <th>Type</th>
+                            <th>Title</th>
+                            <th>Name Surname</th>
+                            <th>Owner Since (Date)</th>
+                            <th class="hidden-phone">Owner Until (Date)</th>
+<!--                            <th>Contribution</th>-->
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for rel in all_leaseholders %}
+                          <tr>
+                            <td>{{ rel.leaseholder.pk }}</td>
+                            <td>{{ rel.leaseholder.type }}</td>
+                            <td>{{ rel.leaseholder.title }}</td>
+                            <td>{{ rel.leaseholder.name_company_name }} {{ rel.leaseholder.surname }}</td>
+                            <td>{{ rel.owner_since_date }}</td>
+                            <td>{{ rel.owner_until_date }}</td>
+
+                          </tr>
+                        {% endfor %}
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+                        <div class="col-md-3 col-sm-3 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="fas fa-building" style="padding-right:20px;"></i>Floor Number: </label>
+<!---->                     {{ object.floor }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                      <div class="form-group">
+                          <label ><i class="fas fa-ruler-combined" style="padding-right:20px;"></i>Size (sqft):</label>
+<!---->                     {{ object.size_sft }}
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+
+                </div>
+                        <div class="col-md-9 col-sm-9 col-xs-12 form-group has-feedback">
+                      <div class="form-group">
+                          <label ><i class="fas fa-folder-open" style="padding-right:20px;"></i>Notes:</label>
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">{{ object.notes }}
+                            </p>
+                  <!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                      </div>
+                </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane fade" id="tab_content4" aria-labelledby="profile-tab">
+                      <!--  -->
+                      <table class="data table table-striped no-margin">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>File</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                        {% for file in files %}
+                          <tr>
+                            <td>{{ file.pk }}</td>
+                            <td>{{ file }}</td>
+                          </tr>
+                        {% endfor %}
+
+                        </tbody>
+                      </table>
+                      <!--  -->
+                    </div>
+                  </div>
+                </div>
+                </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- morris.js -->
+  <script src="/static/vendors/raphael/raphael.min.js"></script>
+  <script src="/static/vendors/morris.js/morris.min.js"></script>
+  <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+
+
+<!--SCRIPT FOR THE SLIDER TO EVALUATE the YEARS-->
+  <script type="text/javascript">
+  $( function() {
+    $( "#slider-range" ).slider({
+      range: true,
+      min:2010,
+      max: 2030,
+      values: [ {{ date_from }}, {{ date_to }} ],
+      slide: function( event, ui ) {
+        $( "#years" ).val( "" + ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+      }
+    });
+    $( "#years" ).val( "" + $( "#slider-range" ).slider( "values", 0 ) +
+      " - " + $( "#slider-range" ).slider( "values", 1 ) );
+  } );
+  </script>
+
+<!--SCRIPT FOR THE BAR CHART -->
+<script>
+    var ctx = document.getElementById('service_charge_and_payments').getContext('2d');
+    debugger;
+    var service_charge_and_payments = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ year_range }},
+            datasets: [{
+                label: 'Service Charges',
+
+                data: {{ service_charge_amount }},
+                backgroundColor: "#26B99A",
+                borderWidth: 1
+            },
+            {
+                label: 'Payments',
+
+                data: {{  payments_amount }},
+                backgroundColor: "#03586A",
+                borderWidth: 1
+            }
+            ]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+
+<!-- OLD SCRIPTS-->
+
+<!--SCRIPT FOR THE MULTISELECTION WITH DROPDOWN-->
+<!--  <script type="text/javascript">-->
+<!--  $(function() {-->
+<!--      $('.multiselect-ui').multiselect({-->
+<!--          includeSelectAllOption: true-->
+<!--      });-->
+<!--  });-->
+<!--  </script>-->
+
+<!--OLD SCRIPT FOR GRAPHS (testing colours and datasets)-->
+<!--  <script>-->
+<!--    var ctx = document.getElementById('service_charge_and_payments').getContext('2d');-->
+<!--    debugger;-->
+<!--    var service_charge_and_payments = new Chart(ctx, {-->
+<!--        type: 'bar',-->
+<!--        data: {-->
+<!--            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],-->
+<!--            datasets: [{-->
+<!--                label: 'Service Charges',-->
+
+<!--                data: [12, 19, 3, 5, 2, 3],-->
+<!--                backgroundColor: [-->
+<!--                    'rgba(255, 99, 132, 1)',-->
+<!--                    'rgba(54, 162, 235, 0.2)',-->
+<!--                    'rgba(255, 206, 86, 0.2)',-->
+<!--                    'rgba(75, 192, 192, 0.2)',-->
+<!--                    'rgba(153, 102, 255, 0.2)',-->
+<!--                    'rgba(255, 159, 64, 0.2)'-->
+<!--                ],-->
+<!--                borderColor: [-->
+<!--                    'rgba(255, 99, 132, 1)',-->
+<!--                    'rgba(54, 162, 235, 1)',-->
+<!--                    'rgba(255, 206, 86, 1)',-->
+<!--                    'rgba(75, 192, 192, 1)',-->
+<!--                    'rgba(153, 102, 255, 1)',-->
+<!--                    'rgba(255, 159, 64, 1)'-->
+<!--                ],-->
+<!--                borderWidth: 1-->
+<!--            },-->
+<!--            {-->
+<!--                label: 'Payments',-->
+
+<!--                data: [12, 19, 3, 5, 2, 3],-->
+<!--                backgroundColor: [-->
+<!--                    'rgba(255, 99, 132, 1)',-->
+<!--                    'rgba(54, 162, 235, 0.2)',-->
+<!--                    'rgba(255, 206, 86, 0.2)',-->
+<!--                    'rgba(75, 192, 192, 0.2)',-->
+<!--                    'rgba(153, 102, 255, 0.2)',-->
+<!--                    'rgba(255, 159, 64, 0.2)'-->
+<!--                ],-->
+<!--                borderColor: [-->
+<!--                    'rgba(255, 99, 132, 1)',-->
+<!--                    'rgba(54, 162, 235, 1)',-->
+<!--                    'rgba(255, 206, 86, 1)',-->
+<!--                    'rgba(75, 192, 192, 1)',-->
+<!--                    'rgba(153, 102, 255, 1)',-->
+<!--                    'rgba(255, 159, 64, 1)'-->
+<!--                ],-->
+<!--                borderWidth: 1-->
+<!--            }-->
+<!--            ]-->
+<!--        },-->
+<!--        options: {-->
+<!--            scales: {-->
+<!--                yAxes: [{-->
+<!--                    ticks: {-->
+<!--                        beginAtZero: true-->
+<!--                    }-->
+<!--                }]-->
+<!--            }-->
+<!--        }-->
+<!--    });-->
+<!--</script>-->
+
+{% endblock javascripts %}

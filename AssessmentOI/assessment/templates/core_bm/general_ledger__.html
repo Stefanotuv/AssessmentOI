@@ -1,0 +1,207 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Transaction {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+      <div class="page-title">
+        <div class="title_left">
+          <h3>General Ledger <small>.</small></h3>
+        </div>
+
+        <div class="title_right">
+          <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+            <div class="input-group">
+              <input type="text" class="form-control" placeholder="Search for...">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button">Go!</button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+<!--      <div class="clearfix"></div>-->
+      <div class="x_content">
+
+
+              <div class="well" style="overflow: auto">
+                <div class="col-md-12">
+                  <div id="reportrange_right" class="pull-left" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc">
+                    <i class="glyphicon glyphicon-calendar fa fa-calendar"></i>
+                    <span>December 30, 2014 - January 28, 2020</span> <b class="caret"></b>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+<!---->
+
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Donut Chart Graph <small>Sessions</small></h2>
+              <ul class="nav navbar-right panel_toolbox">
+                <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+                </li>
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Settings 1</a>
+                    </li>
+                    <li><a href="#">Settings 2</a>
+                    </li>
+                  </ul>
+                </li>
+                <li><a class="close-link"><i class="fa fa-close"></i></a>
+                </li>
+              </ul>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="expenses_by_categories_"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Bar graph <small>Sessions</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="expenses_by_categories"></canvas>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Donut Chart Graph <small>Sessions</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+              <canvas id="canvasDoughnut"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+<!--      <div class="clearfix"></div>-->
+      <div class="row">
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Transactions <small>List of all transactions In/Out</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                      <th>
+                        <input type="checkbox" id="check-all" class="flat">
+                      </th>
+                      <th class="column-title">Invoice </th>
+                      <th class="column-title">Invoice Date </th>
+                      <th class="column-title">Order </th>
+                      <th class="column-title">Bill to Name </th>
+                      <th class="column-title">Status </th>
+                      <th class="column-title">Amount </th>
+                      <th class="column-title no-link last"><span class="nobr">Action</span>
+                      </th>
+                      <th class="bulk-actions" colspan="7">
+                        <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                      </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {% for transaction in object_list %}
+                        <tr class="even pointer">
+                        <td class="a-center ">
+                          <input type="checkbox" class="flat" name="table_records">
+                        </td>
+                        <td class=" ">{{ transaction.pk }}</td>
+                          <td> <a href="{% url 'transaction_detail_view' transaction.pk %}"> {{ transaction.reference }} </a> </td>
+
+                        <td class=" ">{{ transaction.supplier }}</td>
+                        <td class=" ">{{ transaction.category }}</td>
+
+                        </tr>
+                    {% endfor %}
+
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+    <!-- Chart.js -->
+    <script src="/static/vendors/Chart.js/dist/Chart.min.js"></script>
+    <script>
+    var ctx = document.getElementById('expenses_by_categories_').getContext('2d');
+    debugger;
+    var expenses_by_categories = new Chart(ctx, {
+            type: 'pie',
+            data: {
+              labels: {{ categories|safe }},
+              datasets: [{
+                label: 'Population',
+                backgroundColor: ['#26B99A','#03586A',],
+                data: {{ values }}
+              }]
+            },
+            options: {
+              responsive: true,
+              legend: {
+                position: 'bottom',
+              },
+              title: {
+<!--                display: true,-->
+<!--                text: 'Expenses by Category'-->
+              }
+            }
+          });
+
+
+</script>
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

@@ -1,0 +1,108 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Add Service Charge {% endblock title %}
+
+{% block content %}
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-2 col-xs-12"></div>
+        <div class="col-md-8 col-xs-12">
+          <div class="x_panel">
+
+            <div class="x_content">
+
+              <h2>Add a Service Charges</h2>
+
+              <form class="" method="POST" action="{% url 'service_charge_add_view' %}" id="login-form" enctype = "multipart/form-data">
+              <!-- Tabs -->
+              <div id="wizard_verticle" class="form_wizard wizard_verticle">
+                <ul class="list-unstyled wizard_steps">
+                  <li>
+                    <a href="#step-11">
+                      <span class="step_no">1</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#step-22">
+                      <span class="step_no">2</span>
+                    </a>
+                  </li>
+                </ul>
+
+                {% csrf_token %}
+<!--                    <div class="form-horizontal form-label-left">-->
+                      <div id="step-11">
+                        <h2 class="StepTitle">General Info</h2>
+                        <div class="form-horizontal form-label-left">
+
+                          <div class="form-group">
+                          <div class="col-md-9 col-sm-9">
+                          {{ form.property|as_crispy_field }}
+                          <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                          </div>
+                          </div>
+                          <div class="form-group">
+                          <div class="col-md-9 col-sm-9">
+                          {{ form.year|as_crispy_field }}
+                          <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                          </div>
+                          </div>
+                          <div class="form-group">
+                          <div class="col-md-6 col-sm-6">
+                          {{ form.amount|as_crispy_field }}
+                          <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                          </div>
+                          <div class="col-md-3 col-sm-3">
+                          {{ form.currency|as_crispy_field }}
+                          <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                          </div>
+                          </div>
+                          <div class="form-group">
+
+                          </div>
+
+
+                        </div>
+                      </div>
+                      <div id="step-22">
+                        <h2 class="StepTitle">Notes and files</h2>
+                             <div class="form-group">
+
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.notes|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                            <div class="col-md-9 col-sm-9">
+                              {{ form.documents|as_crispy_field }}
+      <!--                        <input type="text" id="first-name2" required="required" class="form-control col-md-7 col-xs-12">-->
+                            </div>
+                          </div>
+
+
+
+                      </div>
+
+
+              </div>
+              </form>
+              <!-- End SmartWizard Content -->
+            </div>
+          </div>
+        </div>
+        <div class="col-md-2 col-xs-12"></div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super}}
+  <!-- jQuery Smart Wizard -->
+  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>
+
+{% endblock javascripts %}
