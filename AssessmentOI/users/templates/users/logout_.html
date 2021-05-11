@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %} Logout {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <!-- Animate.css -->
+  <link href="/static/vendors/animate.css/animate.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block body_class %}Logout{% endblock body_class %}
+
+{% block body %}
+  <div>
+    <a class="hiddenanchor" id="signup"></a>
+    <a class="hiddenanchor" id="signin"></a>
+    <a class="hiddenanchor" id="logout"></a>
+
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+          <section class="login_content">
+            <fieldset class="form-group">
+                <h2>
+                    Thanks for visiting today, come back soon!
+                </h2>
+            </fieldset>
+            <div class="clearfix"></div>
+
+            <div class="separator">
+              <p class="change_link">
+                <a href="{% url 'users_login' %}" class="to_register"> Sign back in again </a>
+              </p>
+
+              <div class="clearfix"></div>
+              <br />
+
+              <div>
+                <h1><i class="fa fa-users" aria-hidden="true"></i> the grouping project </h1>
+                <p>Privacy and Terms apply</p>
+              </div>
+            </div>
+
+          </section>
+
+      </div>
+
+
+    </div>
+  </div>
+{% endblock body %}

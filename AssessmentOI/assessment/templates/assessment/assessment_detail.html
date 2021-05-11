@@ -37,7 +37,9 @@
                 {% for Q in questions_selected %}
 
                 <div class="tab"><strong>Question:</strong>
-                  <p><div class="question">{{ Q.question }}</div>
+                  <p><div class="question" style="background-color: lightgrey;color: black;">
+                        {{ Q.question }}
+                    </div>
                   <br/>
                   <br/>
                   <strong>Select the best answer(s) from the option(s) below </strong> <i>(select {{ Q.number_of_selection}})</i>
@@ -137,7 +139,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div style="overflow:auto;">
                   <div style="float:right;">
-                    <button type="button" id="Btn" onclick="Function()">Count</button>
+<!--                    <button type="button" id="Btn" onclick="Function()">Count</button>-->
                     <button type="button" id="prevBtn" onclick="nextPrev(-1)">Previous</button>
                     <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
                   </div>
@@ -149,7 +151,7 @@
 
                   {% for Q in questions_selected %}
 
-                  <span class="step"></span>
+                  <span class="step" ></span>
 
                 {% endfor %}
 

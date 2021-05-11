@@ -3,3 +3,9 @@ setuptools==56.1.0
 Django==3.2.1
 Pillow==8.0.1
 django-crispy-forms==1.11.2
+
+django-allauth==0.44.0
+
+# added to perform math operations on tags for template. The issue it is used for is to have a counter loop
+# with another loop in django as the main variable doesnt have a cardinal number
+django-mathfilters==1.0.0

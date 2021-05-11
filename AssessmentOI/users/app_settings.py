@@ -1,0 +1,2 @@
+LOGOUT_ON_GET = True
+LOGOUT_REDIRECT_URL = 'users_login'

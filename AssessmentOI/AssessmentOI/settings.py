@@ -38,8 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'assessment',
     'crispy_forms',
+
+    'users.apps.UsersConfig',
+
+    # TODO: #1  The following apps are required for allauth
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    # TODO: #2  to use operations on templates
+    'mathfilters',
 ]
 
 MIDDLEWARE = [
@@ -57,7 +69,9 @@ ROOT_URLCONF = 'AssessmentOI.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR, os.path.join(BASE_DIR, 'assessment/templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'users/templates'),
+                 BASE_DIR,
+                 os.path.join(BASE_DIR, 'assessment/templates'),],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -66,6 +80,9 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'libraries':{
+                    'template_filters': 'assessment.template_filters',
+                }
         },
     },
 ]
@@ -102,6 +119,26 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SITE_ID = 1
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
+# TODO: #6  added for eliminating the username and validate only through emails
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_AUTHENTICATED_LOGIN_REDIRECTS =True
+# ACCOUNT_LOGOUT_ON_GET = True # Added
+ACCOUNT_FORMS = {'login': 'users.forms.UserLoginForm'} # Added (to be verified if required)
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
@@ -135,3 +172,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
     os.path.join(BASE_DIR, '../media/static'),
 )
+
+
+# TODO: #8  Use the new user app
+AUTH_USER_MODEL = 'users.User' # new

@@ -69,11 +69,13 @@ class Question(models.Model):
 class Assessment(models.Model):
 
     YES_NO = ( ('Yes', 'Yes'), ('No', 'No'),)
-
+    assessment_name = models.CharField(max_length=20, blank=True, null=True, unique=True)
     # candidate basic info
     candidate_name = models.CharField(max_length=20, blank=True, null=True)
     candidate_surname = models.CharField(max_length=20, blank=True, null=True)
     candidate_email = models.EmailField(max_length=254, null=True, blank=True)
+    slug = models.SlugField(max_length=40,null=True, blank=True)
+    token = models.CharField(max_length=256, null=True, blank=True)
 
     # team member's email (who created the assessment)
     creator_email = models.EmailField(max_length=254, null=True, blank=True)
@@ -88,5 +90,8 @@ class Assessment(models.Model):
     completed = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO)
 
     answers = models.JSONField()
+
+    def __str__(self):
+        return '%s' % (self.assessment_name)
 
 

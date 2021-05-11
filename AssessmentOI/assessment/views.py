@@ -2,10 +2,14 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.template import loader
-from django.http import HttpResponse
-from django.views.generic import ListView, DetailView
+from django.http import HttpResponse, HttpResponseRedirect
+from django.views.generic import ListView, DetailView, UpdateView
 from django.shortcuts import get_object_or_404
 from .models import *
+from .forms import *
+from django.urls import reverse
+
+
 
 def gentella_html(request):
     context = {}
@@ -22,6 +26,78 @@ class AssessmentView(ListView):
     model = Assessment
     template_name = 'assessment/assessment.html'
     context_object_name = 'assessment_view'
+    pass
+
+# test_questions
+class TestQuestionsView(DetailView):
+    model = Assessment
+    template_name = 'assessment/test_questions.html'
+    context_object_name = 'test_questions_view'
+    slug_field = 'token'
+    slug_url_kwarg = 'token'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
+        questions_selected = Question.objects.filter(assessment__pk=1)
+        context['questions_selected'] = questions_selected
+
+        # total number of questions
+        number_of_questions = questions_selected.count()
+        context['number_of_questions'] = number_of_questions
+
+        # create a range to be used by the template to identify the question mumber
+        number_of_questions_range = range(number_of_questions)
+        context['number_of_questions_range'] = number_of_questions_range
+        count = 1
+        dict_output = {}
+        for Q in questions_selected:
+            dict_output [count] = Q
+            count = count+1
+        context['dict_output'] = dict_output
+        return context
+
+    # def post(self, request, *args, **kwargs):
+    #     HttpResponseRedirect(reverse('test_questions_view'))
+    #     pass
+
+    def get(self,request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+        pass
+
+class TestQuestionsSubmitUpdate(UpdateView):
+    model = Assessment
+    template_name = 'assessment/test_questions_submit.html'
+    context_object_name = 'test_questions_submit_view'
+    # fields = '__all__'
+    form_class = AssessmentForm
+    slug_field = 'token'
+    slug_url_kwarg = 'token'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
+        questions_selected = Question.objects.filter(assessment__pk=1)
+        context['questions_selected'] = questions_selected
+
+        # total number of questions
+        number_of_questions = questions_selected.count()
+        context['number_of_questions'] = number_of_questions
+
+        # create a range to be used by the template to identify the question mumber
+        number_of_questions_range = range(number_of_questions)
+        context['number_of_questions_range'] = number_of_questions_range
+        count = 1
+        dict_output = {}
+        for Q in questions_selected:
+            dict_output [count] = Q
+            count = count+1
+        context['dict_output'] = dict_output
+        return context
+
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+        pass
     pass
 
 class AssessmentDetailView(DetailView):

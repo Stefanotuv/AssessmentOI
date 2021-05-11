@@ -22,7 +22,11 @@
           <div class="x_panel">
             <div class="x_title">
               <h2>Assessment List <small>List of All the Approved Questions for Online Assessment</small></h2>
-
+                <div style="overflow:auto;">
+                  <div style="float:right;">
+                    <button type="button" id="Btn" onclick="">Create a New Assessment</button>
+                  </div>
+                </div>
               <div class="clearfix"></div>
             </div>
 
@@ -36,13 +40,12 @@
                     <tr class="headings">
 
                         <th class="column-title">#</th>
-                        <th class="column-title">Assessment</th>
-                        <th class="column-title">Candidate</th>
-                        <th class="column-title">Email</th>
+
+                        <th class="column-title">Candidate Name</th>
+                        <th class="column-title">Candidate Email</th>
+                        <th class="column-title">Creator</th>
                         <th class="column-title">Sent</th>
-                        <th class="column-title">Opened</th>
                         <th class="column-title">Completed</th>
-                        <th class="column-title">Score</th>
 
 
                     </tr>
@@ -50,15 +53,17 @@
 
                   <tbody>
 
-                    {% for question in object_list %}
+                    {% for a in object_list %}
                     <tr class="even pointer">
 
 
 
-                      <td class=" "><a href="{% url 'question_detail_view' question.pk %}"> {{ question.pk }} </a> </td>
-
-                      <td class=" ">{{ question.question_type }}</td>
-                      <td class=" ">{{ question.question }}</td>
+                      <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}"> {{ a.pk }} </a> </td>
+                      <td class=" ">{{ a.candidate_name }}</td>
+                      <td class=" ">{{ a.candidate_email }}</td>
+                      <td class=" ">{{ a.creator_email }}</td>
+                      <td class=" ">{{ a.date_sent }}</td>
+                      <td class=" ">{{ a.date_complete }}</td>
 
                     </tr>
                     {% endfor %}

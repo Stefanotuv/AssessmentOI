@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Log Out {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+<body>
+
+
+    <div class="main">
+
+            <div class="scene scene--card">
+                <div class="card">
+                    <div class="card__face card__face--front">
+
+                        <!-- Sing in  Form -->
+                        <!--<section class="sign-in">-->
+                            <div class="container">
+                            <div class="signin-content">
+                                <div class="signin-image">
+                                    <figure><img src="/static/build/images/logout-image.jpg" alt="logout image"></figure>
+
+
+<!--                                        <a href="#" class="signup-image-link">Create an account</a>-->
+
+
+                                </div>
+
+                                <div class="signin-form">
+                                    <h2 class="form-title">Logout</h2>
+                                      <p class="change_link">
+                                        <a href="{% url 'users_login' %}" class="to_register"> Sign back in again </a>
+                                      </p>
+                                    <div class="social-login">
+                                        <span class="social-label">Or login with</span>
+                                        <ul class="socials">
+                                            <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                            <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                            <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--</section>-->
+                    </div>
+                </div>
+            </div>
+
+
+
+    </div>
+
+    <!-- JS -->
+    <script src="/static/build/js/cards.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}
