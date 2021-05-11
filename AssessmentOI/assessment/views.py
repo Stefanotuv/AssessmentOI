@@ -8,6 +8,7 @@ from django.shortcuts import get_object_or_404
 from .models import *
 from .forms import *
 from django.urls import reverse
+from datetime import datetime
 
 
 
@@ -35,7 +36,6 @@ class TestQuestionsView(DetailView):
     context_object_name = 'test_questions_view'
     slug_field = 'token'
     slug_url_kwarg = 'token'
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
@@ -76,27 +76,24 @@ class TestQuestionsSubmitUpdate(UpdateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
-        questions_selected = Question.objects.filter(assessment__pk=1)
-        context['questions_selected'] = questions_selected
+        context['assessment'] = Assessment.objects.filter(token=self.kwargs['token'])[0]
 
-        # total number of questions
-        number_of_questions = questions_selected.count()
-        context['number_of_questions'] = number_of_questions
-
-        # create a range to be used by the template to identify the question mumber
-        number_of_questions_range = range(number_of_questions)
-        context['number_of_questions_range'] = number_of_questions_range
-        count = 1
-        dict_output = {}
-        for Q in questions_selected:
-            dict_output [count] = Q
-            count = count+1
-        context['dict_output'] = dict_output
         return context
 
     def post(self, request, *args, **kwargs):
-        return super().post(request, *args, **kwargs)
+        token = self.kwargs['token']
+        test = Assessment.objects.filter(token=token)[0]
+
+        # we should test if it comes from a valid form (it maybe access directly from the URL?)
+
+        # Register information, answers and result
+        if test.completed != 'Yes':
+            test.date_complete = datetime.now()
+            test.completed = 'Yes'
+            test.save()
+
+        return HttpResponseRedirect(reverse('test_questions_submit_view',kwargs = {'token': token}))
+        # return super().post(request, *args, **kwargs)
         pass
     pass
 

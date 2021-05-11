@@ -85,11 +85,15 @@ class Assessment(models.Model):
     date_first_opened = models.DateTimeField(blank=True, null=True,)
     date_complete = models.DateTimeField(blank=True, null=True,)
 
+    # questions part of the assessment
+    # the questions are included in each question
     questions_selected = models.ManyToManyField(Question,null=True,blank=True)
 
-    completed = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO)
+    completed = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO, default='No')
 
-    answers = models.JSONField()
+    answers = models.JSONField(blank=True, null=True)
+    score = models.IntegerField(blank=True, null=True)
+
 
     def __str__(self):
         return '%s' % (self.assessment_name)

@@ -59,9 +59,9 @@
                     </div>
                     <div class="col-md-7 col-sm-12 col-xs-12">
                       {% if value.question_type == 'Single Selection' %}
-                        <input type="radio" checked="" value="selected" id="optionsRadios1" name="optionsRadios{{ value.pk }}" onclick="recordResult()">
+                        <input type="radio" checked="" value="answer1" id="optionsRadios1" name="Q{{ key }} " onclick="recordResult()">
                       {% else %}
-                      <input type="checkbox" value="selected" name="optionsSelection{{ value.pk }}" onclick="recordResult()">
+                      <input type="checkbox" value="answer1" name="Q{{ key }} " onclick="recordResult()">
                         {% endif %}
                       </div>
                       </div>
@@ -83,9 +83,9 @@
                     </div>
                     <div class="col-md-7 col-sm-12 col-xs-12">
                   {% if value.question_type == 'Single Selection' %}
-                  <input type="radio" checked="" value="selected" id="optionsRadios{{ value.pk }}2" name="optionsRadios{{ value.pk }}" onclick="recordResult()">
+                  <input type="radio" checked="" value="answer2" id="optionsRadios{{ value.pk }}2" name="Q{{ key }} " onclick="recordResult()">
                   {% else %}
-                  <input type="checkbox" value="selected" name="optionsSelection{{ Q.pk }}" onclick="recordResult()">
+                  <input type="checkbox" value="answer2" name="Q{{ key }} " onclick="recordResult()">
                   {% endif %}
                     </div>
                   </div>
@@ -106,9 +106,9 @@
                     </div>
                     <div class="col-md-7 col-sm-12 col-xs-12">
                   {% if value.question_type == 'Single Selection' %}
-                  <input type="radio" checked="" value="selected" id="optionsRadios{{ value.pk }}3" name="optionsRadios{{ value.pk }} " onclick="recordResult()">
+                  <input type="radio" checked="" value="answer3" id="optionsRadios{{ value.pk }}3" name="Q{{ key }} " onclick="recordResult()">
                   {% else %}
-                  <input type="checkbox" value="selected" name="optionsSelection{{ value.pk }}" onclick="recordResult()">
+                  <input type="checkbox" value="answer3" name="Q{{ key }} " onclick="recordResult()">
                   {% endif %}
                     </div>
                   </div>
@@ -129,9 +129,9 @@
                     </div>
                     <div class="col-md-7 col-sm-12 col-xs-12">
                   {% if value.question_type == 'Single Selection' %}
-                  <input type="radio" checked="" value="selected" id="optionsRadios{{ value.pk }}4" name="optionsRadios{{ value.pk }}" onclick="recordResult()">
+                  <input type="radio" checked="" value="answer4" id="optionsRadios{{ value.pk }}4" name="Q{{ key }} " onclick="recordResult()">
                   {% else %}
-                  <input type="checkbox" value="selected" name="optionsSelection{{ value.pk }}" onclick="recordResult()">
+                  <input type="checkbox" value="answer4" name="Q{{ key }} " onclick="recordResult()">
                   {% endif %}
                     </div>
                   </div>
@@ -152,9 +152,9 @@
                     <div class="col-md-7 col-sm-12 col-xs-12">
                     <div class="col-md-1 col-sm-12 col-xs-12">
                     {% if value.question_type == 'Single Selection' %}
-                      <input type="radio" checked="" value="selected" id="optionsRadios{{ value.pk }}5" name="optionsRadios{{ value.pk }}" onclick="recordResult()">
+                      <input type="radio" checked="" value="answer5" id="optionsRadios{{ value.pk }}5" name="Q{{ key }} " onclick="recordResult()">
                     {% else %}
-                    <input type="checkbox" value="selected" name="optionsSelection{{ value.pk }}" onclick="recordResult()">
+                    <input type="checkbox" value="answer5" name="Q{{ key }} " onclick="recordResult()">
                       {% endif %}
                     </div>
                     </div>
