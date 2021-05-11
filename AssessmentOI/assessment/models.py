@@ -51,6 +51,9 @@ class Question(models.Model):
 
     # image = models.ImageField(default='default.jpg', upload_to='questions_pics')
 
+    answers = models.CharField(max_length=20) # it is mandatory to include the answer to the question
+
+
 
 
     def __str__(self):

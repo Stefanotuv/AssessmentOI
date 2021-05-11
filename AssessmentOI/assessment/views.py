@@ -39,7 +39,8 @@ class TestQuestionsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
-        questions_selected = Question.objects.filter(assessment__pk=1)
+        pk = Assessment.objects.filter(token=self.kwargs['token'])[0].pk
+        questions_selected = Question.objects.filter(assessment__pk=pk)
         context['questions_selected'] = questions_selected
 
         # total number of questions
@@ -83,17 +84,38 @@ class TestQuestionsSubmitUpdate(UpdateView):
     def post(self, request, *args, **kwargs):
         token = self.kwargs['token']
         test = Assessment.objects.filter(token=token)[0]
-
+        # [values.append(value) for value in request.POST]
+        answers = {}
+        for element in request.POST.items():
+            answer_list = []
+            if element[0].startswith('Q'):
+                if "-" in element[0]:
+                    question_number = element[0].split('-')[0]
+                    answer_number = element[1]
+                    answer_list.append(answer_number)
+                    # check if the question already exist and hence is a multiple choice
+                    if question_number in answers:
+                        answers[question_number].append(answer_number)
+                    else:
+                        answers[question_number] = answer_list
+                else:
+                    question_number = element[0]
+                    answer_number = element[1]
+                    answer_list.append(answer_number)
+                    answers[question_number]= answer_list
+                    pass
         # we should test if it comes from a valid form (it maybe access directly from the URL?)
 
         # Register information, answers and result
         if test.completed != 'Yes':
             test.date_complete = datetime.now()
             test.completed = 'Yes'
+            test.answers = answers
             test.save()
 
         return HttpResponseRedirect(reverse('test_questions_submit_view',kwargs = {'token': token}))
-        # return super().post(request, *args, **kwargs)
+
+    def calculate_score(self,assessment,answers):
         pass
     pass
 
