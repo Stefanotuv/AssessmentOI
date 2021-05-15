@@ -14,8 +14,19 @@ urlpatterns = [
     path("assessment/<pk>/detail", AssessmentDetailView.as_view(template_name='assessment/assessment_detail.html'),
          name='assessment_detail_view'),
 
-    path("test/test_questions/<slug:token>", TestQuestionsView.as_view(template_name='assessment/test_questions.html'), name='test_questions_view'),
+    path("validate_token/", ValidateTokenView.as_view(template_name='assessment/validate_token.html'),
+         name='validate_token_view'),
+
+    path("test/test_launch/<slug:token>", TestQuestionsView.as_view(template_name='assessment/test_launch.html'),
+         name='test_launch_view'),
+    path("test/test_questions/<slug:token>", TestQuestionsView.as_view(template_name='assessment/test_questions.html'),
+         name='test_questions_view'),
+
     path("test/submit/<slug:token>", TestQuestionsSubmitUpdate.as_view(template_name='assessment/test_questions_submit.html'),
          name='test_questions_submit_view'),
 
+    path("test/home/<slug:token>", Home.as_view(template_name='assessment/home.html'),
+         name='home_view'),
+    path("test/practice_questions/<slug:token>", PracticeQuestionsView.as_view(template_name='assessment/practice_questions.html'),
+        name='practice_questions_view'),
 ]

@@ -1,0 +1,207 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load template_filters %}
+{% block title %} Test {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+<!--    <link rel="stylesheet" href="/static/build/css/cards.css">-->
+    <!-- Assessment css -->
+    <link rel="stylesheet" href="/static/build/css/assessment.css">
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-12">-->
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Test</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+
+              <form id="regForm" action="{% url 'test_questions_view' object.token %}" method="post">
+
+                {% csrf_token %}
+                <!-- One "tab" for each step in the form: -->
+
+                <a>
+                <div class="" ><strong>Assessment Instruction and Guideline </strong>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                      <div class="col-md-5 col-sm-12 col-xs-12">
+                      </div>
+                      <div class="col-md-7 col-sm-12 col-xs-12">
+                            <i class="fas fa-arrow-right fa-2x"></i>
+                      </div>
+                    </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        This assessment has the scope to review your knowledge of some areas that are relevant for the position you applied
+                      </div>
+
+                  </div>
+
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                      <div class="col-md-5 col-sm-12 col-xs-12">
+                      </div>
+                      <div class="col-md-7 col-sm-12 col-xs-12">
+                            <i class="fas fa-arrow-right fa-2x"></i>
+                      </div>
+                    </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        There are XXX questions in the Assessment and you have XX mins to complete
+                      </div>
+
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                      <div class="col-md-5 col-sm-12 col-xs-12">
+                      </div>
+                      <div class="col-md-7 col-sm-12 col-xs-12">
+                            <i class="fas fa-arrow-right fa-2x"></i>
+
+                      </div>
+                    </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        <strong>DO NOT REFRESH</strong> the page on the browser or try to relaunch the assessment. This may create inconsistencies in the assessment
+                      </div>
+
+                  </div>
+
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                      <div class="col-md-5 col-sm-12 col-xs-12">
+                      </div>
+                      <div class="col-md-7 col-sm-12 col-xs-12">
+                            <i class="fas fa-arrow-right fa-2x"></i>
+
+                      </div>
+                    </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        Good Luck!!
+                      </div>
+
+                  </div>
+
+
+                  <div class="col-md-12 col-sm-12 col-xs-12" style="
+                      overflow: hidden;
+                  ">
+
+                      <div class="col-md-12 col-sm-12 col-xs-12" style="
+                            float: right;
+                            clear: both;
+                            padding-bottom: 30px;
+                            padding-top: 10px;
+                        ">
+                      <div class="col-md-1 col-sm-12 col-xs-12" style="
+                            float: right;
+                            clear: both;
+                        ">
+                        <input id="termsandconditions_1" type="checkbox" value="accepted" name="termsandconditions" >
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12" style="
+                          /* float: right; */
+                          /* clear: both; */
+                          text-align: end;
+                      ">
+                        <a onclick="terms_and_conditions()"> Accept Terms and Conditions </a>
+                      </div>
+                      </div>
+                </div>
+                </div>
+                </a>
+
+                  <br/>
+                <br/>
+                <br/>
+
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div style="overflow:auto;padding-bottom: 10px;">
+                  <div style="float:right;">
+                    <button type="submit" id="nextBtn" >Start the Assessment</button>
+
+                  </div>
+                </div>
+              </div>
+
+                <!-- Circles which indicates the steps of the form: -->
+
+
+                </form>
+
+            </div>
+          </div>
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+  </div>
+<!-- The Modal -->
+    <div id="myModalTaC" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" id="span2" style="">&times;</span>
+        <p style="text-align: center;">
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+
+
+
+
+        </p>
+        <p style="text-align: center;" id="message"></p>
+      </div>
+
+    </div>
+<script src="/static/build/js/test_launch.js"></script>
+<script>
+
+
+</script>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- jQuery Smart Wizard -->
+<!--  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>-->
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

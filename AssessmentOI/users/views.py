@@ -97,6 +97,8 @@ class UserLogoutView(LogoutView):
             if not self.request.user.is_authenticated:
                 response = redirect(self.get_redirect_url())
                 return _ajax_response(self.request, response)
+            if self.request.user.is_authenticated:
+                self.logout()
             ctx = self.get_context_data()
             response = self.render_to_response(ctx)
             return _ajax_response(self.request, response)

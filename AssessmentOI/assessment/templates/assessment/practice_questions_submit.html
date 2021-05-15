@@ -1,0 +1,110 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Question Submitted Confirmation {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Thank you for completing the Test</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form method="post" action="">
+                  {% csrf_token %}
+                    <section class="">
+                        <!-- title row -->
+                        <div class="row">
+                          <div class="col-xs-12">
+                            <h1>
+                                            <i class="fas fa-check-circle"></i> Your Test has been submitted succefully.
+                                            <small class="pull-right"><small><small>
+                                                Today: <div id="demo"></div>
+                                                <script>
+                                                            var d = new Date();
+                                                            document.getElementById("demo").innerHTML = d.toDateString();
+                                                </script>
+                                                </small></small>
+                                            </small>
+                                        </h1>
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- info row -->
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <h2>
+                                   <i>Test Name:<strong> {{assessment.assessment_name}}</strong></i>
+                              </h2>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <h2>
+                                   <i>Token: <strong>{{assessment.token}}</strong></i>
+                              </h2>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <h2>
+                                   <i>Time Submitted:<strong> {{assessment.date_complete}}</strong></i>
+                              </h2>
+
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-xs-12">
+                              <h2>
+                                  <i>Candidate email: <strong>{{assessment.candidate_email}}</strong></i>
+                              </h2>
+
+                          </div>
+                        </div>
+                        <!-- this row will not appear when printing -->
+                        <div class="row no-print">
+                          <div class="col-xs-12">
+<!--                              <div  class="btn btn-link pull-right" style="margin-right: 10px;"><a href="{% url 'question_view' %}"><i class="fas fa-list-ul"></i> Back to List </a></div>-->
+
+                          </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

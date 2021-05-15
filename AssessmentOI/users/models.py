@@ -78,7 +78,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.OneToOneField(User,unique=True, on_delete=models.CASCADE,default=None)
-    address = address= models.CharField(max_length=254, null=True, blank=True)
+    address = models.CharField(max_length=254, null=True, blank=True)
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
 
     def __str__(self):
@@ -87,7 +87,7 @@ class Profile(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
 
-        img = Image.open(self.image.path )
+        img = Image.open(self.image.path)
 
         if img.height > 300 or img.weight >300:
             output_size = (300,300)

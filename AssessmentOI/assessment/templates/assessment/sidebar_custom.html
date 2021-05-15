@@ -13,7 +13,7 @@
     </div>
     <div class="profile_info">
       <span>Welcome,</span>
-<!--      <h2>{{user.email}}</h2>-->
+      <h2>{{user}}</h2>
     </div>
   </div>
   <!-- /menu profile quick info -->
@@ -25,25 +25,37 @@
     <div class="menu_section">
       <h3>General</h3>
       <ul class="nav side-menu">
+          <li><a href="{%url 'home_view' object.token  %}"><i class="fas fa-home fa-lg" style="padding-right: 4%;"></i> Home
+
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
+
+          <li><a href="{%url 'practice_questions_view' object.token  %}"><i class="fas fa-chalkboard-teacher" style="padding-right: 5%;"></i> Practice Questions
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
+          <li><a href="{%url 'test_launch_view' object.token  %}"><i class="fas fa-shapes" style="padding-right: 6%;"></i> Start Assessment
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
+
+          <li><a href="{%url 'users_logout' %}"><i class="fas fa-sign-out-alt" style="padding-right: 6%;"></i> <i>Exit</i>
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
 
 
-           <li><a href=""><i class="fa fa-home fa-lg"></i> Home
-<!--          <span class="fa fa-chevron-down"></span>-->
-        </a>
-
-        </li>
-                <li><a href=""><i class="fas fa-tachometer-alt fa-lg" style="padding-right:10px;"></i> Dashboard
-
-<!--          <span class="fa fa-chevron-down"></span>-->
-        </a>
-
-        </li>
-
-        <li><a><i class="fa fa-cubes" style="padding-right:10px;"></i>Gentelella <span class="fa fa-chevron-down"></span></a>
-          <ul class="nav child_menu">
-            <li><a href="gentelella/index.html">Overview</a></li>
-          </ul>
-        </li>
+<!--            gentellela-->
+<!--          <li><a><i class="fa fa-cubes" style="padding-right:10px;"></i>Gentelella <span class="fa fa-chevron-down"></span></a>-->
+<!--          <ul class="nav child_menu">-->
+<!--          <li><a href="gentelella/index.html">Overview</a></li>-->
+<!--          </ul>-->
+<!--          </li>-->
       </ul>
     </div>
 
@@ -51,19 +63,19 @@
   <!-- /sidebar menu -->
 
   <!-- /menu footer buttons -->
-  <div class="sidebar-footer hidden-small">
-    <a data-toggle="tooltip" data-placement="top" title="Settings">
-      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-    </a>
-    <a data-toggle="tooltip" data-placement="top" title="FullScreen">
-      <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>
-    </a>
-    <a data-toggle="tooltip" data-placement="top" title="Lock">
-      <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
-    </a>
-    <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">
-      <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
-    </a>
-  </div>
+<!--  <div class="sidebar-footer hidden-small">-->
+<!--    <a data-toggle="tooltip" data-placement="top" title="Settings">-->
+<!--      <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>-->
+<!--    </a>-->
+<!--    <a data-toggle="tooltip" data-placement="top" title="FullScreen">-->
+<!--      <span class="glyphicon glyphicon-fullscreen" aria-hidden="true"></span>-->
+<!--    </a>-->
+<!--    <a data-toggle="tooltip" data-placement="top" title="Lock">-->
+<!--      <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>-->
+<!--    </a>-->
+<!--    <a data-toggle="tooltip" data-placement="top" title="Logout" href="login.html">-->
+<!--      <span class="glyphicon glyphicon-off" aria-hidden="true"></span>-->
+<!--    </a>-->
+<!--  </div>-->
   <!-- /menu footer buttons -->
 </div>

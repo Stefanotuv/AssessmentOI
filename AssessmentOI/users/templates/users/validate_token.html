@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Log In {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+<body>
+
+
+    <div class="main" style="margin-top: 20px;">
+
+            <div class="scene scene--card">
+                <div class="card">
+                    <div class="card__face card__face--front">
+
+                        <!-- Sing in  Form -->
+                        <!--<section class="sign-in">-->
+                            <div class="container">
+                            <div class="signin-content">
+                                <div class="signin-image">
+                                    <figure><img src="/static/build/images/login-image.jpg" alt="sing up image"></figure>
+
+
+<!--                                        <a href="#" class="signup-image-link">Create an account</a>-->
+                                         <p class="change_link">
+<!--                                            <a href="{% url 'users_signup' %}" class="to_register"> Sign Up </a>-->
+                                        </p>
+
+
+                                </div>
+
+                                <div class="signin-form">
+                                    <h2 class="form-title">Insert Token</h2>
+                                    <form method="POST" action="" id="login-form">
+                                        {% csrf_token %}
+
+
+                                        <div class="form-group">
+                                            <label ><i class="zmdi zmdi-email"></i></label>
+
+<!--                                            <input type="email" name="email" id="email" placeholder="email address"/>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <label ><i class="zmdi zmdi-lock"></i></label>
+                                            {{ form.password }}
+<!--                                            <input type="password" name="password" id="password" placeholder="Password"/>-->
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                            <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                                        </div>
+                                        <div class="form-group form-button">
+                                            <input type="submit" name="signin" id="signin" class="form-submit" value="token" />
+                                        </div>
+                                    </form>
+<!--                                    <div class="social-login">-->
+<!--                                        <span class="social-label">Or login with</span>-->
+<!--                                        <ul class="socials">-->
+<!--                                            <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>-->
+<!--                                            <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>-->
+<!--                                            <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>-->
+<!--                                        </ul>-->
+<!--                                    </div>-->
+                                </div>
+                            </div>
+                        </div>
+                        <!--</section>-->
+                    </div>
+                </div>
+            </div>
+
+
+
+    </div>
+
+    <!-- JS -->
+    <script src="/static/build/js/cards.js"></script>
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

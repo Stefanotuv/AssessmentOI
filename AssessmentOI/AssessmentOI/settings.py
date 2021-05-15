@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 import os
+import dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-*buuu-oaji#2m^oi#@(^^2c)d_s%3u5e5#rbxz^uiu_28mrw_@'
+# Add .env variables anywhere before SECRET_KEY
+dotenv_file = os.path.join(BASE_DIR, ".env")
+if os.path.isfile(dotenv_file):
+    dotenv.load_dotenv(dotenv_file)
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# BASE_DIR = Path(__file__).resolve().parent.parent
+# SECRET_KEY = 'django-insecure-*buuu-oaji#2m^oi#@(^^2c)d_s%3u5e5#rbxz^uiu_28mrw_@'
+SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -176,3 +184,5 @@ STATICFILES_DIRS = (
 
 # TODO: #8  Use the new user app
 AUTH_USER_MODEL = 'users.User' # new
+LOGIN_URL = 'users_login'
+LOGIN_REDIRECT_URL = 'validate_token_view'
