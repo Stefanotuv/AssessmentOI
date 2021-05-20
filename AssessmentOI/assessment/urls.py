@@ -29,4 +29,7 @@ urlpatterns = [
          name='home_view'),
     path("test/practice_questions/<slug:token>", PracticeQuestionsView.as_view(template_name='assessment/practice_questions.html'),
         name='practice_questions_view'),
+
+    path("manager/assessment/assessment_file_upload",AssessmentView.as_view(template_name='assessment/manager/assessment_file_upload.html'),
+         name='assessment_file_upload_view'),
 ]
