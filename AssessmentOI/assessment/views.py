@@ -651,24 +651,27 @@ class PracticeQuestionsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
-        pk = Assessment.objects.filter(token='Practice_Test')[0].pk
-        questions_selected = Question.objects.filter(assessment__pk=pk)
-        context['questions_selected'] = questions_selected
+        try:
+            pk = Assessment.objects.filter(token='Practice_Test')[0].pk
+            questions_selected = Question.objects.filter(assessment__pk=pk)
+            context['questions_selected'] = questions_selected
 
-        # total number of questions
-        number_of_questions = questions_selected.count()
-        context['number_of_questions'] = number_of_questions
+            # total number of questions
+            number_of_questions = questions_selected.count()
+            context['number_of_questions'] = number_of_questions
 
-        # create a range to be used by the template to identify the question mumber
-        number_of_questions_range = range(number_of_questions)
-        context['number_of_questions_range'] = number_of_questions_range
-        count = 1
-        dict_output = {}
-        for Q in questions_selected:
-            dict_output [count] = Q
-            count = count+1
-        context['dict_output'] = dict_output
-        return context
+            # create a range to be used by the template to identify the question mumber
+            number_of_questions_range = range(number_of_questions)
+            context['number_of_questions_range'] = number_of_questions_range
+            count = 1
+            dict_output = {}
+            for Q in questions_selected:
+                dict_output [count] = Q
+                count = count+1
+            context['dict_output'] = dict_output
+            return context
+        except:
+            return context
 
     # def post(self, request, *args, **kwargs):
     #     HttpResponseRedirect(reverse('test_questions_view'))
