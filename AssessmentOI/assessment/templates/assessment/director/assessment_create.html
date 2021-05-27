@@ -124,10 +124,6 @@
 
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-12"  ></div>
-                        git pull origin master
-                        https://github.com/Stefanotuv/AssessmentOI.git
-                        git pull https://github.com/Stefanotuv/AssessmentOI.git master
-git remote add origin https://github.com/Stefanotuv/AssessmentOI.git
 
                     </div>
                     </div>
@@ -162,6 +158,18 @@ git remote add origin https://github.com/Stefanotuv/AssessmentOI.git
                               <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email<span class="required">*</span></label>
                               <div class="col-md-9 col-sm-9 col-xs-12">
                                 <input style="font-family: sans-serif;" id="middle-name" class="form-control" type="email" name="candidate_email" required="required" onchange="recordSelection('candidate_email')">
+                              </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 8%;">
+                              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Password<span class="required">*</span></label>
+                              <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input style="font-family: sans-serif;" id="password" class="form-control" type="password" name="candidate_password" required="required" onchange="recordSelection('candidate_password')">
+                              </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 8%;">
+                              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Password Verify<span class="required">*</span></label>
+                              <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input style="font-family: sans-serif;" id="password2" class="form-control" type="password" name="candidate_password2" required="required" onchange="recordSelection('candidate_password')">
                               </div>
                             </div>
                         </div>
@@ -267,11 +275,14 @@ git remote add origin https://github.com/Stefanotuv/AssessmentOI.git
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Token</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea onchange="recordSelection('token')" name="token" class="resizable_textarea form-control" placeholder="Insert the Token/ Passcode here"></textarea>
+                                <textarea onchange="recordSelection('token')" name="token" class="resizable_textarea form-control" placeholder="Insert the Token/ Passcode here or generate it"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
-
-                                </div>
+                                <a class="btn btn-danger">
+                                    <i class="fas fa-code fa-lg"></i><br>
+                                    <strong> Generate Token </strong>
+                                </a>
+                              </div>
                         <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
 
                         </div>

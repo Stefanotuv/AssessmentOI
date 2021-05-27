@@ -2,6 +2,7 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from .views import *
 
+
 urlpatterns = [
     # path("", TestView.as_view(template_name='assessment/test.html'), name='test_view'),
     re_path(r'^.*\.html', gentella_html, name='gentella'),

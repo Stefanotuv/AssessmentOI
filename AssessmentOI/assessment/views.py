@@ -387,14 +387,15 @@ class AssessmentCreateView(ListView):
     model = Assessment
     template_name = 'assessment/director/assessment_create.html'
     context_object_name = 'assessment_create_view'
-    # use = User.objects.get(email='em2@em.com')
-    # use.set_password('Pinocchi0')
-    # use.save()
+
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.all()
-        context['message'] = self.request.session['message']
+        try:
+            context['message'] = self.request.session['message']
+        except:
+            context['message'] = ''
         self.request.session['message'] = ''
         # context['number_of_column'] =
 
@@ -406,6 +407,20 @@ class AssessmentCreateView(ListView):
     def post(self, request, *args, **kwargs):
         questions_selected = [out for out in request.POST if 'table_records' in out]
         questions_selected_number = [x.split("_")[2] for x in questions_selected ]
+
+        try:
+            if len(User.objects.filter(email=request.POST['candidate_email'])) == 0:
+                use = User(name=request.POST['candidate_name'], email=request.POST['candidate_email'])
+                use.set_password(request.POST['candidate_password'])
+                use.save()
+            else:
+                # use = User.objects.get(email=request.POST['candidate_email'])
+                # use.set_password(request.POST['candidate_password'])
+                # use.save()
+                pass
+        except:
+            # user already exist DO NOTHING
+            pass
 
         try:
             newAssessment = Assessment(
