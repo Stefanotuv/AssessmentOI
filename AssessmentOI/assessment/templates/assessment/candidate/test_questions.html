@@ -285,7 +285,7 @@
 <script src="/static/build/js/test.js"></script>
 <script>
 window.onload = function () {
-    var fiveMinutes = 60 * 0.1,
+    var fiveMinutes = 60 * {{ duration }},
         display = document.querySelector('#time');
     resetEntry()
     startTimer(fiveMinutes, display);

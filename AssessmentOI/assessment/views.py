@@ -44,14 +44,15 @@ class TestQuestionsView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
-        pk = Assessment.objects.filter(token=self.kwargs['token'])[0].pk
+        assessment = Assessment.objects.filter(token=self.kwargs['token'])[0]
+        pk = assessment.pk
         questions_selected = Question.objects.filter(assessment__pk=pk)
         context['questions_selected'] = questions_selected
 
         # total number of questions
         number_of_questions = questions_selected.count()
         context['number_of_questions'] = number_of_questions
-
+        context['duration'] = assessment.time_to_complete
         # create a range to be used by the template to identify the question mumber
         number_of_questions_range = range(number_of_questions)
         context['number_of_questions_range'] = number_of_questions_range
@@ -181,7 +182,7 @@ class TestQuestionsSubmitUpdate(UpdateView):
 
         # Register information, answers and result
         if test.completed != 'Yes':
-            test.date_complete = datetime.now()
+            test.date_complete = datetime.datetime.now()
             test.completed = 'Yes'
             test.answers = answers
             test.save()
