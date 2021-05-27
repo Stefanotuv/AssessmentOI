@@ -31,11 +31,15 @@ if os.path.isfile(dotenv_file):
 # SECRET_KEY = 'django-insecure-*buuu-oaji#2m^oi#@(^^2c)d_s%3u5e5#rbxz^uiu_28mrw_@'
 SECRET_KEY = os.environ['SECRET_KEY']
 HOSTNAME = os.environ['HOSTNAME']
+# POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
 POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
 POSTGRESQL_USER = os.environ['POSTGRESQL_USER']
 POSTGRESQL_PASSWORD = os.environ['POSTGRESQL_PASSWORD']
+# POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
 POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
-POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
+# POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
+POSTGRESQL_HOST = 'localhost'
+POSTGRESQL_PORT =  ''
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -107,23 +111,23 @@ WSGI_APPLICATION = 'AssessmentOI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': POSTGRESQL_DB,
-#         'USER': POSTGRESQL_USER,
-#         'PASSWORD': POSTGRESQL_PASSWORD,
-#         'HOST': POSTGRESQL_HOST,
-#         'PORT': POSTGRESQL_PORT,
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': POSTGRESQL_DB,
+        'USER': POSTGRESQL_USER,
+        'PASSWORD': POSTGRESQL_PASSWORD,
+        'HOST': POSTGRESQL_HOST,
+        'PORT': POSTGRESQL_PORT,
+    }
+}
 
 
 # Password validation
