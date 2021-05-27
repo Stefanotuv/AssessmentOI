@@ -688,8 +688,11 @@ class TestHomeView(TemplateView):
 
     def get(self, request, *args, **kwargs):
         email_user = request.user.email
+        try:
+            query_assessment = Assessment.objects.filter(candidate_email__iexact=email_user)[0]
+        except:
+            return super().get(request, *args, **kwargs)
 
-        query_assessment = Assessment.objects.filter(candidate_email__iexact=email_user)[0]
         if query_assessment.completed == 'No':
             return super().get(request, *args, **kwargs)
         else:
