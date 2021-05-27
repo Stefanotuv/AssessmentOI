@@ -631,7 +631,10 @@ class CandidateHomeView(TemplateView):
         def get_context_data(self, **kwargs):
             # token = self.kwargs['token']
             context = super().get_context_data(**kwargs)
-            context['assessment'] = Assessment.objects.filter(candidate_email__iexact=self.request.user.email)[0]
+            try:
+                context['assessment'] = Assessment.objects.filter(candidate_email__iexact=self.request.user.email)[0]
+            except:
+                context['assessment'] = []
             return context
 
         def get(self, request, *args, **kwargs):
