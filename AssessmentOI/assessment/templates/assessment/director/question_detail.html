@@ -1,0 +1,346 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Question Details {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Question Details</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form method="post" action="">
+                  {% csrf_token %}
+                    <section class="content invoice">
+                        <!-- title row -->
+                        <div class="row">
+                          <div class="col-xs-12 invoice-header">
+                            <h1>
+                                            <i class="far fa-question-circle"></i> Question Number: {{ object.pk }}.
+                                            <small class="pull-right"><small><small>
+                                                Today: <div id="demo"></div>
+                                                <script>
+                                                            var d = new Date();
+                                                            document.getElementById("demo").innerHTML = d.toDateString();
+                                                </script>
+                                                </small></small>
+                                            </small>
+                                        </h1>
+                          </div>
+                          <!-- /.col -->
+                        </div>
+                        <!-- info row -->
+
+                        <div class="row">
+
+                            <div class="col-sm-9">
+                                <div class="col-sm-12">
+
+                                    <br/>
+                                        {{ object.question }}
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+<!--                                Insert the image if there is one-->
+
+
+                            </div>
+
+
+                        </div>
+                        <!-- /.row -->
+
+                        <br/>
+                        <b>See the Details of the Question<i> ({{ object.number_of_selection }} options are correct)</i></b>
+                        <hr>
+                        {% if object.question_type == 'Single Selection' %}
+                            {% if object.answer_1 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_1 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_1_value == 'Yes' %}
+                                            <input type="radio" class="flat" name="answer_s" checked disabled>
+
+
+                                            {% else %}
+                                            <input type="radio" class="flat" name="answer_s" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_2 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_2 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_2_value == 'Yes' %}
+                                            <input type="radio" class="flat checked" name="answer_s" checked disabled>
+
+                                            {% else %}
+                                            <input type="radio" class="flat" name="answer_s" disabled>
+
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_3 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_3 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_3_value == 'Yes' %}
+                                            <input type="radio" class="flat checked" name="answer_s" checked disabled>
+
+                                            {% else %}
+                                            <input type="radio" class="flat" name="answer_s" disabled >
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_4 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_4 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_4_value == 'Yes' %}
+                                            <input type="radio" class="flat checked" name="answer_s" checked disabled>
+
+                                            {% else %}
+                                            <input type="radio" class="flat" name="answer_s" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_5 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_5 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_5_value == 'Yes' %}
+                                            <input type="radio" class="flat checked" name="answer_s" checked disabled>
+
+                                            {% else %}
+                                            <input type="radio" class="flat" name="answer_s" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+
+
+
+                        {% elif object.question_type == 'Multi Selection' %}
+                            {% if object.answer_1 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_1 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_1_value == 'Yes' %}
+                                            <input type="checkbox" class="flat" name="answer_m_1_value" checked disabled>
+                                            {% else %}
+                                            <input type="checkbox" class="flat" name="answer_m_1_value" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_2 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_2 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_2_value == 'Yes' %}
+                                            <input type="checkbox" class="flat" name="answer_m_2_value" checked disabled>
+                                            {% else %}
+                                            <input type="checkbox" class="flat" name="answer_m_2_value" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_3 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_3 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_3_value == 'Yes' %}
+                                            <input type="checkbox" class="flat" name="answer_m_3_value" checked disabled>
+                                            {% else %}
+                                            <input type="checkbox" class="flat" name="answer_m_3_value" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_4 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_4 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_4_value == 'Yes' %}
+                                            <input type="checkbox" class="flat" name="answer_m_4_value" checked disabled>
+                                            {% else %}
+                                            <input type="checkbox" class="flat" name="answer_m_4_value" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                            {% if object.answer_5 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_5 }}
+                                        </div>
+                                        <div class="col-sm-2">
+                                            {% if object.answer_5_value == 'Yes' %}
+                                            <input type="checkbox" class="flat" name="answer_m_5_value" checked disabled>
+                                            {% else %}
+                                            <input type="checkbox" class="flat" name="answer_m_5_value" disabled>
+                                            {% endif %}
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+
+                        {% else %}
+                            {% if object.answer_1 %}
+                                <div class="row">
+                                  <!-- answer 1 -->
+                                   <div class="col-sm-12">
+                                        <div class="col-sm-10">
+                                            {{ object.answer_1 }}
+                                        </div>
+                                        <div class="col-sm-2">
+
+                                        </div>
+                                   </div>
+
+                                  <!-- /.col -->
+                                </div>
+
+                                <hr>
+                            {% endif %}
+                        {% endif %}
+                            <!-- /.row -->
+
+                        <!-- this row will not appear when printing -->
+                        <div class="row no-print">
+                          <div class="col-xs-12">
+                              <div  class="btn btn-link pull-right" style="margin-right: 10px;"><a href="{% url 'question_list_view' %}"><i class="fas fa-list-ul"></i> Back to List </a></div>
+
+                          </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

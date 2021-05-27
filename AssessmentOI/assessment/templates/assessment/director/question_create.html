@@ -1,0 +1,523 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Create New Question {% endblock title %}
+
+{% block stylesheets %}
+<style>
+/* The container */
+.container_new {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container_new input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container_new:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container_new input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container_new input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container_new .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+</style>
+
+  {{ block.super }}
+    <!-- Cards css -->
+<!--    <link rel="stylesheet" href="/static/build/css/cards.css">-->
+    <!-- Assessment css -->
+    <link rel="stylesheet" href="/static/build/css/assessment.css">
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Create New Question</h2>
+                <form id="question_form_1" action="{% url 'question_upload_from_file_view' %}" method="POST">
+                    {% csrf_token %}
+                <div style="overflow:auto;">
+                  <div style="float:right;">
+                    <button type="submit" id="Btn" onclick="">Upload Question(s) from File</button>
+                  </div>
+                </div>
+                </form>
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form id="question_form" action="{% url 'question_create_view' %}" method="POST">
+
+                {% csrf_token %}
+                <!-- One "tab" for each step in the form: -->
+
+                <!-- Tab question parameters-->
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                            <i class="fas fa-sliders-h" style="padding-bottom: 5%"></i> Select Question Parameters
+                        </h1>
+                    </div>
+                    <div class="row">
+
+
+                    <div class="form-group">
+                        <div class="col-md-1 col-sm-1 col-xs-12"  ></div>
+                        <div class="col-md-10 col-sm-10 col-xs-12"  >
+                            <div class="col-md-4 col-sm-4 col-xs-12"  >
+                            <label class="control-label " style="text-align: center; padding-bottom: 5%"  >Select Type of Question</label>
+
+                            <label class="container_new" style="font-size: 1em;">Single Option
+                              <input value="single" type="radio" checked="checked" name="radio" onchange="type_of_question('single')">
+                              <span class="checkmark"></span>
+                            </label>
+                            <label class="container_new" style="font-size: 1em;" onchange="type_of_question('multi')">Multi Options
+                              <input value="multi" type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                            <label class="container_new" style="font-size: 1em;" onchange="type_of_question('text')">Free Text
+                              <input value="text" type="radio" name="radio">
+                              <span class="checkmark"></span>
+                            </label>
+                          </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label class="control-label " style="text-align: center; padding-bottom: 5%"  >Select Number of Answers/ Options</label>
+                                <div class="col-md-10 col-sm-10 col-xs-12" style="padding-left: 0px">
+                                <select name="number_of_answers" id="number_of_answers" class="form-control" required onchange="selectedNumberOfAnswers()">
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                      <option value="5">5</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-sm-4 col-xs-12">
+                                <label class="control-label " style="text-align: center; padding-bottom: 5%"  >Select Number of Correct Answers</label>
+                                <div class="col-md-10 col-sm-10 col-xs-12" style="padding-left: 0px">
+                                    <select name="number_of_answers_selected" id="number_of_correct_answers" class="form-control" required disabled
+                                         onchange="selectedNumberOfAnswers()">
+                                      <option value="1">1</option>
+                                      <option value="2">2</option>
+                                      <option value="3">3</option>
+                                      <option value="4">4</option>
+                                    </select>
+                                    <div id="error_message" style="color: red" hidden>
+                                        <i>The Number of Correct Answers have to be less than the Number of Options</i></div>
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-1 col-sm-1 col-xs-12"  ></div>
+
+
+                    </div>
+
+                    </div>
+                </div>
+                </a>
+<!--
+                 Tab candidate info
+{#                <a>#}
+{#                <div class="tab" >#}
+{#                    <div class="row">#}
+{#                        <h1>#}
+{#                            <i class="fas fa-user" style="padding-bottom: 5%"></i> Provide Candidate Information#}
+{#                        </h1>#}
+{#                    </div>#}
+{#                    <div class="row">#}
+{#                    <div class="form-group">#}
+{#                        <div class="col-md-3 col-sm-3 col-xs-12"  ></div>#}
+{#                        <div class="col-md-6 col-sm-6 col-xs-12"  >#}
+{#                            <div class="form-group" style="padding-bottom: 8%;">#}
+{#                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">First Name#}
+{#                              </label>#}
+{#                              <div class="col-md-9 col-sm-9 col-xs-12">#}
+{#                                <input type="text" id="first-name" required="required" class="form-control">#}
+{#                              </div>#}
+{#                            </div>#}
+{#                            <div class="form-group" style="padding-bottom: 8%;">#}
+{#                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Last Name#}
+{#                              </label>#}
+{#                              <div class="col-md-9 col-sm-9 col-xs-12">#}
+{#                                <input type="text" id="last-name" name="last-name"  class="form-control">#}
+{#                              </div>#}
+{#                            </div>#}
+{#                            <div class="form-group" style="padding-bottom: 8%;">#}
+{#                              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email<span class="required">*</span></label>#}
+{#                              <div class="col-md-9 col-sm-9 col-xs-12">#}
+{#                                <input id="middle-name" class="form-control" type="email" name="middle-name" required="required">#}
+{#                              </div>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                        <div class="col-md-3 col-sm-3 col-xs-12"  ></div>#}
+{##}
+{##}
+{#                    </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#                </a>#}
+                    -->
+
+                <!-- Tab question -->
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                                <i class="fas fa-question-circle" style="padding-bottom: 5%"></i> Insert The Question
+                        </h1>
+                    </div>
+                    <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Question</label>
+                              <div class="col-md-10 col-sm-1o col-xs-12">
+                                <textarea name="question" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                </a>
+
+                <!-- Tab answers -->
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                            <i class="fas fa-lightbulb-o" style="padding-bottom: 5%"></i> Insert The Answers <div style="font-size: small;font-style: italic; display: inline">(Flag the correct answers)</div>
+                        </h1>
+
+                    </div>
+{#                    radio#}
+                    <div class="row" id="radio_row">
+                        <div name="answer_radio" id="answer1" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer One</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_s_1" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="radio">
+                                              <label>
+                                                <input type="radio" class="flat" name="answer_s_1_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_radio" id="answer2" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Two</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_s_2" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="radio">
+                                              <label>
+                                                <input type="radio" class="flat" name="answer_s_2_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_radio" id="answer3" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Three</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_s_3" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="radio">
+                                              <label>
+                                                <input type="radio" class="flat" name="answer_s_3_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_radio" id="answer4" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Four</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_s_4" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="radio">
+                                              <label>
+                                                <input type="radio" class="flat" name="answer_s_4_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_radio" id="answer5" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Five</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_s_5" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="radio">
+                                              <label>
+                                                <input type="radio" class="flat" name="answer_s_5_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                    </div>
+
+{#                    checkbox#}
+                    <div class="row" id="check_row" hidden>
+                        <div name="answer_check" id="answer1" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer One</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_m_1" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="checkbox">
+                                              <label>
+                                                <input type="checkbox" class="flat" name="answer_m_1_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_check" id="answer2" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Two</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_m_2" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="checkbox">
+                                              <label>
+                                                <input type="checkbox" class="flat" name="answer_m_2_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_check" id="answer3" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Three</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_m_3" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="checkbox">
+                                              <label>
+                                                <input type="checkbox" class="flat" name="answer_m_3_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_check" id="answer4" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Four</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_m_4" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="checkbox">
+                                              <label>
+                                                <input type="checkbox" class="flat" name="answer_m_4_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                        <div name="answer_check" id="answer5" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Five</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_m_5" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+                                        <div class="checkbox">
+                                              <label>
+                                                <input type="checkbox" class="flat" name="answer_m_5_value"> Correct
+                                              </label>
+                                        </div>
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+                    </div>
+
+{#                    text#}
+                    <div class="row" id="text_row" hidden>
+                        <div name="text" id="answer1" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea name="answer_text" class="resizable_textarea form-control" placeholder="The answer will be a short text"></textarea>
+                              </div>
+
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                </a>
+
+                <br/>
+                <br/>
+                <br/>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div style="overflow:auto;padding-bottom: 10px;">
+                  <div style="float:right;">
+<!--                    <button type="button" id="Btn" onclick="Function()">Count</button>-->
+                    <button type="button" id="prevBtn" onclick="nextPrev(-1)" style="display: none;">Previous</button>
+                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                  </div>
+                </div>
+              </div>
+
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;margin-top:40px;">
+
+                  <a onclick="jumpToQuestion(0)">
+                  <span class="step" name="span" id="span1"></span>
+                  </a>
+                  <a onclick="jumpToQuestion(1)">
+                  <span class="step" name="span" id="span2" ></span>
+                  </a>
+                  <a onclick="jumpToQuestion(2)">
+                  <span class="step" name="span" id="span3"></span>
+                  </a>
+
+                </div>
+
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/static/build/js/create_new_question.js"></script>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

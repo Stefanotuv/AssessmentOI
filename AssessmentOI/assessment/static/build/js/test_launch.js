@@ -20,3 +20,15 @@ function terms_and_conditions(){
   modal2.style.display = "block";
 }
 
+function activate_deactivate_start(){
+  debugger
+  start_button = document.getElementById("startButton");
+  if (start_button.disabled) {
+    start_button.disabled = false
+  }
+  else {
+    start_button.disabled = true
+  }
+
+}
+

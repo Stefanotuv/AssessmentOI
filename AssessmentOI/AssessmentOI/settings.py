@@ -41,7 +41,7 @@ POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [HOSTNAME]
+ALLOWED_HOSTS = [HOSTNAME,'*']
 
 
 # Application definition
@@ -107,23 +107,23 @@ WSGI_APPLICATION = 'AssessmentOI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': POSTGRESQL_DB,
-        'USER': POSTGRESQL_USER,
-        'PASSWORD': POSTGRESQL_PASSWORD,
-        'HOST': POSTGRESQL_HOST,
-        'PORT': POSTGRESQL_PORT,
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': POSTGRESQL_DB,
+#         'USER': POSTGRESQL_USER,
+#         'PASSWORD': POSTGRESQL_PASSWORD,
+#         'HOST': POSTGRESQL_HOST,
+#         'PORT': POSTGRESQL_PORT,
+#     }
+# }
 
 
 # Password validation
@@ -194,12 +194,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, '../media/static'),
+    # os.path.join(BASE_DIR, 'static'),
+#    os.path.join(BASE_DIR, '../media/static'),
 )
 
 
 # TODO: #8  Use the new user app
 AUTH_USER_MODEL = 'users.User' # new
 LOGIN_URL = 'users_login'
-LOGIN_REDIRECT_URL = 'validate_token_view'
+
+# change the redirection for the token it was for the previous iteration
+# LOGIN_REDIRECT_URL = 'validate_token_view'
+
+LOGIN_REDIRECT_URL = 'home_view'

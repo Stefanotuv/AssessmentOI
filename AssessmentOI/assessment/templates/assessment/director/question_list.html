@@ -1,0 +1,109 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Questions List {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+
+
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Questions List <small>List of All the Approved Questions for Online Assessment</small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+
+            <div class="x_content">
+
+<!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+
+              <div class="table-responsive">
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+
+                      <th class="column-title">#</th>
+                      <th class="column-title">Question Type</th>
+                      <th class="column-title">Question</th>
+                        <th class="column-title"># of Selection</th>
+                        <th class="column-title"># of Answers</th>
+                        <th class="column-title">Option 1</th>
+                        <th class="column-title">Option 1 correct?</th>
+                        <th class="column-title">Option 2</th>
+                        <th class="column-title">Option 2 correct?</th>
+                        <th class="column-title">Option 3</th>
+                        <th class="column-title">Option 3 correct?</th>
+                        <th class="column-title">Option 4</th>
+                        <th class="column-title">Option 4 correct?</th>
+                        <th class="column-title">Option 5</th>
+                        <th class="column-title">Option 5 correct?</th>
+                        <th class="column-title">Answers</th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {% for question in object_list %}
+                    <tr class="even pointer">
+
+
+
+                      <td class=" "><a href="{% url 'question_detail_view' question.pk %}"> {{ question.pk }} </a> </td>
+
+                      <td class=" ">{{ question.question_type }}</td>
+                      <td class=" ">{{ question.question|truncatewords:10 }}</td>
+                      <td class=" ">{{ question.number_of_selection}}</td>
+                    <td class=" ">{{ question.number_of_answers}}</td>
+                    <td class=" ">{{ question.answer_1|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_1_value}}</td>
+                    <td class=" ">{{ question.answer_2|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_2_value}}</td>
+                    <td class=" ">{{ question.answer_3|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_3_value}}</td>
+                    <td class=" ">{{ question.answer_4|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_4_value}}</td>
+                    <td class=" ">{{ question.answer_5|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_5_value}}</td>
+                    <td class=" ">{{ question.answers|truncatewords:10}}</td>
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

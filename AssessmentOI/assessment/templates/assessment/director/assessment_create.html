@@ -1,0 +1,523 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Create New Assessment {% endblock title %}
+
+{% block stylesheets %}
+<style>
+/* The container */
+.container_new {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  font-size: 22px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default radio button */
+.container_new input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 25px;
+  width: 25px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+/* On mouse-over, add a grey background color */
+.container_new:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the radio button is checked, add a blue background */
+.container_new input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.container_new input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.container_new .checkmark:after {
+ 	top: 9px;
+	left: 9px;
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: white;
+}
+</style>
+
+  {{ block.super }}
+    <!-- Cards css -->
+<!--    <link rel="stylesheet" href="/static/build/css/cards.css">-->
+    <!-- Assessment css -->
+    <link rel="stylesheet" href="/static/build/css/assessment.css">
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Create New Assessment <small><i><strong style="color: red;">{{ message }}</strong></i> </small></h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form id="question_form" action="{% url 'assessment_create_view' %}" method="POST">
+
+                {% csrf_token %}
+                <!-- One "tab" for each step in the form: -->
+
+                <!-- Tab question parameters-->
+
+<!-- -->
+{#                 Tab candidate info#}
+
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                            <i class="fas fa-user" style="padding-bottom: 5%"></i> Give a name to the Test
+                        </h1>
+                    </div>
+                    <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3 col-sm-3 col-xs-12"  ></div>
+                        <div class="col-md-6 col-sm-6 col-xs-12"  >
+                            <div class="form-group" style="padding-bottom: 8%;">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12"  for="first-name">Test Name
+                              </label>
+                              <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="text" id="first-name" name="test_name" style="font-family: sans-serif;" placeholder="the name has to be unique (check the list)" onchange="recordSelection('test_name')" class="form-control">
+                              </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12"  ></div>
+
+
+                    </div>
+                    </div>
+                </div>
+
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                            <i class="fas fa-user" style="padding-bottom: 5%"></i> Provide Candidate Information
+                        </h1>
+                    </div>
+                    <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3 col-sm-3 col-xs-12"  ></div>
+                        <div class="col-md-6 col-sm-6 col-xs-12"  >
+                            <div class="form-group" style="padding-bottom: 8%;">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12"  for="first-name">Candidate Name
+                              </label>
+                              <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="text" id="first-name" name="candidate_name" style="font-family: sans-serif;" class="form-control" onchange="recordSelection('candidate_name')">
+                              </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 8%;">
+                              <label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Candidate Surname
+                              </label>
+                              <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input type="text" id="last-name" name="candidate_surname" style="font-family: sans-serif;" class="form-control" onchange="recordSelection('candidate_surname')">
+                              </div>
+                            </div>
+                            <div class="form-group" style="padding-bottom: 8%;">
+                              <label for="middle-name" class="control-label col-md-3 col-sm-3 col-xs-12">Email<span class="required">*</span></label>
+                              <div class="col-md-9 col-sm-9 col-xs-12">
+                                <input style="font-family: sans-serif;" id="middle-name" class="form-control" type="email" name="candidate_email" required="required" onchange="recordSelection('candidate_email')">
+                              </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-12"  ></div>
+
+
+                    </div>
+                    </div>
+                </div>
+                </a>
+                <!--    -->
+
+                <!-- Tab question -->
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                                <i class="fas fa-question-circle" style="padding-bottom: 5%"></i> Select Questions
+                        </h1>
+                    </div>
+                    <div class="row">
+            <div class="table-responsive">
+                <table id="table" class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+                        <th>
+
+                        </th>
+                        <th class="column-title">#</th>
+                        <th class="column-title">Question Type</th>
+                        <th class="column-title">Question</th>
+                        <th class="column-title"># of Selection</th>
+                        <th class="column-title"># of Answers</th>
+                        <th class="column-title">Option 1</th>
+                        <th class="column-title">Option 1 correct?</th>
+                        <th class="column-title">Option 2</th>
+                        <th class="column-title">Option 2 correct?</th>
+                        <th class="column-title">Option 3</th>
+                        <th class="column-title">Option 3 correct?</th>
+                        <th class="column-title">Option 4</th>
+                        <th class="column-title">Option 4 correct?</th>
+                        <th class="column-title">Option 5</th>
+                        <th class="column-title">Option 5 correct?</th>
+                        <th class="column-title no-link last"><span class="nobr">Answers</span></th>
+{#                          <th class="column-title no-link last"><span class="nobr">Action</span>#}
+{#                          </th>#}
+                        <th class="bulk-actions" colspan="16">
+                            <a class="antoo" style="color:#fff; font-weight:500;">Bulk Actions ( <span class="action-cnt"> </span> ) <i class="fa fa-chevron-down"></i></a>
+                        </th>
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                    {% for question in questions %}
+                    <tr class="even pointer" onchange="temp()">
+                      <td class="a-center ">
+                        <input type="checkbox" class="flat" name="table_records_{{ question.pk }}" >
+                      </td>
+
+                      <td class=" "><a href="{% url 'question_detail_view' question.pk %}"> {{ question.pk }} </a> </td>
+
+                     <td class=" ">{{ question.question_type }}</td>
+                      <td class=" ">{{ question.question|truncatewords:10 }}</td>
+                      <td class=" ">{{ question.number_of_selection}}</td>
+                    <td class=" ">{{ question.number_of_answers}}</td>
+                    <td class=" ">{{ question.answer_1|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_1_value}}</td>
+                    <td class=" ">{{ question.answer_2|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_2_value}}</td>
+                    <td class=" ">{{ question.answer_3|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_3_value}}</td>
+                    <td class=" ">{{ question.answer_4|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_4_value}}</td>
+                    <td class=" ">{{ question.answer_5|truncatewords:10}}</td>
+                    <td class=" ">{{ question.answer_5_value}}</td>
+                    <td class=" ">{{ question.answers|truncatewords:10}}</td>
+
+                    </tr>
+                    {% endfor %}
+
+                  </tbody>
+                </table>
+              </div>
+                    </div>
+                </div>
+                </a>
+
+                <!-- Tab answers -->
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                            <i class="fas fa-sliders-h" style="padding-bottom: 5%"></i> Insert Token and Confirm Assessment Duration
+                        </h1>
+
+                    </div>
+{#                    radio#}
+                    <div class="row" id="token_row">
+
+                        <div name="div_token" id="token" style="padding-bottom: 8%;" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Token</label>
+                              <div class="col-md-8 col-sm-8 col-xs-12">
+                                <textarea onchange="recordSelection('token')" name="token" class="resizable_textarea form-control" placeholder="Insert the Token/ Passcode here"></textarea>
+                              </div>
+                              <div class="col-md-2 col-sm-2 col-xs-12" >
+
+                                </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+
+                    </div>
+                    <div class="row" id="duration_row">
+                        <div name="duration_token" id="token"   class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                                <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                                <div class="col-md-8 col-sm-8 col-xs-12"  >
+                                  <label class="control-label col-md-10 col-sm-10 col-xs-12 ">Confirm Duration</label>
+                                  <div class="col-md-2 col-sm-2 col-xs-12">
+                                      <input onchange="recordSelection('duration')" name="duration" style="font-family: sans-serif;" type="number" id="duration" required="required" class="form-control" value="60">
+
+                                  </div>
+
+                                </div>
+                                 <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        <div class="col-md-4 col-sm-4 col-xs-12"  ></div>
+
+                        </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        </div>
+
+                    </div>
+
+                </div>
+                </a>
+
+                                <!-- Tab summary -->
+                <a>
+                <div class="tab" >
+                    <div class="row">
+                        <h1>
+                            <i class="fas fa-tasks" style="padding-bottom: 5%"></i> Summary
+                        </h1>
+
+                    </div>
+                    <div class="row">
+                        <h2>
+                            Please review the details below and remember to send the Token to the candidate
+                        </h2>
+
+                    </div>
+                    <div class="row" id="token_row">
+
+                         <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Test Name: <strong id="test_name_summary"> </strong></h2>
+                              </div>
+
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Candidate Name: <strong id="candidate_name_summary"> </strong></h2>
+                              </div>
+
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Candidate Surname: <strong id="candidate_surname_summary"> </strong></h2>
+                              </div>
+
+
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Candidate Email: <strong id="candidate_email_summary"> </strong></h2>
+                              </div>
+
+
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Questions Selected: <strong id="questions_selected_summary"> </strong></h2>
+                              </div>
+
+
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Token: <strong id="token_summary"> </strong></h2>
+                              </div>
+
+
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+                            <hr>
+                          </div>
+
+                          <div class="col-md-12 col-sm-12 col-xs-12">
+
+                            <div class="col-md-1 col-sm-12 col-xs-12" style="padding-top: .5%;">
+                              <div class="col-md-5 col-sm-12 col-xs-12">
+                              </div>
+                              <div class="col-md-7 col-sm-12 col-xs-12">
+                                    <i class="fas fa-arrow-right fa-2x"></i>
+
+                              </div>
+                            </div>
+                              <div class="col-md-11 col-sm-12 col-xs-12">
+                                  <h2>Test Duration: <strong id="duration_summary"> </strong></h2>
+                              </div>
+
+
+                          </div>
+
+                    </div>
+
+                </div>
+                </a>
+
+                <br/>
+                <br/>
+                <br/>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div style="overflow:auto;padding-bottom: 10px;">
+                  <div style="float:right;">
+<!--                    <button type="button" id="Btn" onclick="Function()">Count</button>-->
+                    <button type="button" id="prevBtn" onclick="nextPrev(-1)" style="display: none;">Previous</button>
+                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                  </div>
+                </div>
+              </div>
+
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;margin-top:40px;">
+
+                  <a onclick="jumpToQuestion(0)">
+                  <span class="step" name="span" id="span1"></span>
+                  </a>
+                  <a onclick="jumpToQuestion(1)">
+                  <span class="step" name="span" id="span2" ></span>
+                  </a>
+                  <a onclick="jumpToQuestion(2)">
+                  <span class="step" name="span" id="span3"></span>
+                  </a>
+                  <a onclick="jumpToQuestion(3)">
+                  <span class="step" name="span" id="span3"></span>
+                  </a>
+                </div>
+
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script src="/static/build/js/create_new_assessment.js"></script>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

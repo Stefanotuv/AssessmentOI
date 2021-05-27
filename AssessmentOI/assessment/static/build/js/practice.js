@@ -7,7 +7,7 @@ showTab(currentTab); // Display the current tab
 function showTab(n) {
   // This function will display the specified tab of the form ...
   var x = document.getElementsByClassName("tab");
-
+    debugger
   x[n].style.display = "block";
   // ... and fix the Previous/Next buttons:
   if (n == 0) {
@@ -15,7 +15,7 @@ function showTab(n) {
 //    document.getElementById("prevBtn").innerHTML = "Previous";
   } else if (n == (x.length - 1)) {
       document.getElementById("prevBtn").style.display = "inline";
-    document.getElementById("prevBtn").innerHTML = "Test";
+    document.getElementById("prevBtn").innerHTML = "Back to Test";
   }
   else {
     document.getElementById("prevBtn").innerHTML = "Previous";
@@ -191,29 +191,7 @@ function resetEntry(){
 //    checked
 }
 
-function startTimer(duration, display) {
-    var timer = duration, minutes, seconds;
-    setInterval(function () {
-        minutes = parseInt(timer / 60, 10);
-        seconds = parseInt(timer % 60, 10);
-
-        minutes = minutes < 10 ? "0" + minutes : minutes;
-        seconds = seconds < 10 ? "0" + seconds : seconds;
-
-        display.textContent = minutes + ":" + seconds;
-
-        if (--timer < 0) {
-            timer = duration;
-        }
-    }, 1000);
-}
-
-window.onload = function () {
-    var fiveMinutes = 60 * 1,
-        display = document.querySelector('#time');
-    resetEntry()
-    startTimer(fiveMinutes, display);
-};
+//
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {

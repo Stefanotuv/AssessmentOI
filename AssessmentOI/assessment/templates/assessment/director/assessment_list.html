@@ -1,0 +1,124 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %} Assessment List {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+    <link rel="stylesheet" href="/static/build/css/cards.css">
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="x_panel">
+            <div class="x_title">
+                <h2>Dear <i>{{ user }}</i>, Welcome </h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+                <form method="post" action="">
+                  {% csrf_token %}
+                    <section class="">
+                        <!-- title row -->
+                        <!-- info row -->
+                        <div class="row">
+
+
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                          <div class="x_panel">
+                            <div class="x_title">
+                              <h2>Assessment List <small>List of all the submitted Assessment</small></h2>
+
+                              <div class="clearfix"></div>
+                            </div>
+
+                            <div class="x_content">
+
+                <!--              <p>Add class <code>bulk_action</code> to table for bulk actions options on row select</p>-->
+
+                              <div class="table-responsive">
+                                                    <table class="table table-striped jambo_table bulk_action">
+                                                      <thead>
+                                                        <tr class="headings">
+
+                                                            <th class="column-title">#</th>
+                                                            <th class="column-title">Assessment Name</th>
+                                                            <th class="column-title">Candidate Name</th>
+                                                            <th class="column-title">Candidate Email</th>
+                                                            <th class="column-title">Creator</th>
+                                                            <th class="column-title">Sent</th>
+                                                            <th class="column-title">Completed</th>
+
+
+                                                        </tr>
+                                                      </thead>
+
+                                                      <tbody>
+
+                                                        {% for a in object_list %}
+                                                        <tr class="even pointer">
+
+
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}"> {{ a.pk }} </a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}"> {{ a.assessment_name }} </a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.candidate_name }}</a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.candidate_email }}</a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.creator_email }}</a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.date_sent }}</a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.date_complete }}</a> </td>
+
+                                                        </tr>
+                                                        {% endfor %}
+
+                                                      </tbody>
+                                                    </table>
+                                                  </div>
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                        <!-- this row will not appear when printing -->
+                        <div class="row no-print">
+                          <div class="col-xs-12">
+ {% comment %}
+<!--                              <div  class="btn btn-link pull-right" style="margin-right: 10px;"><a href="{% url 'question_view' %}"><i class="fas fa-list-ul"></i> Back to List </a></div>-->
+{% endcomment %}
+                          </div>
+                        </div>
+                    </section>
+                </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

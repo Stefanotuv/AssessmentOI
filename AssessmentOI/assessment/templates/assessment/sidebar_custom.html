@@ -25,6 +25,81 @@
     <div class="menu_section">
       <h3>General</h3>
       <ul class="nav side-menu">
+
+          {% if user.is_staff  %}
+
+          <li><a href="{%url 'dashboard_view' %}"><i class="fas fa-tachometer-alt fa-lg" style="padding-right: 4%;"></i> Dashboard
+
+          <!--          <span class="fa fa-chevron-down"></span>-->
+{#          <span class="fa fa-chevron-down"></span>#}
+          </a>
+
+          </li>
+
+          <li><a ><i class="fas fa-graduation-cap fa-lg" style="padding-right: 3%;"></i> Assessment
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{%url 'assessment_list_view' %}">Assessment List</a></li>
+                    <li><a href="{%url 'assessment_create_view' %}">Create New</a></li>
+                </ul>
+          </li>
+
+          <li><a ><i class="far fa-question-circle fa-lg" style="padding-right: 5%;"></i> Questions
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          <span class="fa fa-chevron-down"></span></a>
+                <ul class="nav child_menu">
+                    <li><a href="{%url 'question_list_view' %}">Question List</a></li>
+                     <li><a href="{%url 'question_create_view' %}">Create New</a></li>
+                     <li><a href="{%url 'question_upload_from_file_view' %}">Upload from File</a></li>
+                </ul>
+          </li>
+
+
+          <!--            gentellela-->
+         <li><a><i class="fa fa-cubes" style="padding-right:10px;"></i>Gentelella <span class="fa fa-chevron-down"></span></a>
+          <ul class="nav child_menu">
+         <li><a href="gentelella/index.html">Overview</a></li>
+          </ul>
+         </li>
+
+          {% else %}
+
+          <li><a href="{%url 'home_view' %}"><i class="fas fa-home fa-lg" style="padding-right: 4%;"></i> Home
+
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+          </li>
+          <li><a href="{% url 'practice_test_view' %}"><i class="fas fa-chalkboard-teacher" style="padding-right: 5%;"></i> Practice Test
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
+
+          <li><a href="{%url 'test_home_view' %}"><i class="fas fa-shapes" style="padding-right: 6%;"></i> Start Assessment
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
+
+
+          {% endif %}
+
+          <li><a href="{%url 'users_logout' %}"><i class="fas fa-sign-out-alt" style="padding-right: 6%;"></i> <i>Exit</i>
+          <!--          <span class="fa fa-chevron-down"></span>-->
+          </a>
+
+          </li>
+
+<!--            gentellela-->
+<!--          <li><a><i class="fa fa-cubes" style="padding-right:10px;"></i>Gentelella <span class="fa fa-chevron-down"></span></a>-->
+<!--          <ul class="nav child_menu">-->
+<!--          <li><a href="gentelella/index.html">Overview</a></li>-->
+<!--          </ul>-->
+<!--          </li>-->
+      </ul>
+        {% comment %}
+      <ul class="nav side-menu">
           <li><a href="{%url 'home_view' object.token  %}"><i class="fas fa-home fa-lg" style="padding-right: 4%;"></i> Home
 
           <!--          <span class="fa fa-chevron-down"></span>-->
@@ -57,6 +132,7 @@
 <!--          </ul>-->
 <!--          </li>-->
       </ul>
+        {% endcomment %}
     </div>
 
   </div>

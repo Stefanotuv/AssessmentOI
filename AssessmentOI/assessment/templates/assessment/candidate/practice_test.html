@@ -1,0 +1,309 @@
+{% extends "base_custom.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% load template_filters %}
+{% block title %} Test {% endblock title %}
+
+{% block stylesheets %}
+  {{ block.super }}
+    <!-- Cards css -->
+<!--    <link rel="stylesheet" href="/static/build/css/cards.css">-->
+    <!-- Assessment css -->
+    <link rel="stylesheet" href="/static/build/css/assessment.css">
+
+{% endblock stylesheets %}
+{% block content %}
+
+  <div class="right_col" role="main">
+    <div class="">
+
+
+      <div class="clearfix"></div>
+
+<!--      <div class="row">-->
+<!--        <div class="col-md-12">-->
+          <div class="x_panel">
+            <div class="x_title">
+              <h2>Practice Questions</h2>
+
+              <div class="clearfix"></div>
+            </div>
+            <div class="x_content">
+<!--                <div style="float:right;">Time remaining <span id="time">05:00</span> minutes!</div>-->
+              <form id="regForm" action="" method="post">
+
+                {% csrf_token %}
+                <!-- One "tab" for each step in the form: -->
+                {% for key,value in dict_output.items %}
+
+                <a>
+                <div class="tab" ><strong>Question #: </strong><strong>{{key}}</strong><strong>/{{number_of_questions}}</strong>
+                  <p><div class="question" style="background-color: lightgrey;color: black;">
+                        {{ value.question }}
+                    </div>
+
+                  <br/><br/>
+                  <strong>Select the best answer(s) from the option(s) below </strong>
+                  <div style="color:red;">
+                  <i >(select </i><i id="selection{{key}}">{{ value.number_of_selection}}</i><i>)</i>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+
+                  {% if value.answer_1 != '' %}
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                      A1
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                      {% if value.question_type == 'Single Selection' %}
+                        <input type="radio" checked="" value="answer1" id="optionsRadios1" name="Q{{ key }}" onclick="recordResult()">
+                      {% else %}
+                      <input type="checkbox" value="answer1" name="Q{{ key }}-A1 " onclick="recordResult()">
+                        {% endif %}
+                      </div>
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12">
+                        {{ value.answer_1 }}
+                      </div>
+
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  {% endif %}
+
+                  {% if value.answer_2 != '' %}
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-1 col-sm-12 col-xs-12">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                      A2
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                  {% if value.question_type == 'Single Selection' %}
+                  <input type="radio" checked="" value="answer2" id="optionsRadios{{ value.pk }}2" name="Q{{ key }}" onclick="recordResult()">
+                  {% else %}
+                  <input type="checkbox" value="answer2" name="Q{{ key }}-A2 " onclick="recordResult()">
+                  {% endif %}
+                    </div>
+                  </div>
+                  <div class="col-md-11 col-sm-12 col-xs-12">
+                  {{ value.answer_2 }}
+                  </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <hr>
+                  </div>
+                  {% endif %}
+
+                  {% if value.answer_3 != '' %}
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-1 col-sm-12 col-xs-12">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                      A3
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                  {% if value.question_type == 'Single Selection' %}
+                  <input type="radio" checked="" value="answer3" id="optionsRadios{{ value.pk }}3" name="Q{{ key }}" onclick="recordResult()">
+                  {% else %}
+                  <input type="checkbox" value="answer3" name="Q{{ key }}-A3" onclick="recordResult()">
+                  {% endif %}
+                    </div>
+                  </div>
+                  <div class="col-md-11 col-sm-12 col-xs-12">
+                  {{ value.answer_3 }}
+                  </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <hr>
+                  </div>
+                  {% endif %}
+
+                  {% if value.answer_4 != '' %}
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <div class="col-md-1 col-sm-12 col-xs-12">
+                                        <div class="col-md-5 col-sm-12 col-xs-12">
+                      A4
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                  {% if value.question_type == 'Single Selection' %}
+                  <input type="radio" checked="" value="answer4" id="optionsRadios{{ value.pk }}4" name="Q{{ key }}" onclick="recordResult()">
+                  {% else %}
+                  <input type="checkbox" value="answer4" name="Q{{ key }}-A4" onclick="recordResult()">
+                  {% endif %}
+                    </div>
+                  </div>
+                  <div class="col-md-11 col-sm-12 col-xs-12">
+                  {{ value.answer_4 }}
+                  </div>
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                  <hr>
+                </div>
+                  {% endif %}
+
+                  {% if value.answer_5 != '' %}
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-md-5 col-sm-12 col-xs-12">
+                      A5
+                    </div>
+                    <div class="col-md-7 col-sm-12 col-xs-12">
+                    <div class="col-md-1 col-sm-12 col-xs-12">
+                    {% if value.question_type == 'Single Selection' %}
+                      <input type="radio" checked="" value="answer5" id="optionsRadios{{ value.pk }}5" name="Q{{ key }}" onclick="recordResult()">
+                    {% else %}
+                    <input type="checkbox" value="answer5" name="Q{{ key }}-A5 " onclick="recordResult()">
+                      {% endif %}
+                    </div>
+                    </div>
+
+                    <div class="col-md-11 col-sm-12 col-xs-12">
+                      {{ value.answer_5 }}
+                    </div>
+
+                  </div>
+                  <div class="col-md-12 col-sm-12 col-xs-12">
+                    <hr>
+                  </div>
+                  {% endif %}
+                  <div class="col-md-12 col-sm-12 col-xs-12" style="
+                      overflow: hidden;
+                  ">
+
+                      <div class="col-md-12 col-sm-12 col-xs-12" style="
+                            float: right;
+                            clear: both;
+                            padding-bottom: 30px;
+                            padding-top: 10px;
+                        ">
+                      <div class="col-md-1 col-sm-12 col-xs-12" style="
+                            float: right;
+                            clear: both;
+                        ">
+                        <input id="optionsSelectionX{{key}}" type="checkbox" value="selected" name="optionsSelectionX{{key}}" onclick="flagForReview({{key}})">
+                      </div>
+                      <div class="col-md-11 col-sm-12 col-xs-12" style="
+                          /* float: right; */
+                          /* clear: both; */
+                          text-align: end;
+                      ">
+                      Flag for Review
+                      </div>
+                      </div>
+                </div>
+                </div>
+                </a>
+
+                {% endfor %}
+                  <br/>
+                <br/>
+                <br/>
+              <div class="tab"><strong>Summary</strong><strong ></strong>
+                <table class="table table-striped jambo_table bulk_action">
+                  <thead>
+                    <tr class="headings">
+
+                        <th class="column-title">#</th>
+
+                        <th class="column-title">Question</th>
+                        <th class="column-title">Answer(s)</th>
+                        <th class="column-title">Review</th>
+
+
+                    </tr>
+                  </thead>
+
+                  <tbody>
+
+                  {% for key,value in dict_output.items %}
+                    <a href="">
+                    <tr class="even pointer" onclick="jumpToQuestionFromTable({{key}})">
+
+
+
+                      <td class=" "> {{ key }}  </td>
+                      <td class=" ">{{ value.question }}</td>
+                      <td class=" " name="answers_question_{{key}}"></td>
+                      <td class=" " name="review_question_{{key}}"></td>
+
+                    </tr>
+                    {% endfor %}
+                    </a>
+                      </tbody>
+                </table>
+              </div>
+
+
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                <div style="overflow:auto;padding-bottom: 10px;">
+                  <div style="float:right;">
+<!--                    <button type="button" id="Btn" onclick="Function()">Count</button>-->
+                    <button type="button" id="prevBtn" onclick="nextPrev(-1)" style="display: none;">Previous</button>
+                    <button type="button" id="nextBtn" onclick="nextPrev(1)">Next</button>
+                  </div>
+                </div>
+              </div>
+
+                <!-- Circles which indicates the steps of the form: -->
+                <div style="text-align:center;margin-top:40px;">
+
+                {% for num in number_of_questions_range %}
+                  <a onclick="jumpToQuestion({{ num }})">
+                  <span class="step" name="span{{ num }}" ></span>
+
+                  </a>
+                {% endfor %}
+                <a onclick="jumpToQuestion({{ number_of_questions }})">
+                    <i id="question_summary" class="fas fa-list fa-lg" style="display: none"></i>
+                </a>
+
+
+
+                </div>
+
+                </form>
+
+            </div>
+          </div>
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+  </div>
+<!-- The Modal -->
+    <div id="myModal" class="modal">
+
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" style="">&times;</span>
+        <p style="text-align: center;">Questions Selection not Valid</p>
+        <p style="text-align: center;" id="message"></p>
+      </div>
+
+    </div>
+<script src="/static/build/js/practice.js"></script>
+<script>
+function Function() {
+    setTimeout(setAlert, 4000);
+}
+function setAlert() {
+  alert("Hello World!");
+}
+</script>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+  {{ block.super }}
+  <!-- jQuery Smart Wizard -->
+<!--  <script src="/static/vendors/jQuery-Smart-Wizard/js/jquery.smartWizard.js"></script>-->
+
+
+{% endblock javascripts %}
+
+{% block jq%}
+
+{% endblock jq %}

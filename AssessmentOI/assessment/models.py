@@ -24,16 +24,22 @@ class Question(models.Model):
             ('3', '3'),
             ('4', '4'),
     )
-
+    NUMBER_OF_ANSWERS = (
+            ('1', '1'),
+            ('2', '2'),
+            ('3', '3'),
+            ('4', '4'),
+            ('5', '5'),
+    )
     YES_NO = (
             ('Yes', 'Yes'),
             ('No', 'No'),
     )
-
+    question = models.TextField(default="", null=True)
     question_type = models.CharField(max_length=20, blank=False, null=False, choices=QUESTION_TYPES)
 
     number_of_selection = models.CharField(max_length=20, blank=False, null=False, choices=NUMBER_OF_SELECTIONS)
-
+    number_of_answers = models.CharField(max_length=20, blank=False, null=False, choices=NUMBER_OF_ANSWERS)
     answer_1 = models.TextField(default="", null=True)
     answer_1_value = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO)
 
@@ -91,6 +97,8 @@ class Assessment(models.Model):
     # questions part of the assessment
     # the questions are included in each question
     questions_selected = models.ManyToManyField(Question,null=True,blank=True)
+    # in minutes
+    time_to_complete = models.IntegerField(blank=True, null=True)
 
     completed = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO, default='No')
 
