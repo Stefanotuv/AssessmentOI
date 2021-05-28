@@ -22,6 +22,15 @@
             <div class="x_title">
               <h2>Question Details</h2>
 
+                <a href="{% url 'question_detail_view' next %}">
+                    <h2 class="pull-right" style="padding-left: 1%;">Next</h2>
+                    <h2 class="pull-right" style="padding-left: 1%;"><i class="fas fa-step-forward" style="padding-right: 5%;"></i></h2>
+                                </a>
+                <a href="{% url 'question_detail_view' previous %}"><h2 class="pull-right"><i class="fas fa-step-backward" style="padding-left: 2%"></i></h2>
+                                <h2 class="pull-right" style="padding-right: 1%;">Previous</h2></a>
+
+
+
               <div class="clearfix"></div>
             </div>
             <div class="x_content">

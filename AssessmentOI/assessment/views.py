@@ -160,9 +160,36 @@ class QuestionDetailView(DetailView):
     template_name = 'assessment/question_detail.html'
     context_object_name = 'question_detail_view'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        query_list_pk = []
+        query_list = Question.objects.all() #.values_list('pk')
+        [query_list_pk.append(q.pk) for q in query_list]
+
+        current = kwargs['object'].pk
+
+        current_idx = query_list_pk.index(current)
+
+        if current_idx >= len(query_list_pk) - 1:
+            next = 1
+            previous = query_list_pk[current_idx - 1]
+
+        elif current_idx == 0:
+            next = query_list_pk[current_idx + 1]
+            previous = query_list_pk[len(query_list_pk)-1]
+        else:
+            next = query_list_pk[current_idx + 1]
+            previous = query_list_pk[current_idx - 1]
+
+
+        context['next'] = next
+        context['previous'] = previous
+
+        return context
 
     def get_queryset(self):
         self.obj = get_object_or_404(Question, pk=self.kwargs['pk'])
+
         return Question.objects.filter(pk=self.obj.pk)
 
 @method_decorator(login_required, name='dispatch')
