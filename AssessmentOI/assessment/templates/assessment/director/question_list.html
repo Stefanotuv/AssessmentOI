@@ -36,6 +36,8 @@
                     <tr class="headings">
 
                       <th class="column-title">#</th>
+                      <th class="column-title">Practice</th>
+
                       <th class="column-title">Question Type</th>
                       <th class="column-title">Question</th>
                         <th class="column-title"># of Selection</th>
@@ -62,6 +64,7 @@
 
 
                       <td class=" "><a href="{% url 'question_detail_view' question.pk %}"> {{ question.pk }} </a> </td>
+                      <td class=" ">{{ question.practice_question }}</td>
 
                       <td class=" ">{{ question.question_type }}</td>
                       <td class=" ">{{ question.question|truncatewords:10 }}</td>

@@ -76,7 +76,8 @@
                                             Token
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.token|truncatechars:20 }}</i></strong>
+{#                                            <strong><i>{{ assessment.token|truncatechars:20 }}</i></strong>#}
+                                            <input class="form-text" value="{{ assessment.token}}" readonly="readonly"></input>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -87,11 +88,19 @@
                                             <strong><i>{{ assessment.date_creation }}</i></strong>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
+                                            Date Started
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
+                                            <strong><i>{{ assessment.date_first_opened }}</i></strong>
+                                        </div>
+
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Date Completed (if submitted)
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             <strong><i>{{ assessment.date_complete }}</i></strong>
                                         </div>
+
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Time to complete
                                         </div>
@@ -108,7 +117,10 @@
                                             Answers
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.answers|truncatechars:20 }}</i></strong>
+
+                                            <strong>
+                                                <input class="form-text" value="{{ assessment.answers}}" readonly="readonly"></input>
+                                            </strong>
                                         </div>
                                     </div>
                                 </div>

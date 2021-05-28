@@ -29,7 +29,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <div style="float:right;">Time remaining <span id="time">05:00</span> minutes!</div>
+                <div style="float:right;">Time remaining <span id="time">{{ duration }}</span> minutes!</div>
               <form id="regForm" action="{% url 'test_questions_submit_view' object.token %}" method="post">
 
                 {% csrf_token %}
@@ -50,7 +50,7 @@
                     <hr>
                   </div>
 
-                  {% if value.answer_1 != '' %}
+                  {% if value.answer_1 != None and value.answer_1 != '' %}
                   <div class="col-md-12 col-sm-12 col-xs-12">
 
                     <div class="col-md-1 col-sm-12 col-xs-12">
@@ -75,7 +75,7 @@
                   </div>
                   {% endif %}
 
-                  {% if value.answer_2 != '' %}
+                  {% if value.answer_2 != None and value.answer_2 != ''  %}
                   <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="col-md-1 col-sm-12 col-xs-12">
                     <div class="col-md-5 col-sm-12 col-xs-12">
@@ -98,7 +98,7 @@
                   </div>
                   {% endif %}
 
-                  {% if value.answer_3 != '' %}
+                  {% if value.answer_3 != None  and value.answer_3 != ''  %}
                   <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="col-md-1 col-sm-12 col-xs-12">
                     <div class="col-md-5 col-sm-12 col-xs-12">
@@ -121,7 +121,7 @@
                   </div>
                   {% endif %}
 
-                  {% if value.answer_4 != '' %}
+                  {% if value.answer_4 != None  and value.answer_4 != '' %}
                   <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="col-md-1 col-sm-12 col-xs-12">
                                         <div class="col-md-5 col-sm-12 col-xs-12">
@@ -144,7 +144,7 @@
                 </div>
                   {% endif %}
 
-                  {% if value.answer_5 != '' %}
+                  {% if value.answer_5 != None  and value.answer_5 != ''  %}
                   <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="col-md-5 col-sm-12 col-xs-12">
                       A5

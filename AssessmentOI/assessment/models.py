@@ -35,6 +35,7 @@ class Question(models.Model):
             ('Yes', 'Yes'),
             ('No', 'No'),
     )
+    practice_question = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO, default='No')
     question = models.TextField(default="", null=True)
     question_type = models.CharField(max_length=20, blank=False, null=False, choices=QUESTION_TYPES)
 
@@ -92,6 +93,7 @@ class Assessment(models.Model):
     date_creation = models.DateTimeField(blank=True, null=True,)
     date_sent = models.DateTimeField(blank=True, null=True,)
     date_first_opened = models.DateTimeField(blank=True, null=True,)
+    # when it was lunched the first time (to track refreshes of pages that may confuse the timer)
     date_complete = models.DateTimeField(blank=True, null=True,)
 
     # questions part of the assessment

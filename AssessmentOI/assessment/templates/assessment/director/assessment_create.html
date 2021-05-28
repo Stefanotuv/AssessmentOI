@@ -275,10 +275,10 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Token</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea onchange="recordSelection('token')" name="token" class="resizable_textarea form-control" placeholder="Insert the Token/ Passcode here or generate it"></textarea>
+                                <textarea onchange="recordSelection('token')" id="text_token" name="token" class="resizable_textarea form-control" placeholder="Insert the Token/ Passcode here or generate it"></textarea>
                               </div>
-                              <div class="col-md-2 col-sm-2 col-xs-12" >
-                                <a class="btn btn-danger">
+                              <div  class="col-md-2 col-sm-2 col-xs-12" >
+                                <a onclick="record_token()" class="btn btn-danger">
                                     <i class="fas fa-code fa-lg"></i><br>
                                     <strong> Generate Token </strong>
                                 </a>
@@ -449,7 +449,14 @@
                               </div>
                             </div>
                               <div class="col-md-11 col-sm-12 col-xs-12">
-                                  <h2>Token: <strong id="token_summary"> </strong></h2>
+                                  <h2>Token:
+                                      <h2></h2>
+                                      <strong id="token_summary">
+
+                                  <textarea readonly="readonly" id="text_token_1" name="token" class="resizable_textarea form-control" placeholder="Insert the Token/ Passcode here or generate it"></textarea>
+
+
+                                  </strong></h2>
                               </div>
 
 

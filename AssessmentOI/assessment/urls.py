@@ -37,6 +37,9 @@ urlpatterns = [
     path("home", HomeView.as_view(template_name='assessment/director/home.html'),
          name='home_view'),
 
+    path("", HomeView.as_view(template_name='assessment/director/home.html'),
+         name='home_view'),
+
     # Candidate classes
 
     path("candidate/home", CandidateHomeView.as_view(template_name='assessment/candidate/home.html'),
@@ -62,6 +65,7 @@ urlpatterns = [
 
     path("director/dashboard", DashboardView.as_view(template_name='assessment/director/dashboard.html'),
          name='dashboard_view'),
+
     path("director/assessment/", AssessmentListView.as_view(template_name='assessment/director/assessment_list.html'),
          name='assessment_list_view'),
 
@@ -87,4 +91,9 @@ urlpatterns = [
 
     path("director/question/<pk>/detail", QuestionDetailView.as_view(template_name='assessment/director/question_detail.html'),
          name='question_detail_view'),
+
+    path("director/assssement/<pk>/copy",
+         AssessementCopyView.as_view(template_name='assessment/director/assessment_copy.html'),
+         name='assessment_copy_view'),
+
 ]

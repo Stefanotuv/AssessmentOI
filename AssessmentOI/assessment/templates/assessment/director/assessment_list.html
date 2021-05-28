@@ -55,9 +55,9 @@
                                                             <th class="column-title">Candidate Name</th>
                                                             <th class="column-title">Candidate Email</th>
                                                             <th class="column-title">Creator</th>
-                                                            <th class="column-title">Sent</th>
+                                                            <th class="column-title">Opened</th>
                                                             <th class="column-title">Completed</th>
-
+                                                            <th class="column-title"><i class="fas fa-clone"></i></th>
 
                                                         </tr>
                                                       </thead>
@@ -73,17 +73,18 @@
                                                           <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.candidate_name }}</a> </td>
                                                           <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.candidate_email }}</a> </td>
                                                           <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.creator_email }}</a> </td>
-                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.date_sent }}</a> </td>
+                                                          <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.date_first_opened }}</a> </td>
                                                           <td class=" "><a href="{% url 'assessment_detail_view' a.pk %}">{{ a.date_complete }}</a> </td>
-
+                                                          <td class=" "><a href="{% url 'assessment_copy_view' a.pk %}"><i class="fas fa-clone"></i></a> </td>
                                                         </tr>
                                                         {% endfor %}
 
                                                       </tbody>
                                                     </table>
+
                                                   </div>
-
-
+                                <h6 class="pull-right" style="color: grey">default password for new users is <strong><i>OracleInsightforCloud</i></strong>
+                                </h6>
                             </div>
                           </div>
                         </div>
@@ -107,8 +108,6 @@
       </div>
     </div>
   </div>
-
-
 
 
 {% endblock content %}

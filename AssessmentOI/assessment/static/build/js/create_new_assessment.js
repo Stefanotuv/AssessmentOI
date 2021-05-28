@@ -317,6 +317,9 @@ function recordSelection(input){
         case 'duration':
             document.getElementById("duration_summary").innerHTML = document.getElementsByName(input)[0].value
 
+        case 'text_token_1':
+            document.getElementById("text_token_1").value = document.getElementById('text_token').value
+
             break;
         default:
     }
@@ -329,6 +332,7 @@ function temp(ele){
 
 function generate_token(length){
     //edit the token allowed characters
+    debugger
     var a = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890".split("");
     var b = [];
     for (var i=0; i<length; i++) {
@@ -338,5 +342,10 @@ function generate_token(length){
     return b.join("");
 }
 
+function record_token(){
+    debugger
+    document.getElementById("text_token").innerHTML = generate_token(256)
+    recordSelection('text_token_1')
+}
 
 
