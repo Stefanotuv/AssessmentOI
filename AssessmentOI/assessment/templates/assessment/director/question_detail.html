@@ -55,24 +55,40 @@
                           <!-- /.col -->
                         </div>
                         <!-- info row -->
-
+                        <br>
                         <div class="row">
 
-                            <div class="col-sm-9">
+                            <div  class="col-md-12">
+
+                                {% if image %}
+                                <div class="col-sm-7">
+
+                                    <br/>
+                                        {{ object.question }}
+                                </div>
+                                <div class="col-sm-5" style="border: #2b3f54;border-style: double;padding: .4%;">
+                                <img src="{{ object.image.url }}" alt=".ger.." class="img-responsive avatar-viewg">
+                                </div>
+                                {% else %}
                                 <div class="col-sm-12">
 
                                     <br/>
                                         {{ object.question }}
                                 </div>
-                            </div>
 
-                            <div class="col-sm-3">
-<!--                                Insert the image if there is one-->
+                                {% endif %}
 
 
                             </div>
 
+{#                            <div class="col-md-1">#}
+{#<!--                                Insert the image if there is one-->#}
+{##}
+{##}
+{#                            </div>#}
 
+                          <hr>
+                        <br>
                         </div>
                         <!-- /.row -->
 

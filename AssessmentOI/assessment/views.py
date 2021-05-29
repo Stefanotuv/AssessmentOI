@@ -180,8 +180,13 @@ class QuestionDetailView(DetailView):
         else:
             next = query_list_pk[current_idx + 1]
             previous = query_list_pk[current_idx - 1]
+        try:
+            image = True
+            Question.objects.filter(pk=current)[0].image.url
 
-
+        except:
+            image = False
+        context['image'] = image
         context['next'] = next
         context['previous'] = previous
 
