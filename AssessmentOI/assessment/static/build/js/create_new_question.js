@@ -111,7 +111,6 @@ function validateForm() {
 }
 
 
-
 function fixStepIndicator(n) {
   // This function removes the "active" class of all steps...
   var i, x = document.getElementsByClassName("step");
@@ -140,8 +139,6 @@ function jumpToQuestionFromTable(question_number) {
         currentTab  = question_number - 1
         showTab(question_number - 1);
 }
-
-
 
 function resetEntry(){
 //reset any selection (the select option has a default solution )
@@ -251,10 +248,12 @@ function check_max_of_correct_answer(){
 
     if(radio_check_text == "multi"){
         if (number_of_correct_answers_selected >= number_of_answers_selected){
+            debugger
             // cannot be
-            document.getElementById("number_of_answers").selectedIndex = number_of_answers_selected - 1
+            // document.getElementById("number_of_answers").selectedIndex = document.getElementById("number_of_answers").value + 1
+            document.getElementById("number_of_answers").selectedIndex = number_of_correct_answers_selected - 1
             document.getElementById("error_message").hidden = false
-            startTimer(10)
+            startTimer(12)
         }
     }
 
@@ -276,6 +275,21 @@ function startTimer(duration) {
             document.getElementById("error_message").hidden = true
         }
     }, 1000);
+}
+
+function answer_correct_selection_check(number){
+    debugger
+    correct_answers = document.getElementById("number_of_correct_answers")
+    number_of_correct_answers_selected = parseInt(correct_answers[correct_answers.selectedIndex].value)
+    current_selected = 0
+    for (i=0;i<$("input:checkbox").length;i++){
+        if ($("input:checkbox")[i].checked){
+            current_selected++
+        }
+    }
+    if (current_selected >= number_of_correct_answers_selected){
+        document.getElementsByName('answer_m_' + number + '_value')[0].checked = false
+    }
 }
 
 

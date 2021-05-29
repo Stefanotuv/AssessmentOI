@@ -101,7 +101,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <form id="question_form" action="{% url 'question_create_view' %}" method="POST">
+                <form id="question_form" action="{% url 'question_create_view' %}" method="POST" enctype="multipart/form-data">
 
                 {% csrf_token %}
                 <!-- One "tab" for each step in the form: -->
@@ -226,12 +226,26 @@
                         </h1>
                     </div>
                     <div class="row">
-                    <div class="form-group">
+                        <div class="form-group">
                         <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
                         <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Question</label>
                               <div class="col-md-10 col-sm-1o col-xs-12">
                                 <textarea name="question" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                              </div>
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+
+                        </div>
+                    </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                        <div class="col-md-8 col-sm-8 col-xs-12"  >
+                              <label class="control-label col-md-2 col-sm-2 col-xs-12">Picture</label>
+                              <div class="col-md-10 col-sm-1o col-xs-12">
+                                <input style="font-family:sans-serif, Verdana;background-color: lightgrey;" type="file" class="btn" name="fileToUpload" id="fileToUpload">
                               </div>
                         <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
 
@@ -257,12 +271,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer One</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_s_1" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_s_1" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="radio">
                                               <label>
-                                                <input type="radio" class="flat" name="answer_s_1_value"> Correct
+                                                <input type="radio" class="flat" name="answer_s_value" value="1"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -276,12 +290,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Two</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_s_2" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_s_2" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="radio">
                                               <label>
-                                                <input type="radio" class="flat" name="answer_s_2_value"> Correct
+                                                <input value="2" type="radio" class="flat" name="answer_s_value"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -295,12 +309,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Three</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_s_3" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_s_3" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="radio">
                                               <label>
-                                                <input type="radio" class="flat" name="answer_s_3_value"> Correct
+                                                <input value="3" type="radio" class="flat" name="answer_s_value"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -314,12 +328,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Four</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_s_4" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_s_4" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="radio">
                                               <label>
-                                                <input type="radio" class="flat" name="answer_s_4_value"> Correct
+                                                <input type="radio" class="flat" value="4" name="answer_s_value"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -333,12 +347,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Five</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_s_5" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_s_5" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="radio">
                                               <label>
-                                                <input type="radio" class="flat" name="answer_s_5_value"> Correct
+                                                <input type="radio" class="flat" value="5" name="answer_s_value"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -356,12 +370,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer One</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_m_1" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_m_1" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
-                                        <div class="checkbox">
+                                        <div class="checkbox" oninput="answer_correct_selection_check(1)">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_1_value"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_1_value" oninput="answer_correct_selection_check(1)"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -375,12 +389,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Two</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_m_2" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_m_2" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_2_value"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_2_value" onselect="answer_correct_selection_check(2)"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -394,12 +408,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Three</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_m_3" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_m_3" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_3_value"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_3_value" onselect="answer_correct_selection_check(3)"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -413,12 +427,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Four</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_m_4" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_m_4" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_4_value"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_4_value" onselect="answer_correct_selection_check(4)"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -432,12 +446,12 @@
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                               <label class="control-label col-md-2 col-sm-2 col-xs-12">Answer Five</label>
                               <div class="col-md-8 col-sm-8 col-xs-12">
-                                <textarea name="answer_m_5" class="resizable_textarea form-control" placeholder="Insert the Question here"></textarea>
+                                <textarea name="answer_m_5" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_5_value"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_5_value" onselect=""> Correct
                                               </label>
                                         </div>
                                 </div>

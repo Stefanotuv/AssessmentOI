@@ -452,16 +452,21 @@ class QuestionCreateView(CreateView):
         if request.POST['radio'] == 'single':
             data_dict['question_type'] = 'Single Selection'
             data_dict['number_of_selection'] = 1
-            data_dict['answer_1'] = request.POST['answer_s_1']
-            data_dict['answer_1_value'] = 'Yes' if ('answer_s_1_value' in request.POST) else 'No'
-            data_dict['answer_2'] = request.POST['answer_s_2']
-            data_dict['answer_2_value'] = 'Yes' if ('answer_s_2_value' in request.POST) else 'No'
-            data_dict['answer_3'] = request.POST['answer_s_3']
-            data_dict['answer_3_value'] = 'Yes' if ('answer_s_3_value' in request.POST) else 'No'
-            data_dict['answer_4'] = request.POST['answer_s_4']
-            data_dict['answer_4_value'] = 'Yes' if ('answer_s_4_value' in request.POST) else 'No'
-            data_dict['answer_5'] = request.POST['answer_s_5']
-            data_dict['answer_5_value'] = 'Yes' if ('answer_s_5_value' in request.POST) else 'No'
+            selected_answer = request.POST['answer_s_value']
+            for i in range(int(data_dict['number_of_answers'])):
+                data_dict['answer_'+str((int(i)+1))] = request.POST['answer_s_'+str((int(i)+1))]
+                data_dict['answer_' + str((int(i)+1)) + '_value'] = 'No'
+            data_dict['answer_'+ selected_answer + '_value'] = 'Yes'
+                # data_dict['answer_1'] = request.POST['answer_s_1']
+                # data_dict['answer_1_value'] = 'Yes' if ('answer_s_1_value' in request.POST) else 'No'
+                # data_dict['answer_2'] = request.POST['answer_s_2']
+                # data_dict['answer_2_value'] = 'Yes' if ('answer_s_2_value' in request.POST) else 'No'
+                # data_dict['answer_3'] = request.POST['answer_s_3']
+                # data_dict['answer_3_value'] = 'Yes' if ('answer_s_3_value' in request.POST) else 'No'
+                # data_dict['answer_4'] = request.POST['answer_s_4']
+                # data_dict['answer_4_value'] = 'Yes' if ('answer_s_4_value' in request.POST) else 'No'
+                # data_dict['answer_5'] = request.POST['answer_s_5']
+                # data_dict['answer_5_value'] = 'Yes' if ('answer_s_5_value' in request.POST) else 'No'
         elif request.POST['radio'] == 'multi':
             data_dict['question_type'] = 'Multi Selection'
             data_dict['number_of_selection'] = request.POST['number_of_answers_selected']
@@ -477,9 +482,13 @@ class QuestionCreateView(CreateView):
             data_dict['answer_5_value'] = 'Yes' if ('answer_m_5_value' in request.POST) else 'No'
         else:
             data_dict['question_type'] = 'Essay'
-
+        # create routine to put the answers
         data_dict['answers'] = 'Test'
 
+
+
+        if request.FILES:
+            data_dict['image'] = request.FILES['fileToUpload']
         model = 'Question'
         table_name = model
         model_class = getattr(sys.modules[__name__], table_name)
