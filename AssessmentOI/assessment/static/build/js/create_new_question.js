@@ -256,7 +256,7 @@ function check_max_of_correct_answer(){
             startTimer(12)
         }
     }
-
+    document.getElementById('selected_correct_answers').innerHTML = number_of_correct_answers_selected
 
 }
 
@@ -291,6 +291,8 @@ function answer_correct_selection_check(number){
         document.getElementsByName('answer_m_' + number + '_value')[0].checked = false
     }
 }
+
+
 
 
 

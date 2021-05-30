@@ -365,6 +365,25 @@
 
 {#                    checkbox#}
                     <div class="row" id="check_row" hidden>
+
+                        <div name="answer_check" id="answer1" class="form-group col-md-12 col-sm-12 col-xs-12">
+                            <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                            <div class="col-md-8 col-sm-8 col-xs-12"  >
+                                <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
+                                <div class="col-md-8 col-sm-8 col-xs-12"  >
+
+                                    </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12"  >
+                                    Select [<strong id="selected_correct_answers">2</strong>]
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12"  >
+
+                            </div>
+                        </div>
+
+
+
                         <div name="answer_check" id="answer1" class="form-group col-md-12 col-sm-12 col-xs-12">
                             <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
@@ -373,9 +392,9 @@
                                 <textarea name="answer_m_1" class="resizable_textarea form-control" placeholder="Insert the Answer here"></textarea>
                               </div>
                               <div class="col-md-2 col-sm-2 col-xs-12" >
-                                        <div class="checkbox" oninput="answer_correct_selection_check(1)">
+                                        <div class="checkbox" >
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_1_value" oninput="answer_correct_selection_check(1)"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_1_value" > Correct
                                               </label>
                                         </div>
                                 </div>
@@ -394,7 +413,7 @@
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_2_value" onselect="answer_correct_selection_check(2)"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_2_value" > Correct
                                               </label>
                                         </div>
                                 </div>
@@ -413,7 +432,7 @@
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_3_value" onselect="answer_correct_selection_check(3)"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_3_value" > Correct
                                               </label>
                                         </div>
                                 </div>
@@ -432,7 +451,7 @@
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_4_value" onselect="answer_correct_selection_check(4)"> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_4_value" > Correct
                                               </label>
                                         </div>
                                 </div>
@@ -451,7 +470,7 @@
                               <div class="col-md-2 col-sm-2 col-xs-12" >
                                         <div class="checkbox">
                                               <label>
-                                                <input type="checkbox" class="flat" name="answer_m_5_value" onselect=""> Correct
+                                                <input type="checkbox" class="flat" name="answer_m_5_value"> Correct
                                               </label>
                                         </div>
                                 </div>
@@ -528,10 +547,19 @@
 
 {% block javascripts %}
   {{ block.super }}
+    <script>
+        $('input:checkbox').on('ifChecked',function() {
+            debugger
+            answer_correct_selection_check(this.name.split("_")[2])
+            debugger
+          console.log('TEST');
+         });
 
+    </script>
 
 {% endblock javascripts %}
 
-{% block jq%}
+{% block jq %}
+
 
 {% endblock jq %}
