@@ -36,10 +36,11 @@ class Question(models.Model):
             ('No', 'No'),
     )
     practice_question = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO, default='No')
-    question = models.TextField(default="", null=True)
+    # question = models.TextField(default="", null=True)
     question_type = models.CharField(max_length=20, blank=False, null=False, choices=QUESTION_TYPES)
-
+    # number of correct answers
     number_of_selection = models.CharField(max_length=20, blank=False, null=False, choices=NUMBER_OF_SELECTIONS)
+    # number of answers
     number_of_answers = models.CharField(max_length=20, blank=False, null=False, choices=NUMBER_OF_ANSWERS)
     answer_1 = models.TextField(default="", null=True)
     answer_1_value = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO)
@@ -115,7 +116,9 @@ class Assessment(models.Model):
     completed = models.CharField(max_length=3, blank=True, null=True, choices=YES_NO, default='No')
 
     answers = models.JSONField(blank=True, null=True)
-    score = models.IntegerField(blank=True, null=True)
+    # score = models.IntegerField(blank=True, null=True)
+    score = models.DecimalField(blank=True, null=True, max_digits=5, decimal_places=2)
+    # score = models.FloatField(blank=True, null=True)
 
 
     def __str__(self):

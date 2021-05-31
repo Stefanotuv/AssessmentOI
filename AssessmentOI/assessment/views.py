@@ -457,6 +457,7 @@ class QuestionCreateView(CreateView):
                 data_dict['answer_'+str((int(i)+1))] = request.POST['answer_s_'+str((int(i)+1))]
                 data_dict['answer_' + str((int(i)+1)) + '_value'] = 'No'
             data_dict['answer_'+ selected_answer + '_value'] = 'Yes'
+            data_dict['answers'] = '[answer'+ selected_answer +']'
                 # data_dict['answer_1'] = request.POST['answer_s_1']
                 # data_dict['answer_1_value'] = 'Yes' if ('answer_s_1_value' in request.POST) else 'No'
                 # data_dict['answer_2'] = request.POST['answer_s_2']
@@ -469,21 +470,37 @@ class QuestionCreateView(CreateView):
                 # data_dict['answer_5_value'] = 'Yes' if ('answer_s_5_value' in request.POST) else 'No'
         elif request.POST['radio'] == 'multi':
             data_dict['question_type'] = 'Multi Selection'
+
+            # number of answers correct
             data_dict['number_of_selection'] = request.POST['number_of_answers_selected']
-            data_dict['answer_1'] = request.POST['answer_m_1']
-            data_dict['answer_1_value'] = 'Yes' if ('answer_m_1_value' in request.POST) else 'No'
-            data_dict['answer_2'] = request.POST['answer_m_2']
-            data_dict['answer_2_value'] = 'Yes' if ('answer_m_2_value' in request.POST) else 'No'
-            data_dict['answer_3'] = request.POST['answer_m_3']
-            data_dict['answer_3_value'] = 'Yes' if ('answer_m_3_value' in request.POST) else 'No'
-            data_dict['answer_4'] = request.POST['answer_m_4']
-            data_dict['answer_4_value'] = 'Yes' if ('answer_m_4_value' in request.POST) else 'No'
-            data_dict['answer_5'] = request.POST['answer_m_5']
-            data_dict['answer_5_value'] = 'Yes' if ('answer_m_5_value' in request.POST) else 'No'
+
+            # TO DO use a cycle to extract the answers and the if they are correct
+
+            # data_dict['answer_1'] = request.POST['answer_m_1']
+            # data_dict['answer_1_value'] = 'Yes' if ('answer_m_1_value' in request.POST) else 'No'
+            # data_dict['answer_2'] = request.POST['answer_m_2']
+            # data_dict['answer_2_value'] = 'Yes' if ('answer_m_2_value' in request.POST) else 'No'
+            # data_dict['answer_3'] = request.POST['answer_m_3']
+            # data_dict['answer_3_value'] = 'Yes' if ('answer_m_3_value' in request.POST) else 'No'
+            # data_dict['answer_4'] = request.POST['answer_m_4']
+            # data_dict['answer_4_value'] = 'Yes' if ('answer_m_4_value' in request.POST) else 'No'
+            # data_dict['answer_5'] = request.POST['answer_m_5']
+            # data_dict['answer_5_value'] = 'Yes' if ('answer_m_5_value' in request.POST) else 'No'
+            i =0
+            answers =''
+            for i in range(int(request.POST['number_of_answers'])):
+                data_dict['answer_'+str(i+1)] = request.POST['answer_m_'+str(i+1)]
+                data_dict['answer_'+str(i+1)+'_value'] = 'Yes' if ('answer_m_'+str(i+1)+'_value' in request.POST) else 'No'
+                if ('answer_m_'+ str(i+1) +'_value' in request.POST):
+                    answers = answers + 'answer' + str(i+1) + ','
+
+            answers = '[' + answers +']'
+            data_dict['answers'] = answers
         else:
             data_dict['question_type'] = 'Essay'
+            data_dict['answers'] = 'Essay'
         # create routine to put the answers
-        data_dict['answers'] = 'Test'
+
 
 
 
@@ -853,12 +870,17 @@ class TestQuestionsSubmitUpdate(TemplateView):
         token = self.kwargs['token']
         test = Assessment.objects.filter(token=token,candidate_email=self.request.user.email)[0]
         # [values.append(value) for value in request.POST]
+        questions_selected = Question.objects.filter(assessment__pk=test.pk)
+        score = 0
         answers = {}
+
         for element in request.POST.items():
             answer_list = []
             if element[0].startswith('Q'):
                 if "-" in element[0]:
-                    question_number = element[0].split('-')[0]
+                    counter = int(element[0].split("-")[0][1])
+                    # this means it is a multi choice and the format is Qx-Ax = Yes/No
+                    question_number = element[0].split("-")[0]
                     answer_number = element[1]
                     answer_list.append(answer_number)
                     # check if the question already exist and hence is a multiple choice
@@ -866,19 +888,43 @@ class TestQuestionsSubmitUpdate(TemplateView):
                         answers[question_number].append(answer_number)
                     else:
                         answers[question_number] = answer_list
+                    if answer_number[len(answer_number) - 1] in questions_selected[counter-1].answers:
+                        score = score + (1/int(questions_selected[counter-1].number_of_selection))
+                        # correct selection
+                    else:
+                        pass
+                        # do nothing the answer is wrong
+
+
                 else:
+                    # this means it is a single choice and format Qx = 'answerX'
+                    counter = int(element[0][1])
                     question_number = element[0]
                     answer_number = element[1]
-                    answer_list.append(answer_number)
-                    answers[question_number]= answer_list
+                    answer_list.append(answer_number) # create the list
+                    answers[question_number]= answer_list # add to the dictionary
+                    # if getattr(questions_selected[counter],'answer_' + str(counter) + '_value') == answer_number:
+                    if answer_number[len(answer_number) - 1] in questions_selected[counter].answers:
+                        # correct selection
+                        score = score +1
+                    else:
+                        # do nothing the answer is wrong
+                        pass
                     pass
         # we should test if it comes from a valid form (it maybe access directly from the URL?)
 
         # Register information, answers and result
+        # for counter in range(len(questions_selected)):
+        #     q = questions_selected[counter]
+        #     angetattr(q, 'answer_1_value')
+
         if test.completed != 'Yes':
             test.date_complete = datetime.datetime.now()
             test.completed = 'Yes'
             test.answers = answers
+            # calculate score
+            test.score = score
+
             test.save()
 
         return HttpResponseRedirect(reverse('test_questions_submit_view',kwargs = {'token': token}))

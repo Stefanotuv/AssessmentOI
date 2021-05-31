@@ -208,6 +208,7 @@ function type_of_question(type) {
     }
     else if(type == "multi"){
         number_of_correct_answers.disabled = false
+        document.getElementById('num_of_correct_answer_1').hidden = true
         number_of_answers.disabled = false
         number_of_correct_answers.selectedIndex = 1
         number_of_answers.selectedIndex = 1
@@ -277,20 +278,20 @@ function startTimer(duration) {
     }, 1000);
 }
 
-function answer_correct_selection_check(number){
-    debugger
-    correct_answers = document.getElementById("number_of_correct_answers")
-    number_of_correct_answers_selected = parseInt(correct_answers[correct_answers.selectedIndex].value)
-    current_selected = 0
-    for (i=0;i<$("input:checkbox").length;i++){
-        if ($("input:checkbox")[i].checked){
-            current_selected++
-        }
-    }
-    if (current_selected >= number_of_correct_answers_selected){
-        document.getElementsByName('answer_m_' + number + '_value')[0].checked = false
-    }
-}
+// function answer_correct_selection_check(number){
+//     debugger
+//     correct_answers = document.getElementById("number_of_correct_answers")
+//     number_of_correct_answers_selected = parseInt(correct_answers[correct_answers.selectedIndex].value)
+//     current_selected = 0
+//     for (i=0;i<$("input:checkbox").length;i++){
+//         if ($("input:checkbox")[i].checked){
+//             current_selected++
+//         }
+//     }
+//     if (current_selected >= number_of_correct_answers_selected){
+//         document.getElementsByName('answer_m_' + number + '_value')[0].checked = false
+//     }
+// }
 
 
 

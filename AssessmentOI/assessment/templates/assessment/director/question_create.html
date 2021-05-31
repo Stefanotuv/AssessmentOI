@@ -154,7 +154,7 @@
                                 <div class="col-md-10 col-sm-10 col-xs-12" style="padding-left: 0px">
                                     <select name="number_of_answers_selected" id="number_of_correct_answers" class="form-control" required disabled
                                          onchange="selectedNumberOfAnswers()">
-                                      <option value="1">1</option>
+                                      <option id="num_of_correct_answer_1" value="1">1</option>
                                       <option value="2">2</option>
                                       <option value="3">3</option>
                                       <option value="4">4</option>
@@ -366,7 +366,7 @@
 {#                    checkbox#}
                     <div class="row" id="check_row" hidden>
 
-                        <div name="answer_check" id="answer1" class="form-group col-md-12 col-sm-12 col-xs-12">
+                        <div class="form-group col-md-12 col-sm-12 col-xs-12">
                             <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
                             <div class="col-md-8 col-sm-8 col-xs-12"  >
                                 <div class="col-md-2 col-sm-2 col-xs-12"  ></div>
@@ -548,12 +548,12 @@
 {% block javascripts %}
   {{ block.super }}
     <script>
-        $('input:checkbox').on('ifChecked',function() {
-            debugger
-            answer_correct_selection_check(this.name.split("_")[2])
-            debugger
-          console.log('TEST');
-         });
+        {#$('input:checkbox').on('ifChecked',function() {#}
+        {#    debugger#}
+        {#    answer_correct_selection_check(this.name.split("_")[2])#}
+        {#    debugger#}
+        {#  console.log('TEST');#}
+        {# }); #}
 
     </script>
 
