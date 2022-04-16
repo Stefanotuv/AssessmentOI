@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dotenv
+import cx_Oracle
+
+cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/connect")
+# from dotenv import load_dotenv
+# load_dotenv()
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,10 +33,10 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-# BASE_DIR = Path(__file__).resolve().parent.parent
-# SECRET_KEY = 'django-insecure-*buuu-oaji#2m^oi#@(^^2c)d_s%3u5e5#rbxz^uiu_28mrw_@'
+BASE_DIR = Path(__file__).resolve().parent.parent
+
 SECRET_KEY = os.environ['SECRET_KEY']
-HOSTNAME = os.environ['HOSTNAME']
+# HOSTNAME = os.environ['HOSTNAME']
 # POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
 POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
 POSTGRESQL_USER = os.environ['POSTGRESQL_USER']
@@ -38,14 +44,15 @@ POSTGRESQL_PASSWORD = os.environ['POSTGRESQL_PASSWORD']
 # POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
 POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
 # POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
-POSTGRESQL_HOST = 'localhost'
+# POSTGRESQL_HOST = 'localhost'
 POSTGRESQL_PORT =  ''
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [HOSTNAME,'*']
+# ALLOWED_HOSTS = [HOSTNAME,'*']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -62,6 +69,7 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
 
+
     # TODO: #1  The following apps are required for allauth
     'django.contrib.sites',
     'allauth',
@@ -70,6 +78,7 @@ INSTALLED_APPS = [
 
     # TODO: #2  to use operations on templates
     'mathfilters',
+
 ]
 
 MIDDLEWARE = [
@@ -127,6 +136,17 @@ DATABASES = {
 #         'PASSWORD': POSTGRESQL_PASSWORD,
 #         'HOST': POSTGRESQL_HOST,
 #         'PORT': POSTGRESQL_PORT,
+#     }
+# }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': 'db202112252237_low',
+#         'USER': 'admin',
+#         'PASSWORD': 'Pinocchi0Pinocchi0',  # Please provide the db password her
+#         # 'HOST': 'adb.uk-london-1.oraclecloud.com',
+#         # 'PORT': ,
 #     }
 # }
 

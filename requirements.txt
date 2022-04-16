@@ -1,4 +1,4 @@
-pip==21.1.1
+pip
 setuptools==56.1.0
 Django==3.2.1
 Pillow==8.0.1
@@ -10,4 +10,7 @@ django-allauth==0.44.0
 # with another loop in django as the main variable doesnt have a cardinal number
 django-mathfilters==1.0.0
 openpyxl==3.0.7
+python-dotenv
 # python-dotnev==0.17.1
+psycopg2-binary
+cx_oracle
