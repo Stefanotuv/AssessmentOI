@@ -15,7 +15,7 @@ import os
 import dotenv
 import cx_Oracle
 
-# cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/connect")
+# cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/connect") #to add oracle
 # from dotenv import load_dotenv
 # load_dotenv()
 
