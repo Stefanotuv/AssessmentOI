@@ -139,16 +139,7 @@ DATABASES = {
 #     }
 # }
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.oracle',
-#         'NAME': 'db202112252237_low',
-#         'USER': 'admin',
-#         'PASSWORD': 'Pinocchi0Pinocchi0',  # Please provide the db password her
-#         # 'HOST': 'adb.uk-london-1.oraclecloud.com',
-#         # 'PORT': ,
-#     }
-# }
+
 
 
 # Password validation
