@@ -904,7 +904,7 @@ class TestQuestionsSubmitUpdate(TemplateView):
                     answer_list.append(answer_number) # create the list
                     answers[question_number]= answer_list # add to the dictionary
                     # if getattr(questions_selected[counter],'answer_' + str(counter) + '_value') == answer_number:
-                    if answer_number[len(answer_number) - 1] in questions_selected[counter].answers:
+                    if answer_number[len(answer_number) - 1] in questions_selected[counter-1].answers:
                         # correct selection
                         score = score +1
                     else:

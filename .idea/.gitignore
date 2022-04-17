@@ -2,3 +2,5 @@
 /shelf/
 /workspace.xml
 .configurations_instructions.txt
+.env
+.production_deployment
