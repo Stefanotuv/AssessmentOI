@@ -2,7 +2,7 @@ from django import forms
 from django.apps import apps
 from .models import *
 from django.forms import ClearableFileInput
-from django.utils.translation import ugettext_lazy as _
+# from django.utils.translation import ugettext_lazy as _
 
 
 class AssessmentForm(forms.ModelForm):
