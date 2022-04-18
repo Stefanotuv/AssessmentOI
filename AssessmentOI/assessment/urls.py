@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.urls import path, include, re_path
 # from . import views
-from AssessmentOI.assessment.views import *
-# from .views import *
+# from AssessmentOI.assessment.views import *
+from .views import *
 
 
 urlpatterns = [

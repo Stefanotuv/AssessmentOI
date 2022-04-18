@@ -8,7 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, TemplateView, CreateView
 from django.shortcuts import get_object_or_404
 from .models import *
-from forms import *
+from .forms import *
 from django.urls import reverse
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
