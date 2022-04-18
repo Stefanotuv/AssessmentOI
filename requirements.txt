@@ -1,16 +1,26 @@
 pip
+pymysql
 setuptools==56.1.0
-Django==3.2.1
-Pillow==8.0.1
-django-crispy-forms==1.11.2
-
+Django==4.0
+Pillow==8.4.0
+django-allauth
+django-crispy-forms==1.13.0
+django-cors-headers==3.10.1
 django-allauth==0.44.0
+openpyxl==3.0.7
 
 # added to perform math operations on tags for template. The issue it is used for is to have a counter loop
 # with another loop in django as the main variable doesnt have a cardinal number
 django-mathfilters==1.0.0
-openpyxl==3.0.7
+
+django-utils-six
+pandas
+xlsxwriter
+
+djangorestframework
+
+# to use .env for production
 python-dotenv
-# python-dotnev==0.17.1
-psycopg2-binary
+# to connect to autonomous
 cx_oracle
+# djangorestframework-simplejwt
