@@ -15,7 +15,7 @@ import os
 import dotenv
 import cx_Oracle
 
-cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/connect/network/admin") #to add oracle
+cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/connect") #to add oracle
 # from dotenv import load_dotenv
 # load_dotenv()
 
