@@ -15,7 +15,7 @@ import os
 import dotenv
 import cx_Oracle
 
-# cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/connect") #to add oracle
+cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/connect") #to add oracle
 # from dotenv import load_dotenv
 # load_dotenv()
 
@@ -38,14 +38,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY']
 # HOSTNAME = os.environ['HOSTNAME']
 # POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
-POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
-POSTGRESQL_USER = os.environ['POSTGRESQL_USER']
-POSTGRESQL_PASSWORD = os.environ['POSTGRESQL_PASSWORD']
+# POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
+# POSTGRESQL_USER = os.environ['POSTGRESQL_USER']
+# POSTGRESQL_PASSWORD = os.environ['POSTGRESQL_PASSWORD']
+# # POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
 # POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
-POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
-# POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
-# POSTGRESQL_HOST = 'localhost'
-POSTGRESQL_PORT =  ''
+# # POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
+# # POSTGRESQL_HOST = 'localhost'
+# POSTGRESQL_PORT =  ''
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
