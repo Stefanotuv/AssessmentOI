@@ -28,7 +28,7 @@ if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
-# SECRET_KEY = 'django-insecure-*buuu-oaji#2m^oi#@(^^2c)d_s%3u5e5#rbxz^uiu_28mrw_@'
+
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
