@@ -13,12 +13,6 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dotenv
-import cx_Oracle
-
-cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/connect/instantclient_21_5") #to add oracle
-# from dotenv import load_dotenv
-# load_dotenv()
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,25 +27,13 @@ dotenv_file = os.path.join(BASE_DIR, ".env")
 if os.path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.environ['SECRET_KEY']
-# HOSTNAME = os.environ['HOSTNAME']
-# POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
-# POSTGRESQL_DB = os.environ['POSTGRESQL_DB']
-# POSTGRESQL_USER = os.environ['POSTGRESQL_USER']
-# POSTGRESQL_PASSWORD = os.environ['POSTGRESQL_PASSWORD']
-# # POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
-# POSTGRESQL_HOST = os.environ['POSTGRESQL_HOST']
-# # POSTGRESQL_PORT =  os.environ['POSTGRESQL_PORT']
-# # POSTGRESQL_HOST = 'localhost'
-# POSTGRESQL_PORT =  ''
-
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = [HOSTNAME,'*']
 ALLOWED_HOSTS = ['*']
 
 
@@ -69,7 +51,6 @@ INSTALLED_APPS = [
 
     'users.apps.UsersConfig',
 
-
     # TODO: #1  The following apps are required for allauth
     'django.contrib.sites',
     'allauth',
@@ -78,7 +59,6 @@ INSTALLED_APPS = [
 
     # TODO: #2  to use operations on templates
     'mathfilters',
-
 ]
 
 MIDDLEWARE = [
@@ -106,7 +86,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'assessment.context_processors.export_vars',
             ],
             'libraries':{
                     'template_filters': 'assessment.template_filters',
@@ -121,36 +100,12 @@ WSGI_APPLICATION = 'AssessmentOI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': POSTGRESQL_DB,
-#         'USER': POSTGRESQL_USER,
-#         'PASSWORD': POSTGRESQL_PASSWORD,
-#         'HOST': POSTGRESQL_HOST,
-#         'PORT': POSTGRESQL_PORT,
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': os.environ['ENGINE'],
-        'NAME': os.environ['NAME'],
-        'USER':  os.environ['DB_USER'],
-        'PASSWORD':  os.environ['PASSWORD'],
-        # 'HOST':  os.environ['HOST'],
-        # 'PORT': '1522',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
-
 
 
 # Password validation
@@ -208,11 +163,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/') # added for prod
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -223,16 +176,22 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
-    # os.path.join(BASE_DIR, 'static'),
-#    os.path.join(BASE_DIR, '../media/static'),
+    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, '../media/static'),
 )
 
 
 # TODO: #8  Use the new user app
 AUTH_USER_MODEL = 'users.User' # new
 LOGIN_URL = 'users_login'
-
-# change the redirection for the token it was for the previous iteration
-# LOGIN_REDIRECT_URL = 'validate_token_view'
+# LOGIN_REDIRECT_URL = 'validate_token_view' # this will request the token validation for any user but it should only do it for candidates
 
 LOGIN_REDIRECT_URL = 'home_view'
+
+EMAIL_BACKEND = os.environ['EMAIL_BACKEND']
+EMAIL_USE_TLS = os.environ['EMAIL_USE_TLS']
+EMAIL_HOST = os.environ['EMAIL_HOST']
+EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
+EMAIL_PORT = os.environ['EMAIL_PORT']
+DEFAULT_FROM_EMAIL = os.environ['DEFAULT_FROM_EMAIL']

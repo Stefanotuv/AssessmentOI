@@ -61,7 +61,7 @@ class Question(models.Model):
 
     answers = models.CharField(max_length=20) # it is mandatory to include the answer to the question
 
-    image = models.ImageField(blank=True, null=True, upload_to='question_pics')
+    image = models.ImageField(blank=True, null=True, upload_to='question_pics',default='')
 
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)

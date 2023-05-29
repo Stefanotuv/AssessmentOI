@@ -1,5 +1,7 @@
 import sys
-
+from django.template import Template
+from django.template.loader import render_to_string, get_template
+from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render
 
 # Create your views here.
@@ -17,6 +19,12 @@ import openpyxl # to upload file
 import datetime
 from users.models import User
 
+from django import forms
+from django.conf import settings
+from django.core.mail import send_mail
+
+
+from django.core.mail import EmailMultiAlternatives
 def gentella_html(request):
     context = {}
     # The template to be loaded as per gentelella.
@@ -217,11 +225,13 @@ class ValidateTokenView(ListView):
         if assessment_query:
             assessment = Assessment.objects.filter(token=token)[0]
             if assessment.candidate_email == request.user.email:
-                return HttpResponseRedirect(reverse('home_view', kwargs={'token': token}))
+                # return HttpResponseRedirect(reverse('candidate_home_view', kwargs={'token': token}))
+                return HttpResponseRedirect(reverse('candidate_home_view'))
             else:
-                return HttpResponseRedirect(reverse('validate_token_view'))
+                # return HttpResponseRedirect(reverse('validate_token_view',)) # add return message for the page
+                return HttpResponseRedirect(reverse('validate_token_view', kwargs={'token': token}))
         else:
-            return HttpResponseRedirect(reverse('validate_token_view'))
+            return HttpResponseRedirect(reverse('validate_token_view')) # add return message for the page
 
 @method_decorator(login_required, name='dispatch')
 class Home(UpdateView):
@@ -292,7 +302,6 @@ class Home(UpdateView):
 
         def calculate_score(self, assessment, answers):
             pass
-
         pass
 
 # **** **** **** **** **** ****
@@ -308,7 +317,8 @@ class HomeView(TemplateView):
             if request.user.is_staff:
                 return HttpResponseRedirect(reverse('dashboard_view'))
             else:
-                return HttpResponseRedirect(reverse('candidate_home_view'))
+                return HttpResponseRedirect(reverse('validate_token_view'))
+                # return HttpResponseRedirect(reverse('candidate_home_view'))
             pass
 
 # **** Director Classes
@@ -323,20 +333,14 @@ class DashboardView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['questions'] = Question.objects.all()
-
         context['tot_number_of_assessment'] = len(Assessment.objects.all())
-
         context['assessment_created_30_days'] = len(Assessment.objects.filter(date_creation__range=[
                             datetime.datetime.now() - datetime.timedelta(30),
                             datetime.datetime.now()]))
-
-
         context['assessment_completed'] = len(Assessment.objects.exclude(date_complete = None))
         context['assessment_completed_30_days'] = len(Assessment.objects.filter(date_creation__range=[
                                              datetime.datetime.now() - datetime.timedelta(30),
                                              datetime.datetime.now()]).exclude(date_complete = None))
-
-
         return context
 
 @method_decorator(login_required, name='dispatch')
@@ -405,28 +409,68 @@ class AssessmentCreateView(ListView):
         try:
             newAssessment = Assessment(
                 assessment_name = request.POST['test_name'],
-
                 candidate_name =  request.POST['candidate_name'],
                 candidate_surname = request.POST['candidate_surname'],
                 candidate_email = request.POST['candidate_email'],
-
                 token = request.POST['token'],
-
                 creator_email = request.user.email,
-
                 date_creation = datetime.datetime.now(),
-
                 time_to_complete = request.POST['duration'],
-
             )
             newAssessment.save()
-
             newAssessment.questions_selected.add(*questions_selected_number)
             newAssessment.save()
+            # after creating the assessment send an email to the candidate and an email to the sender
+            # the email to the candidate should have the token to run the test
+
+            # it works. previous version of sending email but only text
+
+            # send_mail(
+            #     subject="email from test",
+            #     message="msg",
+            #     from_email=request.user.email,
+            #     recipient_list=[request.POST['candidate_email']]
+            # )
+            email_template = "assessment/templates/template_email_test_invitation.html"
+
+            # link = get_current_site(request).domain + '/assessment/candidate/token?'+ request.POST['token']
+
+            # if we send the token still the candidate will need to login. so preferably we send to the login
+            #     page and let the candidate to insert user and password
+
+            # the current site should be changed to the ip of the running server... this need to be changed in the
+            # admin site app.
+
+            link = get_current_site(request).domain + '/assessment/'
+
+
+            candidate = request.POST['candidate_name']
+            token = request.POST['token'],
+
+            send_emails(request, email_template, link, candidate, token)
+
             return HttpResponseRedirect(reverse('assessment_list_view'))
         except ValueError:
             request.session['message'] = 'Assessment NOT Saved - Make sure the name of the assessment and the Token have NOT been used before. Retry'
             return super().get(request, *args, **kwargs)
+
+def send_emails(request,email_template,link,candidate,token):
+    # to add the tags
+    merge_data = {
+        'link': link,
+        'candidate': candidate,
+        'token':token,
+    }
+    html_body = render_to_string(email_template, merge_data)
+    #html_body = get_template("assessment/templates/template_email_test_invitation.html",merge_data).render()
+    message = EmailMultiAlternatives(
+       subject='Django HTML Email',
+       body="mail testing",
+       from_email=request.user.email,
+       to=[request.POST['candidate_email']]
+    )
+    message.attach_alternative(html_body, "text/html")
+    message.send(fail_silently=False)
 
 
 @method_decorator(login_required, name='dispatch')
@@ -513,7 +557,10 @@ class QuestionCreateView(CreateView):
         try:
             model_class(**data_dict).save()
             print('question saved')
-        except:
+        except ValueError:
+            print('question saved')
+            pass
+        else:
             print('question not saved')
 
         return HttpResponseRedirect(reverse('question_list_view'))
@@ -533,6 +580,9 @@ class QuestionCreateFromFileView(CreateView):
         return context
 
     def post(self, request, *args, **kwargs):
+
+
+
         saved_questions = []
         not_saved_questions = []
         if (len(request.FILES)!=0) :
@@ -557,6 +607,9 @@ class QuestionCreateFromFileView(CreateView):
             headers_file = []
             data_dict = {}
             data_dict_rows= {}
+
+
+
             for row in worksheet.iter_rows():
                 row_data = list()
                 j = 0
@@ -565,6 +618,7 @@ class QuestionCreateFromFileView(CreateView):
                         row_data.append(str(cell.value))
                         if i != 0:
                             data_dict[headers_file[j]] = str(cell.value)
+                            data_dict['image'] = None
                     else:
                         row_data.append(None)
                         if i != 0:
@@ -579,12 +633,17 @@ class QuestionCreateFromFileView(CreateView):
 
                 else:
                     try:
+                        # {ValueError}
+                        # ValueError("The 'image' attribute has no file associated with it.")
                         excel_data_no_headers.append(row_data)
                         model_class(**data_dict).save()
                         print('saved question number:%s'% i)
                         saved_questions.append(i)
-                    except:
-                        print('not saved')
+                    except ValueError:
+                        print('saved question number:%s' % i)
+                        saved_questions.append(i)
+                        pass
+                    else:
                         not_saved_questions.append(i)
                         pass
                 data_dict = {}
@@ -635,11 +694,6 @@ class QuestionListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
-
-
-
-
 
 
 # **** Candidate Classes

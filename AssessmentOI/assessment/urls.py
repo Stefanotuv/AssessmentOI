@@ -17,8 +17,8 @@ urlpatterns = [
     # path("assessment/<pk>/detail", AssessmentDetailView.as_view(template_name='assessment/assessment_detail.html'),
     #      name='assessment_detail_view'),
     #
-    # path("validate_token/", ValidateTokenView.as_view(template_name='assessment/validate_token.html'),
-    #      name='validate_token_view'),
+    path("validate_token/", ValidateTokenView.as_view(template_name='assessment/validate_token.html'),
+         name='validate_token_view'),
     #
     # path("test/test_launch/<slug:token>", TestQuestionsView.as_view(template_name='assessment/test_launch.html'),
     #      name='test_launch_view'),

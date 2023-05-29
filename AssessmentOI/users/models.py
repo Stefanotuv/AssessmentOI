@@ -87,12 +87,12 @@ class Profile(models.Model):
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
 
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width >300:
-            output_size = (300,300)
-            img.thumbnail(output_size)
-            img = Image.open(self.image.path)
+        # img = Image.open(self.image.path)
+        #
+        # if img.height > 300 or img.width >300:
+        #     output_size = (300,300)
+        #     img.thumbnail(output_size)
+        #     img = Image.open(self.image.path)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender,instance, created, **kwargs):
