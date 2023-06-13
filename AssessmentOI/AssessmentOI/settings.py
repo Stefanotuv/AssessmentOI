@@ -129,10 +129,13 @@ elif DATABASE_TYPE == 'oracle':
 elif DATABASE_TYPE == 'sqllite':
     DB['ENGINE'] = 'django.db.backends.sqlite3'
     DB['NAME'] = BASE_DIR / 'db.sqlite3'
-
+    DB['USER'] = ''
+    DB['PASSWORD'] = ''
 else:
     DB['ENGINE'] = 'django.db.backends.sqlite3'
     DB['NAME'] = BASE_DIR / 'db.sqlite3'
+    DB['USER'] = ''
+    DB['PASSWORD'] = ''
 
 DATABASES = {
     # 'default': {
@@ -142,7 +145,12 @@ DATABASES = {
     # 'default': { DB }
 
     'default': {
-        DB
+        'ENGINE': DB['ENGINE'],
+        'NAME': DB['NAME'],
+        'USER': DB['USER'],
+        'PASSWORD': DB['PASSWORD'],
+        'HOST': DB['HOST'],
+        'PORT': DB['PORT'],
     }
 }
 
