@@ -1,0 +1,94 @@
+
+# deploy VM install webserver and test VM connectivity
+
+ssh-keygen -t rsa
+
+sudo apt update
+sudo apt upgrade
+
+sudo apt install nginx
+systemctl status nginx
+
+curl localhost
+
+sudo apt-get install iptables-persistent
+sudo iptables -I INPUT 5 -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
+
+
+# deploy Postgres on VM and test DB remote connectivity
+
+sudo apt update
+sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+sudo -u postgres psql
+
+CREATE DATABASE newdb;
+CREATE USER master WITH PASSWORD 'SecurePassword';
+GRANT ALL PRIVILEGES ON DATABASE newdb TO master;
+# CREATE USER master WITH ENCRYPTED PASSWORD 'SecurePassword';
+# ALTER ROLE director SET client_encoding TO 'utf8';
+# ALTER ROLE director SET default_transaction_isolation TO 'read committed';
+# ALTER ROLE director SET timezone TO 'UTC';
+\q
+
+sudo nano /etc/postgresql/14/main/postgresql.conf -> use '*'
+sudo nano /etc/postgresql/14/main/pg_hba.conf -> change 127.0.0.1/32 -> 0.0.0.0/0
+
+sudo apt-get install iptables-persistent
+# sudo iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 5432 -j ACCEPT
+sudo iptables -I INPUT 5 -p tcp --dport 5432 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
+
+sudo systemctl restart postgresql # the server has to be restarted to reload the changes on the config files
+sudo systemctl status postgresql
+
+# deploy MySQL on VM and test DB remote connectivity
+
+https://www.youtube.com/watch?v=4QrQlKtluK8&t=359s
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install mysql-server -y
+
+sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+
+sudo systemctl restart mysql
+sudo systemctl enable mysql
+sudo systemctl status mysql
+sudo mysql -V
+
+sudo apt-get install iptables-persistent
+# sudo iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
+sudo iptables -I INPUT 5 -p tcp --dport 3306 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
+
+sudo mysql
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'S3curePassword!';
+exit
+
+mysql -u root -p
+
+# sudo mysql_secure_installation
+
+CREATE USER 'director'@'localhost' IDENTIFIED BY 'S3curePassword!';
+GRANT ALL PRIVILEGES ON *.* TO 'director@'localhost' IDENTIFIED BY 'S3curePassword!';
+
+ALTER USER 'director'@'localhost' IDENTIFIED WITH mysql_native_password BY 'S3curePassword!';
+RENAME USER 'director'@'localhost' to 'director'@'%';
+
+CREATE DATABASE assessment;
+
+GRANT ALL PRIVILEGES ON *.* TO 'director'@'%';
+# GRANT ALL PRIVILEGES ON *.* TO 'director'@'%' IDENTIFIED BY 'S3curePassword!';
+
+select user, plugin, host from mysql.user;
+
+GRANT ALL PRIVILEGES ON *.* TO 'director@'%' IDENTIFIED BY 'S3curePassword!';
+
+CREATe USER 'director_remote@'%' identified
+
+exit
+
+mysql -u root -p
+
+
+
