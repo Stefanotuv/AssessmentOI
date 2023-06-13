@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 from pathlib import Path
 import os
 import dotenv
-
+import django.db.backends.postgresql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -100,10 +100,54 @@ WSGI_APPLICATION = 'AssessmentOI.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
+DATABASE_TYPE = os.environ['DATABASE_TYPE']
+
+DB = {}
+
+if DATABASE_TYPE == 'postgres':
+    DB['ENGINE'] = 'django.db.backends.postgresql'
+    DB['NAME'] = os.environ['POSTGRESQL_DB']
+    DB['USER'] = os.environ['POSTGRESQL_USER']
+    DB['PASSWORD'] = os.environ['POSTGRESQL_PASSWORD']
+    DB['HOST'] = os.environ['POSTGRESQL_HOST']
+    DB['PORT'] = ''
+
+elif DATABASE_TYPE == 'mysql':
+    DB['ENGINE'] = 'django.db.backends.mysql'
+    DB['NAME'] = os.environ['MYSQL_DB']
+    DB['USER'] = os.environ['MYSQL_USER']
+    DB['PASSWORD'] = os.environ['MYSQL_PASSWORD']
+    DB['HOST'] = os.environ['MYSQL_HOST']
+    DB['PORT'] = os.environ['MYSQL_PORT']
+
+elif DATABASE_TYPE == 'oracle':
+    DB['ENGINE'] = 'django.db.backends.oracle'
+    DB['NAME'] = os.environ['ORACLE_NAME']
+    DB['USER'] = os.environ['ORACLE_USER']
+    DB['PASSWORD'] = os.environ['ORACLE_PASSWORD']
+
+elif DATABASE_TYPE == 'sqllite':
+    DB['ENGINE'] = 'django.db.backends.sqlite3'
+    DB['NAME'] = BASE_DIR / 'db.sqlite3'
+
+else:
+    DB['ENGINE'] = 'django.db.backends.sqlite3'
+    DB['NAME'] = BASE_DIR / 'db.sqlite3'
+
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # },
+    # 'default': { DB }
+
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ['POSTGRESQL_DB'],
+        'USER': os.environ['POSTGRESQL_USER'],
+        'PASSWORD': os.environ['POSTGRESQL_PASSWORD'],
+        'HOST': os.environ['POSTGRESQL_HOST'],
+        'PORT': '',
     }
 }
 
@@ -176,8 +220,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR,'media')
 MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-    os.path.join(BASE_DIR, '../media/static'),
+    os.path.join(BASE_DIR, 'assessment/static'),
+    # os.path.join(BASE_DIR, '../media/static'),
 )
 
 

@@ -36,8 +36,21 @@
                           <div class="x_panel">
                             <div class="x_title">
                               <h2>Assessment Details </h2>
-                                <a href="{% url 'assessment_list_view' %}"><h2 class="pull-right"><i class="fas fa-step-backward" style="padding-left: 2%"></i></h2>
-                                <h2 class="pull-right" style="padding-right: 1%;">Back to List</h2></a>
+
+
+
+                              <a href="{% url 'assessment_list_view' %}"><h2 class="pull-right"><i class="fas fa-step-backward" style="padding-left: 2%"></i></h2>
+                                    <h2 class="pull-right" style="padding-right: 1%;">Back to List</h2>
+                              </a>
+
+                               <a onclick="submit_changes()" ><h2 class="pull-right"><i class="fas fa-paper-plane" style="padding-right:3em"></i></h2>
+                                    <h2 class="pull-right" style="padding-right:1em;">Submit</h2>
+                              </a>
+
+
+                               <a onclick="edit_fields()"><h2 class="pull-right"><i class="fas fa-edit" style="padding-right:1em"></i></h2>
+                                    <h2 class="pull-right" style="padding-right:1em">Edit</h2>
+                              </a>
 
                               <div class="clearfix"></div>
                             </div>
@@ -233,7 +246,7 @@
 
 {% block javascripts %}
   {{ block.super }}
-
+{##TODO: add the logic to manage the edit and submit#}
 
 {% endblock javascripts %}
 

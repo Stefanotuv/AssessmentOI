@@ -1,0 +1,65 @@
+
+
+
+ssh ubuntu@152.67.131.11
+
+
+
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-16-04
+
+sudo apt-get update
+sudo apt-get install python3-pip -y
+sudo apt-get install python-dev -y
+sudo apt-get install libpq-dev postgresql postgresql-contrib nginx -y
+sudo apt-get -y install nano
+sudo -u postgres psql
+
+
+myproject —> AssessmentOI;
+myprojectuser —> director
+
+CREATE DATABASE AssessmentOI;
+CREATE USER director WITH PASSWORD 'Pinocchi0';
+
+
+ALTER ROLE director SET client_encoding TO 'utf8';
+ALTER ROLE director SET default_transaction_isolation TO 'read committed';
+ALTER ROLE director SET timezone TO 'UTC';
+
+GRANT ALL PRIVILEGES ON DATABASE AssessmentOI TO director;
+\q
+
+sudo -H pip3 install --upgrade pip
+sudo -H pip3 install virtualenv
+
+mkdir ~/AssessmentOI
+cd AssessmentOI
+
+sudo apt install git -y
+
+virtualenv AssessmentOIenv
+
+source AssessmentOIenv/bin/activate
+
+pip install django gunicorn psycopg2
+
+git clone https://github.com/Stefanotuv/AssessmentOI.git
+
+— Modify settings.py —
+
+
+pip install -r requirements.txt
+Python-donet==0.17.1
+
+
+service postgresql status
+To change the Postgres connection
+https://stackoverflow.com/questions/38466190/cant-connect-to-postgresql-on-port-5432
+
+
+sudo apt install ufw
+
+152.67.131.11
+
+------------------------------------------------------------------------------------------------------
+
