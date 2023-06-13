@@ -36,6 +36,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Application definition
 
@@ -212,6 +213,7 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
 
 
 # Static files (CSS, JavaScript, Images)
