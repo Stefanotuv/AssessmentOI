@@ -36,7 +36,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'assessment/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 # Application definition
 
@@ -232,6 +232,7 @@ MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'assessment/static'),
+    os.path.join(BASE_DIR, 'user/static'),
     # os.path.join(BASE_DIR, '../media/static'),
 )
 
