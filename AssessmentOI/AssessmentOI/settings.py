@@ -15,6 +15,7 @@ import os
 import dotenv
 import django.db.backends.postgresql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
+import cx_Oracle
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
@@ -122,6 +123,12 @@ elif DATABASE_TYPE == 'mysql':
     DB['PORT'] = os.environ['MYSQL_PORT']
 
 elif DATABASE_TYPE == 'oracle':
+    if (os.environ('DEPLOYMENT') == 'local'):
+        cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
+    elif (os.environ('DEPLOYMENT') == 'remote'):
+        cx_Oracle.init_oracle_client(lib_dir="home/ubuntu/AssessmentOI/wallet_prod")
+    else:
+        cx_Oracle.init_oracle_client(lib_dir="home/ubuntu/AssessmentOI/wallet_prod")
     DB['ENGINE'] = 'django.db.backends.oracle'
     DB['NAME'] = os.environ['ORACLE_NAME']
     DB['USER'] = os.environ['ORACLE_USER']
