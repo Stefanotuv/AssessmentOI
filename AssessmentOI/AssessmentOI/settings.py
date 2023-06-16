@@ -128,7 +128,8 @@ elif DATABASE_TYPE == 'oracle':
         oracledb.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
     elif (os.environ['DEPLOYMENT'] == 'remote'):
         # cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
-        oracledb.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
+        # oracledb.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
+        pass
     else:
         # cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
         oracledb.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
