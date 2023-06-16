@@ -17,7 +17,7 @@ import django.db.backends.postgresql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import cx_Oracle
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+import oracledb
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -124,11 +124,14 @@ elif DATABASE_TYPE == 'mysql':
 
 elif DATABASE_TYPE == 'oracle':
     if (os.environ['DEPLOYMENT'] == 'local'):
-        cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
+        # cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
+        oracledb.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
     elif (os.environ['DEPLOYMENT'] == 'remote'):
-        cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
+        # cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
+        oracledb.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
     else:
-        cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
+        # cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
+        oracledb.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
     DB['ENGINE'] = 'django.db.backends.oracle'
     DB['NAME'] = os.environ['ORACLE_NAME']
     DB['USER'] = os.environ['ORACLE_USER']
