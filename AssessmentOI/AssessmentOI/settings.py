@@ -103,7 +103,7 @@ WSGI_APPLICATION = 'AssessmentOI.wsgi.application'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASE_TYPE = os.environ['DATABASE_TYPE']
-
+DEPLOYMENT = os.environ['DEPLOYMENT']
 DB = {}
 
 if DATABASE_TYPE == 'postgres':
@@ -123,9 +123,9 @@ elif DATABASE_TYPE == 'mysql':
     DB['PORT'] = os.environ['MYSQL_PORT']
 
 elif DATABASE_TYPE == 'oracle':
-    if (os.environ('DEPLOYMENT') == 'local'):
+    if (os.environ['DEPLOYMENT'] == 'local'):
         cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
-    elif (os.environ('DEPLOYMENT') == 'remote'):
+    elif (os.environ['DEPLOYMENT'] == 'remote'):
         cx_Oracle.init_oracle_client(lib_dir="home/ubuntu/AssessmentOI/wallet_prod")
     else:
         cx_Oracle.init_oracle_client(lib_dir="home/ubuntu/AssessmentOI/wallet_prod")
