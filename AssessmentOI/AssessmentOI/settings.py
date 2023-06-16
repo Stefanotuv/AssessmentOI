@@ -126,9 +126,9 @@ elif DATABASE_TYPE == 'oracle':
     if (os.environ['DEPLOYMENT'] == 'local'):
         cx_Oracle.init_oracle_client(lib_dir="/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet")
     elif (os.environ['DEPLOYMENT'] == 'remote'):
-        cx_Oracle.init_oracle_client(lib_dir="home/ubuntu/AssessmentOI/wallet_prod")
+        cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
     else:
-        cx_Oracle.init_oracle_client(lib_dir="home/ubuntu/AssessmentOI/wallet_prod")
+        cx_Oracle.init_oracle_client(lib_dir="/home/ubuntu/AssessmentOI/wallet_prod")
     DB['ENGINE'] = 'django.db.backends.oracle'
     DB['NAME'] = os.environ['ORACLE_NAME']
     DB['USER'] = os.environ['ORACLE_USER']
