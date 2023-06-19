@@ -3,7 +3,7 @@ from django.template import Template
 from django.template.loader import render_to_string, get_template
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render
-
+import os
 # Create your views here.
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,6 +18,7 @@ from django.utils.decorators import method_decorator
 import openpyxl # to upload file
 import datetime
 from users.models import User
+
 
 from django import forms
 from django.conf import settings
@@ -707,6 +708,7 @@ class CandidateHomeView(TemplateView):
         def get_context_data(self, **kwargs):
             # token = self.kwargs['token']
             context = super().get_context_data(**kwargs)
+            context['DATABASE_TYPE'] = os.environ['DATABASE_TYPE']
             try:
                 context['assessment'] = Assessment.objects.filter(candidate_email__iexact=self.request.user.email)[0]
             except:

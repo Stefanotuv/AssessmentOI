@@ -1,0 +1,27 @@
+###################### postgres
+
+ deploy Postgres on VM and test DB remote connectivity
+
+sudo apt update
+sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+sudo -u postgres psql
+
+CREATE DATABASE newdb;
+CREATE USER master WITH PASSWORD 'SecurePassword';
+GRANT ALL PRIVILEGES ON DATABASE newdb TO master;
+# CREATE USER master WITH ENCRYPTED PASSWORD 'SecurePassword';
+# ALTER ROLE director SET client_encoding TO 'utf8';
+# ALTER ROLE director SET default_transaction_isolation TO 'read committed';
+# ALTER ROLE director SET timezone TO 'UTC';
+# \q
+
+sudo nano /etc/postgresql/14/main/postgresql.conf -> use '*'
+sudo nano /etc/postgresql/14/main/pg_hba.conf -> change 127.0.0.1/32 -> 0.0.0.0/0
+
+sudo apt-get install iptables-persistent
+# sudo iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 5432 -j ACCEPT
+sudo iptables -I INPUT 5 -p tcp --dport 5432 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
+
+sudo systemctl restart postgresql # the server has to be restarted to reload the changes on the config files
+sudo systemctl status postgresql

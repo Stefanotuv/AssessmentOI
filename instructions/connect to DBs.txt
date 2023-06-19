@@ -1,0 +1,9 @@
+Makes the changes to the settings
+
+1) test postgres
+2) test mysql
+
+
+sudo nano /home/ubuntu/AssessmentOI/AssessmentOI/AssessmentOI/settings.py
+
+DATABASE_TYPE = os.environ['DATABASE_TYPE']

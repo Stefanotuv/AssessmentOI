@@ -1,0 +1,97 @@
+###################### autonmous
+
+# create and ADB formthe OCI console, you only need to provide a password for the admin
+# we use an ADB with connectivity from anywhere
+Autonmous db password: S3curePassword!
+
+# downaload the wallet
+Wallet password: S3curePassword!
+
+Follow the instruction below to download all required files for connecting to the ADB
+https://python-oracledb.readthedocs.io/en/latest/user_guide/installation.html
+(old) https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+https://blogs.oracle.com/opal/post/connecting-to-oracle-cloud-autonomous-database-with-django
+
+python -m pip install oracledb --upgrade
+
+sudo pip install libaio
+
+the various file can be downloaded from here
+https://www.oracle.com/database/technologies/instant-client/downloads.html
+
+how to modify the settings for the conection
+
+and export the LIB_PATH
+
+------------------- LOCALLY -------------------
+
+export LD_LIBRARY_PATH=/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet:$LD_LIBRARY_PATH
+export ORACLE_HOME=/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet
+export TNS_ADMIN=$ORACLE_HOME/network/admin
+export NLS_LANG=English_America.UTF8
+export PATH=$PATH:$ORACLE_HOME
+
+------------------- REMOTE -------------------
+
+# transfer the modified files with the connectivity for ADB. the credentials in my case are saved on .env file
+scp -i /Users/stefano/.ssh/id_oci_test -r /Users/stefano/Dropbox/NewDev/AssessmentOI/AssessmentOI/.env ubuntu@141.147.107.248:/home/ubuntu/AssessmentOI/AssessmentOI/.env
+
+# in case you modified any python files you may want to refresh the application file
+# the assumption is that we are using the same app we have already installed on the VM
+git pull https://github.com/Stefanotuv/AssessmentOI.git
+
+# unzip wallet and client, put the file on the folder (under newtork/wallet and network/admin)
+# transfer all files for instant client and wallet to the remote machine
+# you can also downlaod with curl and then unzip (after downloading the unzip package)
+# however this way is much easier as you may haev already downloaded the files locally
+scp -i /Users/stefano/.ssh/id_oci_test -r /Users/stefano/Dropbox/NewDev/AssessmentOI/wallet_prod ubuntu@141.147.107.248:/home/ubuntu/AssessmentOI
+# dont put the last folder in the destionation path
+
+# to redo the transfer first delete the folder (and the file inside)
+rm -rf /home/ubuntu/AssessmentOI/wallet_prod
+
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn.socket
+sudo systemctl restart gunicorn
+
+sudo systemctl restart nginx
+sudo systemctl restart gunicorn
+sudo systemctl status gunicorn
+sudo systemctl restart gunicorn.socket
+sudo systemctl status gunicorn.socket
+
+source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
+
+sudo journalctl -u gunicorn >> SomeFile.txt
+
+
+
+export LD_LIBRARY_PATH=/home/ubuntu/AssessmentOI/wallet_prod:$LD_LIBRARY_PATH
+export ORACLE_HOME=/home/ubuntu/AssessmentOI/wallet_prod
+export TNS_ADMIN=$ORACLE_HOME/network/admin
+export NLS_LANG=English_America.UTF8
+export PATH=$PATH:$ORACLE_HOME
+
+
+sudo apt-get install libaio1
+
+sudo journalctl -u gunicorn >> gunicorn.txt
+
+https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+
+sudo iptables -I INPUT 5 -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+
+
+# on ubuntu, the like with the wallet seems not to work. to make it working a solution would be to add to the
+# configuration file of the library the location of the files downloaded including the wallet etc
+# the standard procedure is to add to the file with an echo command, alternately edit the file with sudo nano
+# $ sudo sh -c "echo /opt/oracle/instantclient_21_1 > /etc/ld.so.conf.d/oracle-instantclient.conf"
+# modified manually and for the right conf file
+sudo nano /etc/ld.so.conf.d/aarch64-linux-gnu.conf
+
+# change /aarch64-linux-gnu.conf dipending on the VM
+# add the location of the wallet
+# /home/ubuntu/AssessmentOI/wallet_prod
+
+$ sudo ldconfig
+

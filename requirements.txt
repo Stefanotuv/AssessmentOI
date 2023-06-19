@@ -23,4 +23,5 @@ djangorestframework
 python-dotenv
 # to connect to autonomous
 cx_oracle
+oracledb
 # djangorestframework-simplejwt
