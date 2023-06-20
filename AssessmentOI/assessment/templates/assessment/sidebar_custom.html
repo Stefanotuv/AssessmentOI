@@ -1,6 +1,8 @@
 <div class="left_col scroll-view">
   <div class="navbar nav_title" style="border: 0;">
     <a {% if ENVIRONMENT == 'dev' %} href="index.html" {% endif %} class="site_title"><i class="fa fa-spinner"></i> <span><small>Assessment</small></span></a>
+    <span><small>{{ DATABASE_TYPE }}</small></span>
+
   </div>
 
   <div class="clearfix"></div>

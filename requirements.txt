@@ -18,7 +18,7 @@ pandas
 xlsxwriter
 
 djangorestframework
-
+gunicorn
 # to use .env for production
 python-dotenv
 # to connect to autonomous
