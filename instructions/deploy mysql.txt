@@ -2,11 +2,16 @@
 # deploy MySQL on VM and test DB remote connectivity
 
 https://www.youtube.com/watch?v=4QrQlKtluK8&t=359s
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install mysql-server -y
+https://www.digitalocean.com/community/tutorials/how-to-install-mysql-on-ubuntu-20-04
 
+ssh ubuntu@130.162.168.73 -i /Users/stefano/.ssh/id_oci_test
+sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install mysql-server -y
+
+# modify the config file to login from anywhere
 sudo nano /etc/mysql/mysql.conf.d/mysqld.cnf
+# change bind-address to 0.0.0.0
+
+
 
 sudo systemctl restart mysql
 sudo systemctl enable mysql
@@ -18,36 +23,47 @@ sudo apt-get install iptables-persistent
 sudo iptables -I INPUT 5 -p tcp --dport 3306 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 sudo netfilter-persistent save
 
+# now mysql has been installed and the default user root doesnt have a password
+# we have to give password to root and then login back
+
 sudo mysql
+select user, plugin, host from mysql.user;
+# the user root has plugin " auth_socket " and can only connect fomr localhost
+
 ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'S3curePassword!';
+select user, plugin, host from mysql.user;
+# now the user root should have plugin "mysql_native_password" still can only connect fomr localhost
 exit
 
 mysql -u root -p
+# use the password from the step above
 
-# sudo mysql_secure_installation
+# sudo mysql_secure_installation # in some tutorial you will find this but i didnt manage to make it working
 
+# now we create the user, password and we modify to login with password and to connect from anywhere
 CREATE USER 'director'@'localhost' IDENTIFIED BY 'S3curePassword!';
-GRANT ALL PRIVILEGES ON *.* TO 'director@'localhost' IDENTIFIED BY 'S3curePassword!';
-
+select user, plugin, host from mysql.user;
+# you should see the user director
 ALTER USER 'director'@'localhost' IDENTIFIED WITH mysql_native_password BY 'S3curePassword!';
+select user, plugin, host from mysql.user;
 RENAME USER 'director'@'localhost' to 'director'@'%';
+select user, plugin, host from mysql.user;
+GRANT ALL PRIVILEGES ON *.* TO 'director@'%';
+
+
 
 CREATE DATABASE assessment;
 
-GRANT ALL PRIVILEGES ON *.* TO 'director'@'%';
-# GRANT ALL PRIVILEGES ON *.* TO 'director'@'%' IDENTIFIED BY 'S3curePassword!';
+GRANT ALL PRIVILEGES ON *.* TO director@'%';
+# GRANT ALL PRIVILEGES ON *.* TO 'director'@'%' IDENTIFIED BY 'S3curePassword!'; # it does not work
 
 select user, plugin, host from mysql.user;
-
-GRANT ALL PRIVILEGES ON *.* TO 'director@'%' IDENTIFIED BY 'S3curePassword!';
-
-CREATe USER 'director_remote@'%' identified
 
 exit
 
 mysql -u root -p
 
-
+# ----------------------------
 
 # to make mysql working on remote you have to install pymysql and
 # edit __init__.py in the folder that contains settings.py

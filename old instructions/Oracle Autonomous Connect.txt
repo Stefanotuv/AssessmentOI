@@ -1,0 +1,20 @@
+https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+
+
+###################### autonmous
+
+Autonmous db password: S3curePassword!
+
+Wallet password: S3curePassword!
+
+https://cx-oracle.readthedocs.io/en/latest/user_guide/installation.html
+how to modify the settings for the conection
+
+and export the LIB_PATH
+
+
+export LD_LIBRARY_PATH=/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet:$LD_LIBRARY_PATH
+export ORACLE_HOME=/Users/stefano/Dropbox/NewDev/AssessmentOI/wallet
+export TNS_ADMIN=$ORACLE_HOME/network/admin
+export NLS_LANG=English_America.UTF8
+export PATH=$PATH:$ORACLE_HOME

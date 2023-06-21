@@ -2,21 +2,25 @@
 
  deploy Postgres on VM and test DB remote connectivity
 
-sudo apt update
-sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib
+sudo apt update && sudo apt-get upgrade -y
+sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib -y
 sudo -u postgres psql
 
-CREATE DATABASE newdb;
-CREATE USER master WITH PASSWORD 'SecurePassword';
-GRANT ALL PRIVILEGES ON DATABASE newdb TO master;
-# CREATE USER master WITH ENCRYPTED PASSWORD 'SecurePassword';
-# ALTER ROLE director SET client_encoding TO 'utf8';
-# ALTER ROLE director SET default_transaction_isolation TO 'read committed';
-# ALTER ROLE director SET timezone TO 'UTC';
-# \q
+CREATE DATABASE assessment;
+CREATE USER director WITH PASSWORD 'S3curePassword!';
+GRANT ALL PRIVILEGES ON DATABASE assessment TO director;
 
-sudo nano /etc/postgresql/14/main/postgresql.conf -> use '*'
-sudo nano /etc/postgresql/14/main/pg_hba.conf -> change 127.0.0.1/32 -> 0.0.0.0/0
+ALTER ROLE director SET client_encoding TO 'utf8';
+ALTER ROLE director SET default_transaction_isolation TO 'read committed';
+ALTER ROLE director SET timezone TO 'UTC';
+\q
+
+sudo nano /etc/postgresql/14/main/postgresql.conf
+-> from #listen_addresses = 'localhost'  to use listen_addresses = '*'
+sudo nano /etc/postgresql/14/main/pg_hba.conf ->
+
+change -> host    all             all             127.0.0.1/32            scram-sha-256
+to -> host    all             all             0.0.0.0/0            scram-sha-256
 
 sudo apt-get install iptables-persistent
 # sudo iptables -A INPUT -p tcp -m state --state NEW -m tcp --dport 5432 -j ACCEPT

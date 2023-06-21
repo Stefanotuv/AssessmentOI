@@ -2,21 +2,46 @@
 # Sources:
 https://pylessons.com/django-deployment
 https://www.youtube.com/watch?v=1fjpNXK7yqc&t=2s
+https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-22-04
 
 
 # Instructions sequence to deploy in production the application
 # The servers are on OCI and the DB (guide to install the DB are in separate guides)
 # The servers use Ubuntu (creation of a VM with Ubuntu on OCI is on a separate guide)
 
+ssh-keygen -t rsa
 
 # Connect to server, check the version of python and install required packages (and python if required)
 ssh ubuntu@[ip_address] -i [private key]
-ssh ubuntu@141.147.72.203 -i /Users/stefano/.ssh/id_oci_test;
+ssh ubuntu@141.147.113.192 -i /Users/stefano/.ssh/id_oci_test
+ssh ubuntu@144.21.58.252 -i /Users/stefano/.ssh/id_oci_test
+
+
+
 
 # ----------- INSTALL DJANGO
 
 # install virtual environment
+# if you are on AMD you may need also two additional commands:
+# https://stackoverflow.com/questions/63591163/python3-pip-has-no-installation-candidate
+# sudo add-apt-repository universe
+# sudo apt update
+# sudo apt install python3.10-venv
+#
+# sudo apt-get update
+# sudo apt-get install python3-pip -y
+# sudo -H pip3 install --upgrade pip
+# sudo -H pip3 install virtualenv
+#
+# sudo apt install python3.8-venv
+#
+# sudo -H pip3 install --upgrade pip
+# sudo -H pip3 install virtualenv
+
+sudo apt-get update
+sudo apt-get upgrade
 sudo apt-get install python3-venv
+
 
 # Download the exist Django App from git
 # you can use your own project here
@@ -24,7 +49,6 @@ git clone https://github.com/Stefanotuv/AssessmentOI.git
 
 # if you do any mistake
 sudo rm -rf /home/ubuntu/AssessmentOI
-
 
 
 # you can alternatevely create a project frm scratch see here:
@@ -35,7 +59,8 @@ sudo rm -rf /home/ubuntu/AssessmentOI
 # the app requires a set of environment varialble saved on an hidden file that i call .env
 # the file can also be creted locally on the same folder using sudo nano /home/ubuntu/AssessmentOI/AssessmentOI/.env
 # once the file has been transferred we will make some changes to work in production
-scp -i /Users/stefano/.ssh/id_oci_test -r /Users/stefano/Dropbox/NewDev/AssessmentOI/AssessmentOI/.env ubuntu@141.147.72.203:/home/ubuntu/AssessmentOI/AssessmentOI/.env
+scp -i /Users/stefano/.ssh/id_oci_test -r /Users/stefano/Dropbox/NewDev/AssessmentOI/AssessmentOI/.env ubuntu@141.147.113.192:/home/ubuntu/AssessmentOI/AssessmentOI/.env
+scp -i /Users/stefano/.ssh/id_oci_test -r /Users/stefano/Dropbox/NewDev/AssessmentOI/AssessmentOI/.env ubuntu@144.21.58.252:/home/ubuntu/AssessmentOI/AssessmentOI/.env
 
 # change parameters in the env file
 sudo nano /home/ubuntu/AssessmentOI/AssessmentOI/.env
@@ -44,7 +69,7 @@ set: all the parameters for the various DB or the DB you want your app to connec
 
 # create a virtual environment and activate it
 # take a note of where you put your virtual environment
-python3 -m venv v_assessment
+python3 -m venv /home/ubuntu/AssessmentOI/v_assessment
 source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
 
 # If you have download the app form git we need to install the various libraries for the project
@@ -56,8 +81,7 @@ cd AssessmentOI
 pip install -r requirements.txt
 # after this step all the libraries for the project should be installed a ready
 # you can exit the venv
-deactivate
-
+exit
 
 
 # OPTIONAL
@@ -71,9 +95,9 @@ git pull https://github.com/Stefanotuv/AssessmentOI.git
 
 # open the door ubuntu
 # this is required to have the webserver exposed to the web.
-# we open the 8080
+# we open the 8000
 sudo apt-get install iptables-persistent
-sudo iptables -I INPUT 5 -p tcp --dport 8080 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo iptables -I INPUT 5 -p tcp --dport 8000 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 sudo netfilter-persistent save
 
 # open the door on OCI from the OCI console
@@ -81,7 +105,7 @@ sudo netfilter-persistent save
 
 # Reactivate the virtual environment and Test Django
 source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
-python /home/ubuntu/AssessmentOI/AssessmentOI/manage.py runserver 0.0.0.0:8080
+python /home/ubuntu/AssessmentOI/AssessmentOI/manage.py runserver 0.0.0.0:8000
 # check the address and the app should respond. To use it you have to start the migration and create a super user
 # quit the server and deactivate
 
@@ -89,35 +113,42 @@ python /home/ubuntu/AssessmentOI/AssessmentOI/manage.py runserver 0.0.0.0:8080
 # test that gunicorn can connect to the django app
 # gunicorn is used to enter the application through the wsgi file
 # NOTE: check the path for the file
-gunicorn --bind 0.0.0.0:8080 /home/ubuntu/AssessmentOI/AssessmentOI/AssessmentOI.wsgi
+# sudo apt install gunicorn # not required gunicorn is install from the requirements file
+# you have to activate the venv to launch gunicorn
+source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
+
+cd /home/ubuntu/AssessmentOI/AssessmentOI/
+gunicorn --bind 0.0.0.0:8000 AssessmentOI.wsgi
+# note: it does not work using the absolute path.
+# you need to be in the right directory
 
 sudo mkdir /var/log/gunicorn
 
 sudo nano /etc/systemd/system/gunicorn.socket
 # ---------------------------------------------------------------------------
-# [Unit]
-# Description=gunicorn socket
-#
-# [Socket]
-# ListenStream=/run/gunicorn.sock
-#
-# [Install]
-# WantedBy=sockets.target
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
 # ---------------------------------------------------------------------------
 sudo nano /etc/systemd/system/gunicorn.service
 # ---------------------------------------------------------------------------
-# [Unit]
-# Description=gunicorn daemon
-# After=network.target
-#
-# [Service]
-# User=ubuntu
-# Group=www-data
-# WorkingDirectory=/home/ubuntu/AssessmentOI/AssessmentOI
-# ExecStart=/home/ubuntu/AssessmentOI/v_assessment/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock AssessmentOI.wsgi:application
-#
-# [Install]
-# WantedBy=multi-user.target
+[Unit]
+Description=gunicorn daemon
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/AssessmentOI/AssessmentOI
+ExecStart=/home/ubuntu/AssessmentOI/v_assessment/bin/gunicorn --access-logfile - --workers 3 --bind unix:/run/gunicorn.sock AssessmentOI.wsgi:application
+
+[Install]
+WantedBy=multi-user.target
 # ---------------------------------------------------------------------------
 
 # start the service
@@ -145,38 +176,49 @@ sudo apt-get install nginx
 # Prepare the static files. This step is necessary to put all files on the folder static
 # without this steps the CSS and JS files cannot be served to the server
 source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
-python AssessmentOI/manage.py collectstatic
+python /home/ubuntu/AssessmentOI/AssessmentOI/manage.py collectstatic
 deactivate
 
 # create the files and link for NGINIX
-sudo nano /etc/nginx/sites-available/djang_website
-# server {
-#     listen 80;
-#     server_name XXX.XXX.XXX.XXX;
-#
-#     location = /favicon.ico { access_log off; log_not_found off; }
-#     location /static/ {
-#         ubuntu /home/ubuntu/AssessmentOI/AssessmentOI;
-#     }
-#     location /media/ {
-#         ubuntu /home/ubuntu/AssessmentOI/AssessmentOI;
-#     }
-#     location / {
-#         include proxy_params;
-#         proxy_pass http://unix:/run/gunicorn.sock;
-#     }
-# }
+sudo nano /etc/nginx/sites-available/AssessmentOI
+server {
+    listen 80;
+    server_name 141.147.113.192;
+
+    location = /favicon.ico { access_log off; log_not_found off; }
+    location /static/ {
+        root /home/ubuntu/AssessmentOI/AssessmentOI;
+    }
+    location /media/ {
+        root /home/ubuntu/AssessmentOI/AssessmentOI;
+    }
+    location / {
+        include proxy_params;
+        proxy_pass http://unix:/run/gunicorn.sock;
+    }
+}
+
+sudo gpasswd -a www-data ubuntu
+sudo -u www-data stat /home/ubuntu/AssessmentOI/AssessmentOI/static
+
 
 # enable the file by linking it to the sites-enabled directory
-sudo ln -s /etc/nginx/sites-available/djang_website /etc/nginx/sites-enabled
+sudo ln -s /etc/nginx/sites-available/AssessmentOI /etc/nginx/sites-enabled
 
 # test nginx
 sudo nginx -t
 
+# restart if you change any python file
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn
 # restart server.
+sudo nginx -s reload
 sudo systemctl restart nginx
+sudo systemctl status nginx
 
 # test the ip address
 # if the default port is not open, add an ingress rule and in ubuntu add the below
+ssh ubuntu@141.147.115.202 -i /Users/stefano/.ssh/id_oci_test
 sudo iptables -I INPUT 5 -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
+sudo netfilter-persistent save
 
