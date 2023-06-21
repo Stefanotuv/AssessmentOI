@@ -69,8 +69,9 @@ set: all the parameters for the various DB or the DB you want your app to connec
 
 # create a virtual environment and activate it
 # take a note of where you put your virtual environment
-python3 -m venv /home/ubuntu/AssessmentOI/v_assessment
 source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
+python3 -m venv /home/ubuntu/AssessmentOI/v_assessment
+
 
 # If you have download the app form git we need to install the various libraries for the project
 # to do that we use pip and the requirements.txt that contained the various libraries

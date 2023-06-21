@@ -1,9 +1,40 @@
 Makes the changes to the settings
 
+locally
+
 1) test postgres
+change settings on the .env file
+change the credential to connect to postgres in the .env file
+
+# activate venv locally
+python AssessmentOI/manage.py makemigrations
+python AssessmentOI/manage.py migrate
+python AssessmentOI/manage.py createsuperuser
+
+# login to remote server
+ssh ubuntu@141.147.113.192 -i /Users/stefano/.ssh/id_oci_test
+
+# activate venv for your app for remote connection
+source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
+python AssessmentOI/manage.py makemigrations
+python AssessmentOI/manage.py migrate
+python AssessmentOI/manage.py createsuperuser
+
+
 2) test mysql
+change settings on the .env file
+change the credential to connect to postgres in the .env file
 
+# activate venv locally
+python AssessmentOI/manage.py makemigrations
+python AssessmentOI/manage.py migrate
+python AssessmentOI/manage.py createsuperuser
 
-sudo nano /home/ubuntu/AssessmentOI/AssessmentOI/AssessmentOI/settings.py
+# login to remote server
+ssh ubuntu@141.147.113.192 -i /Users/stefano/.ssh/id_oci_test
 
-DATABASE_TYPE = os.environ['DATABASE_TYPE']
+# activate venv for your app for remote connection
+source /home/ubuntu/AssessmentOI/v_assessment/bin/activate
+python AssessmentOI/manage.py makemigrations
+python AssessmentOI/manage.py migrate
+python AssessmentOI/manage.py createsuperuser
