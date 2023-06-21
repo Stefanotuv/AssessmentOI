@@ -22,6 +22,6 @@ gunicorn
 # to use .env for production
 python-dotenv
 # to connect to autonomous
-cx_oracle
+#cx_oracle
 oracledb
 # djangorestframework-simplejwt
