@@ -15,7 +15,7 @@ import os
 import dotenv
 import django.db.backends.postgresql
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-import cx_Oracle
+# import cx_Oracle
 BASE_DIR = Path(__file__).resolve().parent.parent
 import oracledb
 
