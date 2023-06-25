@@ -25,6 +25,13 @@ python AssessmentOI/manage.py createsuperuser
 change settings on the .env file
 change the credential to connect to postgres in the .env file
 
+# to make mysql working on remote you have to install pymysql and
+# edit __init__.py in the folder that contains settings.py
+# online I saw addong the same two lines to the settings.py
+# add:
+import pymysql
+pymysql.install_as_MySQLdb()
+
 # activate venv locally
 python AssessmentOI/manage.py makemigrations
 python AssessmentOI/manage.py migrate
