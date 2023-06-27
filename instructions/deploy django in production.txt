@@ -223,3 +223,18 @@ ssh ubuntu@141.147.115.202 -i /Users/stefano/.ssh/id_oci_test
 sudo iptables -I INPUT 5 -p tcp --dport 80 -m conntrack --ctstate NEW,ESTABLISHED -j ACCEPT
 sudo netfilter-persistent save
 
+# https
+# https://pylessons.com/django-deployment
+sudo apt-get install python3-certbot-nginx
+
+sudo nano /etc/nginx/sites-available/AssessmentOI
+
+IP-webserver:
+
+sudo certbot --nginx -d IP-webserver -d IP-webserver
+
+
+
+
+
+
