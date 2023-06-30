@@ -6,6 +6,8 @@ from .views import *
 
 
 urlpatterns = [
+
+
     # path("", TestView.as_view(template_name='assessment/test.html'), name='test_view'),
     re_path(r'^.*\.html', gentella_html, name='gentella'),
 
@@ -19,6 +21,11 @@ urlpatterns = [
     #
     path("validate_token/", ValidateTokenView.as_view(template_name='assessment/validate_token.html'),
          name='validate_token_view'),
+
+    # decorator branch: added the view to manage the error page for not authorised for login
+    path("access-denied/", AccessDeniedView.as_view(),
+         name='access_denied_view'),
+
     #
     # path("test/test_launch/<slug:token>", TestQuestionsView.as_view(template_name='assessment/test_launch.html'),
     #      name='test_launch_view'),

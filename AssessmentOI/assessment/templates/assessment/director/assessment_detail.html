@@ -7,6 +7,15 @@
   {{ block.super }}
     <!-- Cards css -->
     <link rel="stylesheet" href="/static/build/css/cards.css">
+    <script>
+    .editable{
+
+    }
+    .clear{
+
+    }
+
+    </script>
 {% endblock stylesheets %}
 {% block content %}
 
@@ -25,7 +34,7 @@
               <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <form method="post" action="">
+                <form id="form_assessment" method="post" action="">
                   {% csrf_token %}
                     <section class="">
                         <!-- title row -->
@@ -35,7 +44,11 @@
                         <div class="col-md-12 col-sm-12 col-xs-12">
                           <div class="x_panel">
                             <div class="x_title">
-                              <h2>Assessment Details </h2>
+                              <h2>Assessment Details
+                              <small>you can change any parameter below.
+                                    Note if you change the name the system will create a new test, if you change anything else the system will overwrite the assessment</small>
+
+                              </h2>
 
 
 
@@ -43,12 +56,16 @@
                                     <h2 class="pull-right" style="padding-right: 1%;">Back to List</h2>
                               </a>
 
-                               <a onclick="submit_changes()" ><h2 class="pull-right"><i class="fas fa-paper-plane" style="padding-right:3em"></i></h2>
+                               <a id="a_bin" hidden onclick="delete_changes()" ><h2 class="pull-right"><i class="fas fa-trash" style="padding-right:3em"></i></h2>
+                                    <h2 class="pull-right" style="padding-right:1em;">Delete</h2>
+                              </a>
+
+                               <a id="a_save" hidden onclick="submit_changes()" ><h2 class="pull-right"><i class="fas fa-paper-plane" style="padding-right:3em"></i></h2>
                                     <h2 class="pull-right" style="padding-right:1em;">Submit</h2>
                               </a>
 
 
-                               <a onclick="edit_fields()"><h2 class="pull-right"><i class="fas fa-edit" style="padding-right:1em"></i></h2>
+                               <a id="a_edit" onclick="edit_fields()"><h2 class="pull-right"><i class="fas fa-edit" style="padding-right:3em"></i></h2>
                                     <h2 class="pull-right" style="padding-right:1em">Edit</h2>
                               </a>
 
@@ -65,32 +82,43 @@
                                             Assessment Name
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.assessment_name }}</i></strong>
+{#                                            <strong><i>{{ assessment.assessment_name }}</i></strong>#}
+                                            <input  name="assessment_name" class="form-text editable" value="{{ assessment.assessment_name}}" readonly="readonly"></input>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Candidate Name
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.candidate_name }}</i></strong>
+{#                                            <strong><i>{{ assessment.candidate_name }}</i></strong>#}
+                                            <input name="candidate_name" class="form-text editable" value="{{ assessment.candidate_name}}" readonly="readonly"></input>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Candidate Surname
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.candidate_surname }}</i></strong>
+{#                                            <strong><i>{{ assessment.candidate_surname }}</i></strong>#}
+                                            <input name="candidate_surname" class="form-text editable" value="{{ assessment.candidate_surname}}" readonly="readonly"></input>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Candidate Email
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.candidate_email }}</i></strong>
+{#                                            <strong><i>{{ assessment.candidate_email }}</i></strong>#}
+                                            <input name="candidate_email" class="form-text editable" value="{{ assessment.candidate_email}}" readonly="readonly"></input>
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
+                                            Candidate Password
+                                        </div>
+                                        <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
+{#                                            <strong><i>{{ clear_password }}</i></strong>#}
+                                            <input name="clear_password" class="form-text editable" value="{{ clear_password}}" readonly="readonly"></input>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Token
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
 {#                                            <strong><i>{{ assessment.token|truncatechars:20 }}</i></strong>#}
-                                            <input class="form-text" value="{{ assessment.token}}" readonly="readonly"></input>
+                                            <input name="assessment_token" class="form-text editable" value="{{ assessment.token}}" readonly="readonly"></input>
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-xs-12">
@@ -98,33 +126,37 @@
                                             Date Created
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.date_creation }}</i></strong>
+                                            <strong><i class="clear" name="date_creation">{{ assessment.date_creation }}</i></strong>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Date Started
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.date_first_opened }}</i></strong>
+                                            <strong><i class="clear" name="date_first_opened">{{ assessment.date_first_opened }}</i></strong>
                                         </div>
 
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Date Completed (if submitted)
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.date_complete }}</i></strong>
+                                            <strong><i class="clear" name="date_complete">{{ assessment.date_complete }}</i></strong>
                                         </div>
 
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            Time to complete
+                                            Time to complete (min)
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.time_to_complete }}</i></strong>
+                                            <strong>
+{#                                                <i class="clear" name="time_to_complete">{{ assessment.time_to_complete }}</i>#}
+                                                   <input type="number" name="time_to_complete" class="form-text clear" value="{{ assessment.time_to_complete }}" readonly="readonly"></input>
+
+                                            </strong>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Score
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
-                                            <strong><i>{{ assessment.score }}</i></strong>
+                                            <strong><i class="clear" name="score">{{ assessment.score }}</i></strong>
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
                                             Answers
@@ -132,7 +164,7 @@
                                         <div class="col-md-6 col-sm-6 col-xs-12" style="padding-bottom: 2%">
 
                                             <strong>
-                                                <input class="form-text" value="{{ assessment.answers}}" readonly="readonly"></input>
+                                                <input name="answers" class="form-text clear" value="{{ assessment.answers}}" readonly="readonly"></input>
                                             </strong>
                                         </div>
                                     </div>
@@ -247,6 +279,61 @@
 {% block javascripts %}
   {{ block.super }}
 {##TODO: add the logic to manage the edit and submit#}
+{#    edit#}
+    <script>
+    function edit_fields(){
+
+        a_edit = document.getElementById("a_edit")
+        a_edit.hidden = true
+        a_save = document.getElementById("a_save")
+        a_save.hidden = false
+        a_bin = document.getElementById("a_bin")
+        a_bin.hidden = false
+
+        editable_fields = document.getElementsByClassName("editable")
+        debugger;
+        for (i = 0; i < editable_fields.length; i++){
+            editable_fields[i].readOnly = false
+            {#editable_fields[i].setAttribute( 'readOnly', true )#}
+        }
+        clear_fields = document.getElementsByClassName("clear")
+        for (i = 0; i < clear_fields.length; i++){
+            if (clear_fields[i].tagName == "I"){
+                clear_fields[i].innerHTML = "None"
+            }
+            else{
+                clear_fields[i].innerHTML = "None"
+            }
+        document.getElementsByName("time_to_complete")[0].readOnly = false
+
+        }
+
+
+    }
+    function submit_changes(){
+        a_edit = document.getElementById("a_edit")
+        a_edit.hidden = false
+        a_save = document.getElementById("a_save")
+        a_save.hidden = true
+        a_bin = document.getElementById("a_bin")
+        a_bin.hidden = true
+        var form = document.getElementById("form_assessment")
+        form.submit()
+    }
+
+    function delete_changes(){
+        debugger
+        a_edit = document.getElementById("a_edit")
+        a_edit.hidden = false
+        a_save = document.getElementById("a_save")
+        a_save.hidden = true
+        a_bin = document.getElementById("a_bin")
+        a_bin.hidden = true
+        {#var form = document.getElementById("form_assessment")#}
+        {#form.submit()#}
+        location.reload();
+    }
+    </script>
 
 {% endblock javascripts %}
 

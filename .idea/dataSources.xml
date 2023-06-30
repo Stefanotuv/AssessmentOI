@@ -1,15 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="db.sqlite3" uuid="3b23919f-06dc-47dd-b677-1f33ee6a8c83">
-      <driver-ref>sqlite.xerial</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:$PROJECT_DIR$/AssessmentOI/db.sqlite3</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
     <data-source source="LOCAL" name="Oracle OCI" uuid="72764dd0-f966-4cb6-800d-12c22613d3a2">
-      <driver-ref>876ec9ea-5b58-4da5-8070-0e82abab432e</driver-ref>
+      <driver-ref>oracle.19</driver-ref>
       <synchronize>true</synchronize>
       <auto-commit>false</auto-commit>
       <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
@@ -22,56 +15,20 @@
         <property name="ORACLE_HOME" value="path" />
       </vm-env>
     </data-source>
-    <data-source source="LOCAL" name="Django default" uuid="be0aafae-6445-4d3a-8c7d-cf8af3767299">
-      <driver-ref>oracle.19</driver-ref>
-      <synchronize>true</synchronize>
-      <imported>true</imported>
-      <remarks>$PROJECT_DIR$/AssessmentOI/AssessmentOI/settings.py</remarks>
-      <auto-commit>false</auto-commit>
-      <jdbc-driver>oracle.jdbc.OracleDriver</jdbc-driver>
-      <jdbc-url>jdbc:oracle:thin:@//127.0.0.1:1521/db202112252237_low</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="assessment@132.145.78.165" uuid="c2ac5b66-7e48-41b0-8e65-e9dab0908060">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://132.145.78.165:5432/assessment</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="assessment@141.147.71.65" uuid="93cda695-de75-45d5-8eca-7d4e3a0911c9">
+    <data-source source="LOCAL" name="assessment@130.162.168.73" uuid="4b434324-43ee-4327-a3c6-dd0e74655d65">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
+      <remarks>S3curePassword!</remarks>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://141.147.71.65:3306/assessment</jdbc-url>
+      <jdbc-url>jdbc:mysql://130.162.168.73:3306/assessment</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="newdb@141.147.107.248" uuid="f6e6a8d0-1e01-4d40-a483-760cd3c81f86">
+    <data-source source="LOCAL" name="assessment@130.162.168.73 [2]" uuid="49f497ae-dc2b-4614-977b-2a316a37b768">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
+      <remarks>S3curePassword!</remarks>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://141.147.107.248:5432/newdb</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="newdb@141.147.72.203" uuid="9b069e52-178b-480f-9f0f-82518bdf6384">
-      <driver-ref>postgresql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
-      <jdbc-url>jdbc:postgresql://141.147.72.203:5432/newdb</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="assessment@141.147.107.248" uuid="e83202a4-dab1-4b44-aea3-b422649d2f38">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://141.147.107.248 :3306/assessment</jdbc-url>
-      <working-dir>$ProjectFileDir$</working-dir>
-    </data-source>
-    <data-source source="LOCAL" name="assessment@141.147.72.203" uuid="5379aa29-71ad-4fda-8506-306cbe9e0fb7">
-      <driver-ref>mysql.8</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://141.147.72.203:3306/assessment</jdbc-url>
+      <jdbc-url>jdbc:postgresql://130.162.168.73:5432/assessment</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </component>

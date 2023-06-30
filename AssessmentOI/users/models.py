@@ -77,12 +77,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class Profile(models.Model):
+    # decorator branch: added a USER_TYPES
+    USER_TYPES = (
+            ('Admin', 'Admin'),
+            ('director', 'director'),
+            ('candidate', 'candidate'),
+    )
     user = models.OneToOneField(User,unique=True, on_delete=models.CASCADE,default=None)
     address = models.CharField(max_length=254, null=True, blank=True)
     image = models.ImageField(default='default.jpg',upload_to='profile_pics')
-
+    # decorator branch: added a field to the profile
+    user_type = models.CharField(max_length=20,blank=True, null=True,choices=USER_TYPES)
+    clear_password = models.CharField(max_length=254, null=True, blank=True)
     def __str__(self):
-        return f'{self.user.name} Profile'
+        return f'{self.user.email} Profile'
 
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)

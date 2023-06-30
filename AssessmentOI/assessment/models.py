@@ -59,19 +59,19 @@ class Question(models.Model):
 
     # image = models.ImageField(default='default.jpg', upload_to='questions_pics')
 
-    answers = models.CharField(max_length=20) # it is mandatory to include the answer to the question
+    answers = models.CharField(max_length=50) # it is mandatory to include the answer to the question
 
     image = models.ImageField(blank=True, null=True, upload_to='question_pics',default='')
 
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width >300:
-            output_size = (300,300)
-            img.thumbnail(output_size)
-            img = Image.open(self.image.path)
+        #
+        # img = Image.open(self.image.path)
+        #
+        # if img.height > 300 or img.width >300:
+        #     output_size = (300,300)
+        #     img.thumbnail(output_size)
+        #     img = Image.open(self.image.path)
 
 
     def __str__(self):

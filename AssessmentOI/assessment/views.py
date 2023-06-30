@@ -4,8 +4,10 @@ from django.template.loader import render_to_string, get_template
 from django.contrib.sites.shortcuts import get_current_site
 from django.shortcuts import render
 import os
+
 # Create your views here.
 from django.template import loader
+from django.views import View
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import ListView, DetailView, UpdateView, TemplateView, CreateView
 from django.shortcuts import get_object_or_404
@@ -17,7 +19,10 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 import openpyxl # to upload file
 import datetime
-from users.models import User
+from users.models import User # not sure why it is flagged as an error...
+from .decorators import user_type_required
+from users.models import Profile
+from .models import Assessment
 
 
 from django import forms
@@ -35,7 +40,7 @@ def gentella_html(request):
     load_template = request.path.split('/')[-1]
     template = loader.get_template('gentelella/' + load_template)
     return HttpResponse(template.render(context, request))
-
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class AssessmentView(ListView):
     model = Assessment
@@ -43,112 +48,7 @@ class AssessmentView(ListView):
     context_object_name = 'assessment_view'
     pass
 
-@method_decorator(login_required, name='dispatch')
-class TestQuestionsView(DetailView):
-    model = Assessment
-    template_name = 'assessment/test_questions.html'
-    context_object_name = 'test_questions_view'
-    slug_field = 'token'
-    slug_url_kwarg = 'token'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
-        assessment = Assessment.objects.filter(token=self.kwargs['token'])[0]
-        pk = assessment.pk
-        questions_selected = Question.objects.filter(assessment__pk=pk)
-        context['questions_selected'] = questions_selected
-
-        # total number of questions
-        number_of_questions = questions_selected.count()
-        context['number_of_questions'] = number_of_questions
-        context['duration'] = assessment.time_to_complete
-        # create a range to be used by the template to identify the question mumber
-        number_of_questions_range = range(number_of_questions)
-        context['number_of_questions_range'] = number_of_questions_range
-        count = 1
-        dict_output = {}
-        for Q in questions_selected:
-            dict_output [count] = Q
-            count = count+1
-        context['dict_output'] = dict_output
-        return context
-
-    # def post(self, request, *args, **kwargs):
-    #     HttpResponseRedirect(reverse('test_questions_view'))
-    #     pass
-    def post(self,request, *args, **kwargs):
-
-        return self.get(request, *args, **kwargs)
-
-    def get(self,request, *args, **kwargs):
-        token = self.kwargs['token']
-        # token = request.POST['token']
-
-        # query token and user to see if the candidate has an assessment assigned
-
-        # test if it exist pass user and token (the token is unique... but we want to verify the correct email too)
-        assessment_query = Assessment.objects.filter(token=token)
-        if assessment_query:
-            assessment = Assessment.objects.filter(token=token)[0]
-            if assessment.candidate_email == request.user.email:
-                if assessment.completed == 'Yes':
-
-                    return HttpResponseRedirect(reverse('home_view',kwargs = {'token': token}))
-                else:
-                    return super().get(request, *args, **kwargs)
-            else:
-                return HttpResponseRedirect(reverse('test_home_view'))
-                # reset to make the old app working (without candidate)
-                # return HttpResponseRedirect(reverse('validate_token_view'))
-        else:
-            return HttpResponseRedirect(reverse('test_home_view'))
-            # return HttpResponseRedirect(reverse('validate_token_view'))
-
-        # check if the token and the user are valid at the same time.
-
-@method_decorator(login_required, name='dispatch')
-class PracticeQuestionsView(DetailView):
-    model = Assessment
-    template_name = 'assessment/test_questions.html'
-    context_object_name = 'test_questions_view'
-    slug_field = 'token'
-    slug_url_kwarg = 'token'
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
-        pk = Assessment.objects.filter(token=self.kwargs['token'])[0].pk
-        questions_selected = Question.objects.filter(assessment__pk=pk)
-        context['questions_selected'] = questions_selected
-
-        # total number of questions
-        number_of_questions = questions_selected.count()
-        context['number_of_questions'] = number_of_questions
-
-        # create a range to be used by the template to identify the question mumber
-        number_of_questions_range = range(number_of_questions)
-        context['number_of_questions_range'] = number_of_questions_range
-        count = 1
-        dict_output = {}
-        for Q in questions_selected:
-            dict_output [count] = Q
-            count = count+1
-        context['dict_output'] = dict_output
-        return context
-
-    # def post(self, request, *args, **kwargs):
-    #     HttpResponseRedirect(reverse('test_questions_view'))
-    #     pass
-    def post(self,request, *args, **kwargs):
-
-        return self.get(request, *args, **kwargs)
-
-    def get(self,request, *args, **kwargs):
-        # token = 'Test_Token'
-
-        # return HttpResponseRedirect(reverse('home_view',kwargs = {'token': token}))
-        return super().get(request, *args, **kwargs)
-
-
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class QuestionView(ListView):
     model = Question
@@ -161,7 +61,7 @@ class QuestionView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
-
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class QuestionDetailView(DetailView):
     model = Question
@@ -215,9 +115,15 @@ class ValidateTokenView(ListView):
     # form_class = AssessmentForm
     # slug_field = 'token'
     # slug_url_kwarg = 'token'
+
+
+
     def post(self, request, *args, **kwargs):
 
+        # if we are logged in then the user exist we dont need to test
+        # context = super().get_context_data(**kwargs)
         token = request.POST['token']
+        # context['token'] = token
 
         # query token and user to see if the candidate has an assessment assigned
 
@@ -228,12 +134,18 @@ class ValidateTokenView(ListView):
             if assessment.candidate_email == request.user.email:
                 # return HttpResponseRedirect(reverse('candidate_home_view', kwargs={'token': token}))
                 return HttpResponseRedirect(reverse('candidate_home_view'))
+                # return HttpResponseRedirect(reverse('candidate_home_view'), kwargs={'token': token})
             else:
                 # return HttpResponseRedirect(reverse('validate_token_view',)) # add return message for the page
+                # return HttpResponseRedirect(reverse('candidate_home_view'), kwargs={'token': token})
                 return HttpResponseRedirect(reverse('validate_token_view', kwargs={'token': token}))
         else:
-            return HttpResponseRedirect(reverse('validate_token_view')) # add return message for the page
 
+            # return HttpResponseRedirect(reverse('validate_token_view')) # add return message for the page
+            return HttpResponseRedirect(reverse('candidate_home_view'))
+
+
+# verify if the cass Home is required
 @method_decorator(login_required, name='dispatch')
 class Home(UpdateView):
         model = Assessment
@@ -306,7 +218,7 @@ class Home(UpdateView):
         pass
 
 # **** **** **** **** **** ****
-
+# @method_decorator(user_type_required('Admin'), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class HomeView(TemplateView):
 
@@ -323,7 +235,7 @@ class HomeView(TemplateView):
             pass
 
 # **** Director Classes
-
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class DashboardView(ListView):
     model = Assessment
@@ -343,14 +255,14 @@ class DashboardView(ListView):
                                              datetime.datetime.now() - datetime.timedelta(30),
                                              datetime.datetime.now()]).exclude(date_complete = None))
         return context
-
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class AssessmentListView(ListView):
     model = Assessment
     template_name = 'assessment/director/assessment_list.html'
     context_object_name = 'assessment_list_view'
     ordering = ['-pk']
-
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class AssessmentDetailView(DetailView):
     model = Assessment
@@ -363,10 +275,75 @@ class AssessmentDetailView(DetailView):
         questions_selected = Question.objects.filter(assessment__pk=self.object.pk)
         context['questions_selected'] = questions_selected
         assessment = Assessment.objects.filter(pk=self.object.pk)[0]
+        candidate_email = assessment.candidate_email
+        if len(User.objects.filter(email=candidate_email)) > 0:
+            user = User.objects.filter(email=candidate_email)[0]
+            context['clear_password'] = user.profile.clear_password
+        else:
+            assessment.candidate_email = "" # we assign but not save on the DB (the user was cancelled. if recreated then it will work)
+            context['clear_password'] = ""
+            pass
         context['assessment'] = assessment
         return context
 
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
 
+    def post(self, request, *args, **kwargs):
+
+        if len(User.objects.filter(email=request.POST['candidate_email'])) > 0:
+            # the candidate exists
+            candidate = User.objects.filter(email=request.POST['candidate_email'])[0]
+            candidate.set_password(request.POST['clear_password'])
+            candidate.save()
+            candidate.profile.clear_password = request.POST['clear_password']
+            candidate.profile.user_type = 'candidate'
+            candidate.profile.save()
+        else:
+            candidate = User(
+                email = request.POST['candidate_email']
+            )
+            candidate.set_password(request.POST['clear_password'])
+            candidate.save()
+            candidate.profile.clear_password = request.POST['clear_password']
+            candidate.profile.user_type = 'candidate'
+            candidate.profile.save()
+
+        if len(Assessment.objects.filter(assessment_name=request.POST['assessment_name'])) > 0:
+            # the candidate exists
+            assessment = Assessment.objects.filter(assessment_name=request.POST['assessment_name'])[0]
+            # assessment.assessment_name = request.POST['assessment_name']
+            assessment.candidate_name = request.POST['candidate_name']
+            assessment.candidate_surname = request.POST['candidate_surname']
+            assessment.candidate_email = request.POST['candidate_email']
+            assessment.token = request.POST['assessment_token']
+            assessment.creator_email = request.user.email
+            assessment.date_creation = datetime.datetime.now()
+            assessment.time_to_complete = request.POST['time_to_complete']
+            assessment.save()
+        else:
+            newAssessment = Assessment(
+                assessment_name=request.POST['assessment_name'],
+                candidate_name = request.POST['candidate_name'],
+                candidate_surname = request.POST['candidate_surname'],
+                candidate_email = request.POST['candidate_email'],
+                token = request.POST['assessment_token'],
+                creator_email = request.user.email,
+                date_creation = datetime.datetime.now(),
+                time_to_complete = request.POST['time_to_complete'],
+            )
+            newAssessment.save()
+            questions_selected_number = []
+            questions_selected = Question.objects.filter(assessment__pk=kwargs['pk'])
+
+            [questions_selected_number.append(q.pk) for q in questions_selected]
+            newAssessment.save()
+            newAssessment.questions_selected.add(*questions_selected_number)
+            newAssessment.save()
+
+        # return self.get(request, *args, **kwargs)
+        return HttpResponseRedirect(reverse('assessment_list_view'))
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 @method_decorator(login_required, name='dispatch')
 class AssessmentCreateView(ListView):
     model = Assessment
@@ -396,8 +373,20 @@ class AssessmentCreateView(ListView):
         try:
             if len(User.objects.filter(email=request.POST['candidate_email'])) == 0:
                 use = User(name=request.POST['candidate_name'], email=request.POST['candidate_email'])
-                use.set_password(request.POST['candidate_password'])
+                if ((request.POST['candidate_password'] == '') or (request.POST['candidate_password'] == None)):
+                    password = 'S3curePassword'
+                else:
+                    password = request.POST['candidate_password']
+                use.set_password(password)
+
+                # we save also the password in clear if it is a candidate so we can communicate the password
+                # TODO: a further change would be to edit the password at first login
                 use.save()
+
+                use.profile.user_type = "candidate"
+                use.profile.clear_password = password
+                use.profile.save()
+
             else:
                 # use = User.objects.get(email=request.POST['candidate_email'])
                 # use.set_password(request.POST['candidate_password'])
@@ -408,8 +397,12 @@ class AssessmentCreateView(ListView):
             pass
 
         try:
+            if(len(Assessment.objects.filter(assessment_name=request.POST['test_name']))>0):
+                assessment_name = request.POST['test_name'] + '_1'
+            else:
+                assessment_name = request.POST['test_name']
             newAssessment = Assessment(
-                assessment_name = request.POST['test_name'],
+                assessment_name = assessment_name,
                 candidate_name =  request.POST['candidate_name'],
                 candidate_surname = request.POST['candidate_surname'],
                 candidate_email = request.POST['candidate_email'],
@@ -473,8 +466,14 @@ def send_emails(request,email_template,link,candidate,token):
     message.attach_alternative(html_body, "text/html")
     message.send(fail_silently=False)
 
+class AccessDeniedView(View):
+    def get(self, request, *args, **kwargs):
+        # Your view logic for access denied
+        return render(request, 'assessment/access_denied.html')
 
+# @user_type_required('director')
 @method_decorator(login_required, name='dispatch')
+@method_decorator(user_type_required(['Admin','director']), name='dispatch')
 class QuestionCreateView(CreateView):
     model = Question
     template_name = 'assessment/director/question_create.html'
@@ -695,7 +694,85 @@ class QuestionListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         return context
+@method_decorator(login_required, name='dispatch')
+class AssessementCopyView(CreateView):
+    model = Assessment
+    template_name = 'assessment/director/assessment_copy.html'
+    context_object_name = 'assessment_copy_view'
 
+
+
+    def get(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        assessment = Assessment.objects.get(pk=pk)
+        assessment_name = assessment.assessment_name
+
+# **************** routine to add '_1' to the name and email before creating a new assessment and new user
+
+        if assessment_name[len(assessment_name)-1].isnumeric():
+                if assessment_name[len(assessment_name)-2] == '_':
+                    assessment_name = assessment_name[:len(assessment_name)-2] + '_' + str(int(assessment_name[len(assessment_name)-1]) + 1)
+                else:
+                    assessment_name = assessment_name + '_1'
+        else:
+            assessment_name = assessment_name + '_1'
+
+        candidate_email = assessment.candidate_email
+
+        candidate_email_no_at = candidate_email.split('@')[0]
+
+        if candidate_email_no_at[len(candidate_email_no_at)-1].isnumeric():
+                if candidate_email_no_at[len(candidate_email_no_at)-2] == '_':
+                    candidate_email_no_at = candidate_email_no_at[:len(candidate_email_no_at)-2] + '_' + str(int(candidate_email_no_at[len(candidate_email_no_at)-1]) + 1)
+                else:
+                    candidate_email_no_at = candidate_email_no_at + '_1'
+        else:
+            candidate_email_no_at = candidate_email_no_at + '_1'
+
+        candidate_email = candidate_email_no_at +'@'+candidate_email.split('@')[1]
+
+        if len(User.objects.filter(email=candidate_email)) != 0 :
+            candidate_email = candidate_email.split('@')[0]+'_1@'+candidate_email.split('@')[1]
+
+        if len(Assessment.objects.filter(assessment_name=assessment_name)) != 0:
+            assessment_name = assessment_name + '_1'
+
+
+
+        try:
+
+            newUser = User(name=assessment.candidate_name,email=candidate_email)
+            newUser.save()
+            newUser.set_password('S3curePassword')
+            newUser.save()
+            newAssessment = Assessment(
+                assessment_name=assessment_name,
+                candidate_name=assessment.candidate_name,
+                candidate_surname=assessment.candidate_surname,
+                candidate_email=candidate_email,
+                time_to_complete =assessment.time_to_complete,
+                creator_email = assessment.creator_email,
+                date_creation=datetime.datetime.now(),
+                # questions_selected = assessment.questions_selected,
+                token=assessment.token,
+            )
+            # newAssessment.questions_selected.set(assessment.questions_selected)
+            questions_selected_number = []
+            questions_selected = Question.objects.filter(assessment__pk=assessment.pk)
+
+            [questions_selected_number.append(q.pk) for q in questions_selected]
+            newAssessment.save()
+            newAssessment.questions_selected.add(*questions_selected_number)
+            newAssessment.save()
+
+            return HttpResponseRedirect(reverse('assessment_list_view'))
+
+        except:
+            return HttpResponseRedirect(reverse('assessment_list_view'))
+
+    def post(self, request, *args, **kwargs):
+        self.get(request, *args, **kwargs)
+        pass
 
 # **** Candidate Classes
 
@@ -738,7 +815,7 @@ class PracticeQuestionsView(TemplateView):
             number_of_questions = questions_selected.count()
             context['number_of_questions'] = number_of_questions
 
-            # create a range to be used by the template to identify the question mumber
+            # create a range to be used by the template to identify the question number
             number_of_questions_range = range(number_of_questions)
             context['number_of_questions_range'] = number_of_questions_range
             count = 1
@@ -989,6 +1066,72 @@ class TestQuestionsSubmitUpdate(TemplateView):
         pass
     pass
 
+@method_decorator(login_required, name='dispatch')
+class TestQuestionsView(DetailView):
+    model = Assessment
+    template_name = 'assessment/test_questions.html'
+    context_object_name = 'test_questions_view'
+    slug_field = 'token'
+    slug_url_kwarg = 'token'
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
+        assessment = Assessment.objects.filter(token=self.kwargs['token'])[0]
+        pk = assessment.pk
+        questions_selected = Question.objects.filter(assessment__pk=pk)
+        context['questions_selected'] = questions_selected
+
+        # total number of questions
+        number_of_questions = questions_selected.count()
+        context['number_of_questions'] = number_of_questions
+        context['duration'] = assessment.time_to_complete
+        # create a range to be used by the template to identify the question mumber
+        number_of_questions_range = range(number_of_questions)
+        context['number_of_questions_range'] = number_of_questions_range
+        count = 1
+        dict_output = {}
+        for Q in questions_selected:
+            dict_output [count] = Q
+            count = count+1
+        context['dict_output'] = dict_output
+        return context
+
+    # def post(self, request, *args, **kwargs):
+    #     HttpResponseRedirect(reverse('test_questions_view'))
+    #     pass
+    def post(self,request, *args, **kwargs):
+
+        return self.get(request, *args, **kwargs)
+
+    def get(self,request, *args, **kwargs):
+        token = self.kwargs['token']
+        # token = request.POST['token']
+
+        # query token and user to see if the candidate has an assessment assigned
+
+        # test if it exist pass user and token (the token is unique... but we want to verify the correct email too)
+        assessment_query = Assessment.objects.filter(token=token)
+        if assessment_query:
+            assessment = Assessment.objects.filter(token=token)[0]
+            if assessment.candidate_email == request.user.email:
+                if assessment.completed == 'Yes':
+
+                    return HttpResponseRedirect(reverse('home_view',kwargs = {'token': token}))
+                else:
+                    return super().get(request, *args, **kwargs)
+            else:
+                return HttpResponseRedirect(reverse('test_home_view'))
+                # reset to make the old app working (without candidate)
+                # return HttpResponseRedirect(reverse('validate_token_view'))
+        else:
+            return HttpResponseRedirect(reverse('test_home_view'))
+            # return HttpResponseRedirect(reverse('validate_token_view'))
+
+        # check if the token and the user are valid at the same time.
+
+
+
+
 # @method_decorator(login_required, name='dispatch')
 # class TestQuestionsSubmitUpdate(UpdateView):
 #     model = Assessment
@@ -1042,83 +1185,48 @@ class TestQuestionsSubmitUpdate(TemplateView):
 #     def calculate_score(self,assessment,answers):
 #         pass
 #     pass
-@method_decorator(login_required, name='dispatch')
-class AssessementCopyView(CreateView):
-    model = Assessment
-    template_name = 'assessment/director/assessment_copy.html'
-    context_object_name = 'assessment_copy_view'
 
 
+# @method_decorator(login_required, name='dispatch')
+# class PracticeQuestionsView(DetailView):
+#     model = Assessment
+#     template_name = 'assessment/test_questions.html'
+#     context_object_name = 'test_questions_view'
+#     slug_field = 'token'
+#     slug_url_kwarg = 'token'
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         # context['assessment'] = Assessment.objects.filter(assessment=self.kwargs['pk'])
+#         pk = Assessment.objects.filter(token=self.kwargs['token'])[0].pk
+#         questions_selected = Question.objects.filter(assessment__pk=pk)
+#         context['questions_selected'] = questions_selected
+#
+#         # total number of questions
+#         number_of_questions = questions_selected.count()
+#         context['number_of_questions'] = number_of_questions
+#
+#         # create a range to be used by the template to identify the question mumber
+#         number_of_questions_range = range(number_of_questions)
+#         context['number_of_questions_range'] = number_of_questions_range
+#         count = 1
+#         dict_output = {}
+#         for Q in questions_selected:
+#             dict_output [count] = Q
+#             count = count+1
+#         context['dict_output'] = dict_output
+#         return context
+#
+#     # def post(self, request, *args, **kwargs):
+#     #     HttpResponseRedirect(reverse('test_questions_view'))
+#     #     pass
+#     def post(self,request, *args, **kwargs):
+#
+#         return self.get(request, *args, **kwargs)
+#
+#     def get(self,request, *args, **kwargs):
+#         # token = 'Test_Token'
+#
+#         # return HttpResponseRedirect(reverse('home_view',kwargs = {'token': token}))
+#         return super().get(request, *args, **kwargs)
 
-    def get(self, request, *args, **kwargs):
-        pk = kwargs['pk']
-        assessment = Assessment.objects.get(pk=pk)
-        assessment_name = assessment.assessment_name
-
-# **************** routine to add '_1' to the name and email before creating a new assessment and new user
-
-        if assessment_name[len(assessment_name)-1].isnumeric():
-                if assessment_name[len(assessment_name)-2] == '_':
-                    assessment_name = assessment_name[:len(assessment_name)-2] + '_' + str(int(assessment_name[len(assessment_name)-1]) + 1)
-                else:
-                    assessment_name = assessment_name + '_1'
-        else:
-            assessment_name = assessment_name + '_1'
-
-        candidate_email = assessment.candidate_email
-
-        candidate_email_no_at = candidate_email.split('@')[0]
-
-        if candidate_email_no_at[len(candidate_email_no_at)-1].isnumeric():
-                if candidate_email_no_at[len(candidate_email_no_at)-2] == '_':
-                    candidate_email_no_at = candidate_email_no_at[:len(candidate_email_no_at)-2] + '_' + str(int(candidate_email_no_at[len(candidate_email_no_at)-1]) + 1)
-                else:
-                    candidate_email_no_at = candidate_email_no_at + '_1'
-        else:
-            candidate_email_no_at = candidate_email_no_at + '_1'
-
-        candidate_email = candidate_email_no_at +'@'+candidate_email.split('@')[1]
-
-        if len(User.objects.filter(email=candidate_email)) != 0 :
-            candidate_email = candidate_email.split('@')[0]+'_1@'+candidate_email.split('@')[1]
-
-        if len(Assessment.objects.filter(assessment_name=assessment_name)) != 0:
-            assessment_name = assessment_name + '_1'
-
-
-
-        try:
-
-            newUser = User(name=assessment.candidate_name,email=candidate_email)
-            newUser.save()
-            newUser.set_password('OracleInsightforCloud')
-            newUser.save()
-            newAssessment = Assessment(
-                assessment_name=assessment_name,
-                candidate_name=assessment.candidate_name,
-                candidate_surname=assessment.candidate_surname,
-                candidate_email=candidate_email,
-                time_to_complete =assessment.time_to_complete,
-                creator_email = assessment.creator_email,
-                date_creation=datetime.datetime.now(),
-                # questions_selected = assessment.questions_selected,
-                token=assessment.token,
-            )
-            # newAssessment.questions_selected.set(assessment.questions_selected)
-            questions_selected_number = []
-            questions_selected = Question.objects.filter(assessment__pk=assessment.pk)
-
-            [questions_selected_number.append(q.pk) for q in questions_selected]
-            newAssessment.save()
-            newAssessment.questions_selected.add(*questions_selected_number)
-            newAssessment.save()
-
-            return HttpResponseRedirect(reverse('assessment_list_view'))
-
-        except:
-            return HttpResponseRedirect(reverse('assessment_list_view'))
-
-    def post(self, request, *args, **kwargs):
-        self.get(request, *args, **kwargs)
-        pass
 
